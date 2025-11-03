@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KrakenFlow</title>
+  <link rel="icon" href="assets/Kraken_logo.png" sizes="32x32">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header id="topbar" class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <span class="topbar-title">KrakenFlow</span>
+        <img class="topbar-logo" src="assets/Kraken_logo.png" alt="KrakenFlow logo">
+      </div>
+      <div class="topbar-right">
+        <span>Built by <a href="https://github.com/jeffe107" class="topbar-link">Jeferyd Yepes-García</a></span>
+      </div>
+    </div>
+  </header>
+  <div id="app">
+    <aside class="sidebar">
+      <nav id="file-nav" class="nav"></nav>
+      <div class="controls">
+        <button id="toggle-toc" class="switch" aria-pressed="false" title="Toggle Table of Contents">
+          <span class="knob" aria-hidden="true"></span>
+          <span class="label">TOC</span>
+        </button>
+        <button id="toggle-theme" class="switch theme" aria-pressed="false" title="Toggle Theme">
+          <span class="knob" aria-hidden="true"></span>
+          <span class="icon" aria-hidden="true">🌜</span>
+          <span class="label">Dark</span>
+        </button>
+      </div>
+      <div class="sidebar-hero">
+        <img src="assets/Kraken_logo.png" alt="KrakenFlow logo large" class="sidebar-hero-img">
+      </div>
+    </aside>
+    <main class="content">
+      <article id="doc"></article>
+      <div id="pager" class="pager">
+        <button id="prev-page" class="pager-btn" disabled>← Prev</button>
+        <button id="next-page" class="pager-btn" disabled>Next →</button>
+      </div>
+    </main>
+    <aside id="toc" class="toc hidden"></aside>
+  </div>
+
+  <noscript>
+    This site requires JavaScript to render the markdown files.
+  </noscript>
+
+  <script src="app.js"></script>
+
+  <div class="signature">
+    <span>Part of</span>
+    <a href="https://www.unifr.ch/bio/en/groups/falquet/" target="_blank" class="developer-link">
+        <img src="assets/unifr-logo.png" alt="University of Fribourg" class="unifr-logo">
+        BugFri
+    </a>
+</div>
+
+</body>
+</html>
+
+
