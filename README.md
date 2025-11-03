@@ -1,4 +1,4 @@
-# KrakenFlow
+# KrakenFlow: The tutorial
 <p align="center">
     <img class="brand" src="assets/Kraken_logo.png" alt="KrakenFlow logo">
 </p>
@@ -35,3 +35,4 @@ The tutorial assumes some minimal familiarity with the following:
 
 
 For technical requirements and environment setup, see the [Environment Setup](https://training.nextflow.io/latest/envsetup/) mini-course.
+
