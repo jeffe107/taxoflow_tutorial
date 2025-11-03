@@ -18,10 +18,17 @@
 
   function rewriteAssetPaths(md) {
     return md
+      // Normalize assets/* paths used in upstream content
       .replaceAll('../../assets/img/', '../assets/')
       .replaceAll('assets/img/', '../assets/')
       .replaceAll('../../assets/', '../assets/')
-      .replaceAll('(assets/', '(../assets/');
+      .replaceAll('(assets/', '(../assets/')
+      // Fix markdown image links that use images/* relative to the markdown file
+      .replaceAll('](images/', '](markdown/images/')
+      .replaceAll('](./images/', '](markdown/images/')
+      // Fix raw HTML <img src="images/..."> used in markdown
+      .replaceAll('src="images/', 'src="markdown/images/')
+      .replaceAll('src="./images/', 'src="markdown/images/');
   }
 
   function escapeHtml(s) {

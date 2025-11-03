@@ -123,7 +123,7 @@ If this is not entirely clear, please check the [Nextflow documentation](https:/
 #### 2.2.1. Including a customized script
 
 We are at the last step of the pipeline execution, and now we need to process the `*.biom` file by transforming it into a Phyloseq object, which is easier to use, more intuitive to understand, and is equipped with multiple tools and methods to plot.
-Another amazing feature by Nextflow is the possibility to run the so-called _Scripts à la carte_, which means that a process does not necessarily require an external tool to execute, and hence you can develop your own analysis with customized scripts, i.e., R or Python.
+Another feature of Nextflow is the possibility to run the so-called _Scripts à la carte_, which means that a process does not necessarily require an external tool to execute, and hence you can develop your own analysis with customized scripts, i.e., R or Python.
 Here, we will run an R script inside the module `knit_phyloseq.nf` to create and process the Phyloseq object taking as input the output from `kraken_biom.nf`:
 
 ```groovy title="modules/kraken_biom.nf" linenums="1"
@@ -159,7 +159,7 @@ As a result the output from this process is just a standard/command-line output,
 ```
 
 In addition, please notice the `container` used for the `KNIT_PHYLOSEQ`, which is combination of multiple packages required to render the `*.html` report.
-This is possible thanks to an awesome tool called [Seqera Containers](https://seqera.io/containers/), which is able to build almost any container (for docker or singularity!) by just "merging" different PyPI or Conda packages; please give it a try and be amazed by Seqera Containers.
+This is possible thanks to tool called [Seqera Containers](https://seqera.io/containers/), which is able to build almost any container (for docker or singularity!) by just "merging" different PyPI or Conda packages; please give it a try and be amazed by Seqera Containers.
 
 Also, we have to include this new process within `workflow.nf`:
 
@@ -190,17 +190,18 @@ On the output of the command line, you will see:
 
 Launching `main.nf` [stoic_miescher] DSL2 - revision: 8f65b983e6
 
-        __________________________________________________________________________________________________________________________________________________
-        __________________________________________________________________________________________________________________________________________________
-        >=>   >=>                       >=>                                         >=> >=>>=>                                >=>
-        >=>  >=>                        >=>                           >=>>=>       >=>  >>   >=>                              >=>
-        >=> >=>     >> >==>    >=> >=>  >=>  >=>   >==>    >==>>==>  >>   >=>     >=>   >>    >=> >> >==>    >=> >=>     >==> >=>  >=>   >==>    >==>>==>
-        >>=>>        >=>     >=>   >=>  >=> >=>  >>   >=>   >=>  >=>     >=>     >=>    >==>>=>    >=>     >=>   >=>   >=>    >=> >=>  >>   >=>   >=>  >=>
-        >=>  >=>     >=>    >=>    >=>  >=>=>    >>===>>=>  >=>  >=>    >=>     >=>     >>    >=>  >=>    >=>    >=>  >=>     >=>=>    >>===>>=>  >=>  >=>
-        >=>   >=>    >=>     >=>   >=>  >=> >=>  >>         >=>  >=>  >=>      >=>      >>     >>  >=>     >=>   >=>   >=>    >=> >=>  >>         >=>  >=>
-        >=>     >=> >==>      >==>>>==> >=>  >=>  >====>   >==>  >=> >======> >=>       >===>>=>  >==>      >==>>>==>    >==> >=>  >=>  >====>   >==>  >=>
-        __________________________________________________________________________________________________________________________________________________
-        __________________________________________________________________________________________________________________________________________________
+	___________________________________________________________________________________________________
+	___________________________________________________________________________________________________
+	>=>   >=>                       >=>                          >=======>  >=>                         
+	>=>  >=>                        >=>                          >=>        >=>                         
+	>=> >=>     >> >==>    >=> >=>  >=>  >=>   >==>    >==>>==>  >=>        >=>    >=>     >=>      >=> 
+	>>=>>        >=>     >=>   >=>  >=> >=>  >>   >=>   >=>  >=> >=====>    >=>  >=>  >=>   >=>  >  >=> 
+	>=>  >=>     >=>    >=>    >=>  >=>=>    >>===>>=>  >=>  >=> >=>        >=> >=>    >=>  >=> >>  >=> 
+	>=>   >=>    >=>     >=>   >=>  >=> >=>  >>         >=>  >=> >=>        >=>  >=>  >=>   >=>>  >=>=> 
+	>=>     >=> >==>      >==>>>==> >=>  >=>  >====>   >==>  >=> >=>       >==>    >=>     >==>    >==> 
+                                                                                                    
+	___________________________________________________________________________________________________
+	___________________________________________________________________________________________________
 
 executor >  local (22)
 [4e/914152] kraken2Flow:BOWTIE2 (ERR2143774)           [100%] 4 of 4 ✔
