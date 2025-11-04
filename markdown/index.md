@@ -5,7 +5,7 @@
 
 !!! note
 
-    This learning resource is was developed by the Nextflow Ambassador [Jeferyd Yepes](https://jeferydyepes.com/) and edited by the Nextflow Training team. It will be re-visited every now and then for updates and suggestions from the community members.
+    This learning resource is was developed by the Nextflow Ambassador [Jeferyd Yepes](https://jeferydyepes.com/), and suggestions from the Nextflow Training team were applied.
 
 The tutorial is designed for researchers on focused metagenomics (WGS/shotgun) data analysis who are interested in developing or customizing taxonomic annotation pipelines.
 It builds on the [Hello Nextflow](https://training.nextflow.io/latest/hello_nextflow/) and [Nextflow for RNAseq](https://training.nextflow.io/latest/nf4_science/rnaseq/) beginner training and demonstrates how to use Nextflow in the specific context of metagenomics data analysis.
