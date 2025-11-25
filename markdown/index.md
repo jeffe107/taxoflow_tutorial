@@ -1,14 +1,6 @@
-# Nextflow for Metagenomics
+# KrakenFlow: The tutorial
 
-<p align="center">
-    <img class="brand" src="images/Kraken_logo.png" alt="KrakenFlow logo">
-</p>
-
-!!! note
-
-    This learning resource is was developed by [Jeferyd Yepes](https://jeferydyepes.com/), and suggestions from the [Nextflow Training team](https://training.nextflow.io/latest/) were applied.
-
-The course is designed for researchers on focused metagenomics (WGS/shotgun) data analysis who are interested in developing or customizing taxonomic annotation pipelines.
+This tutorial is designed for researchers on focused metagenomics (WGS/shotgun) data analysis who are interested in developing or customizing taxonomic annotation pipelines.
 It builds on the [Hello Nextflow](https://training.nextflow.io/latest/hello_nextflow/) and [Nextflow for RNAseq](https://training.nextflow.io/latest/nf4_science/rnaseq/) beginner training and demonstrates how to use Nextflow in the specific context of metagenomics data analysis.
 
 Specifically, this course demonstrates how to implement a simple read taxonomic annotation starting from removing host sequences, passing through re-estimating species abundance with Bayesian statistics, until generating complete reports.

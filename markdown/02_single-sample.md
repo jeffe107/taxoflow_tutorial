@@ -38,7 +38,7 @@ process BOWTIE2 {
 
     script:
     """
-    export BOWTIE2_INDEXES=/workspaces/training/nf4-science/KrakenFlow/genome/TAIR10
+    export BOWTIE2_INDEXES=/workspaces/training/nf4-science/KrakenFlow/data/genome/TAIR10
     bowtie2 -x $bowtie2_index -1 ${reads[0]} -2 ${reads[1]} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}
     """
     }
@@ -463,7 +463,13 @@ output/
 Feel free to explore each of the files to understand each process and how data were handled.
 
 The file we are most interested in is the `*.html` file containing the Krona plot.
-You can either download it and open it in your browser, or install the [preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) extension for Visual Studio.
+You can either download it and open it in your browser, or install the [preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) extension for Visual Studio. Below you can see a snapshot of how it should look like:
+
+<div markdown class="metagenomics">
+
+![Metagenomics](../../assets/img/snapshot.png)
+
+</div>
 
 !!!note
 
