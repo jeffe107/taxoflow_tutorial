@@ -40,9 +40,9 @@ Here, we have provided the `sample id` and the absolute paths to both forward an
 Please notice that the files are not required to be stored in the directory; however, this is recommended in order to maintain a consistent fodirectorylder structure.
 
 However, we cannot use this file as input in the current state of the pipeline, given that it expects only a path to create a paired-end channel.
-So let's include an additional parameter in the `nextflow.config` file (inside the parameter block, keeping the same structure):
+So let's include an additional parameter in the `multi/nextflow.config` file (inside the parameter block, keeping the same structure):
 
-```groovy title="nextflow.config" linenums="10"
+```groovy title="multi/nextflow.config" linenums="10"
     sheet_csv                             = null
 ```
 
