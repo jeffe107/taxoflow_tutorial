@@ -168,7 +168,7 @@ As a result the output from this process is just a standard/command-line output,
 In addition, please notice the `container` used for the `KNIT_PHYLOSEQ`, which is combination of multiple packages required to render the `*.html` report.
 This is possible thanks to an awesome tool called [Seqera Containers](https://seqera.io/containers/), which is able to build almost any container (for docker or singularity!) by just "merging" different PyPI or Conda packages; please give it a try and be amazed by Seqera Containers.
 
-Also, we have to include this new process within `workflow.nf`:
+Also, we have to include this new process within `multi/workflow.nf`:
 
 ```groovy title="multi/workflow.nf" linenums="10"
 include { KNIT_PHYLOSEQ             }   from './modules/knit_phyloseq.nf'
