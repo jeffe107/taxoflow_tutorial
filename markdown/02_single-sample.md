@@ -283,8 +283,8 @@ We start by adding the following code to import modules:
 include { BOWTIE2               }  from './modules/bowtie2.nf'
 include { KRAKEN2               }  from './modules/kraken2.nf'
 include { BRACKEN               }  from './modules/bracken.nf'
-include { K_REPORT_TO_KRONA.    }  from './modules/kReport2Krona.nf'
-include { KT_IMPORT_TEXT.       }  from './modules/ktImportText.nf'
+include { K_REPORT_TO_KRONA     }  from './modules/kReport2Krona.nf'
+include { KT_IMPORT_TEXT        }  from './modules/ktImportText.nf'
 ```
 
 Here we list all the modules that we wish to import into the workflow using the standard `include` syntax.
