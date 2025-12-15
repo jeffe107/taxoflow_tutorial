@@ -159,9 +159,9 @@ process KNIT_PHYLOSEQ {
 As you can see, we are declaring some variables both in Nextflow and bash to be able to call the script.
 This is a special case since this type of scripts can be stored in the **bin** directory for Nextflow to find them directly.
 Nevertheless, as we are not "running the script" directly but we are calling `Rscript` to render a final `*.html` report, Nextflow is not able to automatically find the customized script nor detect when the report is rendered.
-As a result the output from this process is just a standard/command-line output, and we have to include an additional parameter in the `nextflow.config` file:
+As a result the output from this process is just a standard/command-line output, and we have to include an additional parameter in the `multi/nextflow.config` file:
 
-```groovy title="nextflow.config" linenums="11"
+```groovy title="multi/nextflow.config" linenums="11"
     report                             = "/workspaces/training/nf4-science/KrakenFlow/multi/bin/report.Rmd"
 ```
 
@@ -176,7 +176,7 @@ include { KNIT_PHYLOSEQ             }   from './modules/knit_phyloseq.nf'
 
 We need to call it as well inside the conditional execution if multi-sample is being handled:
 
-```groovy title="workflow.nf" linenums="31"
+```groovy title="multi/workflow.nf" linenums="31"
         KNIT_PHYLOSEQ(KRAKEN_BIOM.out)
 ```
 
