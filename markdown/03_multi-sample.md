@@ -77,9 +77,9 @@ Notwithstanding, the inclusion of additional samples has the advantage that we c
 
 Let's create a new module that is going to handle the Bracken output to produce a Biological Observation Matrix (BIOM) file that concatenates the species abundance in each sample.
 
-The `kraken_biom.nf` file will be located in the `modules/` directory:
+The `kraken_biom.nf` file will be located in the `multi/modules/` directory:
 
-```groovy title="modules/kraken_biom.nf" linenums="1"
+```groovy title="multi/modules/kraken_biom.nf" linenums="1"
 process KRAKEN_BIOM {
 	  tag "merge_samples"
     publishDir "$params.outdir", mode:'copy'
@@ -101,28 +101,28 @@ process KRAKEN_BIOM {
 ```
 
 This process will _collect_ each output from the Bracken files to build a single `*.biom` file that contains the abundance species data of all the samples.
-In the `script` statement we find three tasks to execute, the first two lines are for variable manipulation required to handle the type of input this process receives (more about this when modifying `workflow.nf` below), and the second line executes the kraken-biom command that is available thanks to specified container.
+In the `script` statement we find three tasks to execute, the first two lines are for variable manipulation required to handle the type of input this process receives (more about this when modifying `multi/workflow.nf` below), and the second line executes the kraken-biom command that is available thanks to specified container.
 
 #### 2.1.1. Operator _collect()_ and conditional execution
 
 Nextflow provides a high number of operators that smooth data handling and orchestrates the workflow to do exactly what we want.
 In this case, the process `KRAKEN_BIOM` requires all the files produced by Bracken belonging to each sample, which means that `KRAKEN_BIOM` can not be triggered until all Bracken processes are finished.
-For this task, the operator _collect()_ comes really handy, and therefore let's include it in our `workflow.nf`... but wait!
+For this task, the operator _collect()_ comes really handy, and therefore let's include it in our `multi/workflow.nf`... but wait!
 Let's recall that `KRAKEN_BIOM` and the following `KNIT_PHYLOSEQ` are only triggered if the execution is aiming at processing more than one sample.
-Being so, we will include these processes and modify the workflow execution to add the conditional statement in the `workflow.nf`:
+Being so, we will include these processes and modify the workflow execution to add the conditional statement in `multi/workflow.nf`:
 
-```groovy title="workflow.nf" linenums="9"
+```groovy title="multi/workflow.nf" linenums="9"
 include { KRAKEN_BIOM               }   from './modules/kraken_biom.nf'
 ```
 
-```groovy title="workflow.nf" linenums="29"
+```groovy title="multi/workflow.nf" linenums="29"
         if(params.sheet_csv){
 		    KRAKEN_BIOM(BRACKEN.out.collect())
 		}
 ```
 
 Here, you can see that we have added the operator _collect()_ to capture all the output files from `BRACKEN`, and this is happening only if we are using `--sheet_csv` as input.
-This operator is going to return a list of the elements specified in the output of the process (`BRACKEN`), and, for instance, we are interested in each "second" (indices 1,4,7...) element of the list to run the _kraken-biom_ command; this is the reason why within the `script` statement in `kraken_biom.nf` we have included two codelines to obtain the paths to these files.
+This operator is going to return a list of the elements specified in the output of the process (`BRACKEN`), and, for instance, we are interested in each "second" (indices 1,4,7...) element of the list to run the _kraken-biom_ command; this is the reason why within the `script` statement in `multi/modules/kraken_biom.nf` we have included two codelines to obtain the paths to these files.
 If this is not entirely clear, please check the [Nextflow documentation](https://www.nextflow.io/docs/latest/reference/operator.html#collect).
 
 ### 2.2. Phyloseq
@@ -131,9 +131,9 @@ If this is not entirely clear, please check the [Nextflow documentation](https:/
 
 We are at the last step of the pipeline execution, and now we need to process the `*.biom` file by transforming it into a Phyloseq object, which is easier to use, more intuitive to understand, and is equipped with multiple tools and methods to plot.
 Another amazing feature by Nextflow is the possibility to run the so-called _Scripts à la carte_, which means that a process does not necessarily require an external tool to execute, and hence you can develop your own analysis with customized scripts, i.e., R or Python.
-Here, we will run an R script inside the module `knit_phyloseq.nf` to create and process the Phyloseq object taking as input the output from `kraken_biom.nf`:
+Here, we will run an R script inside the module `multi/modules/knit_phyloseq.nf` to create and process the Phyloseq object taking as input the output from `multi/modules/kraken_biom.nf`:
 
-```groovy title="modules/kraken_biom.nf" linenums="1"
+```groovy title="multi/modules/kraken_biom.nf" linenums="1"
 process KNIT_PHYLOSEQ {
 	tag "knit_phyloseq"
     publishDir "$params.outdir", mode:'copy'
@@ -162,7 +162,7 @@ Nevertheless, as we are not "running the script" directly but we are calling `Rs
 As a result the output from this process is just a standard/command-line output, and we have to include an additional parameter in the `nextflow.config` file:
 
 ```groovy title="nextflow.config" linenums="11"
-    report                             = "/workspaces/training/nf4-science/KrakenFlow/bin/report.Rmd"
+    report                             = "/workspaces/training/nf4-science/KrakenFlow/multi/bin/report.Rmd"
 ```
 
 In addition, please notice the `container` used for the `KNIT_PHYLOSEQ`, which is combination of multiple packages required to render the `*.html` report.
@@ -170,7 +170,7 @@ This is possible thanks to an awesome tool called [Seqera Containers](https://se
 
 Also, we have to include this new process within `workflow.nf`:
 
-```groovy title="workflow.nf" linenums="10"
+```groovy title="multi/workflow.nf" linenums="10"
 include { KNIT_PHYLOSEQ             }   from './modules/knit_phyloseq.nf'
 ```
 
@@ -187,7 +187,7 @@ We need to call it as well inside the conditional execution if multi-sample is b
 Now, we are completely set to run the analysis for as many samples as we would like, and we will obtain a final report depicting different metrics regarding taxonomic abundance, network analysis, and α and β-diversity. Let's execute:
 
 ```bash
-nextflow run main.nf --sheet_csv 'data/samplesheet.csv'
+nextflow run multi/main.nf --sheet_csv 'data/samplesheet.csv'
 ```
 
 On the output of the command line, you will see:
