@@ -2,8 +2,9 @@
 
 In this part, we are going to start from the pipeline structure we built in the previous part and extend it for multi-sample analysis.
 
-> [!WARNING]
-> We will be working now in the `multi` directory.
+!!!note
+
+    We will be working now in the `multi` directory.
 
 This will give us the opportunity to practice using the following Nextflow features:
 
