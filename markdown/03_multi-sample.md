@@ -2,6 +2,9 @@
 
 In this part, we are going to start from the pipeline structure we built in the previous part and extend it for multi-sample analysis.
 
+> [!WARNING]
+> We will be working now in the `multi` directory.
+
 This will give us the opportunity to practice using the following Nextflow features:
 
 1. Using a Nextflow operator to control the flow of data
@@ -14,7 +17,7 @@ This will give us the opportunity to practice using the following Nextflow featu
 
 With our shiny brand-new pipeline, we are at this moment able to analyze each sample individually by running the workflow multiple times.
 Nonetheless, one of the most powerful capabilities by Nextflow is its native parallel execution according to the available resources the executor finds.
-You can think of this as a sort of "integrated _for_ loop" that will process all the samples in parallel in a single run without the need of re-running the pipeline.
+You can think of this as a sort of "integrated *for* loop" that will process all the samples in parallel in a single run without the need of re-running the pipeline.
 
 To achieve this purpose, there are two possibilities:
 
