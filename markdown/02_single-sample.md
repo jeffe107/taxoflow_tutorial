@@ -465,7 +465,7 @@ output/
 Feel free to explore each of the files to understand each process and how data were handled.
 
 The file we are most interested in is the `*.html` file containing the Krona plot.
-You can either download it and open it in your browser, or install the [preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) extension for Visual Studio. Below you can see a snapshot of how it should look like:
+You can either download it and open it in your browser, or install the [preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) extension for Visual Studio. Below you can see a snapshot of how it should look like (**keep in mind that this is the Bracken output!**):
 
 <div markdown class="metagenomics">
 
