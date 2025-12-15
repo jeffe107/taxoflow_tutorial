@@ -356,7 +356,7 @@ log.info """\
 .stripIndent()
 ```
 
-Then we add an `include` statement to import the `kraken2Flow` workflow from the 'single/workflow.nf' file, as well as a `workflow` block that sets up an input channel and invokes the `kraken2Flow` workflow:
+Then we add an `include` statement to import the `kraken2Flow` workflow from the `single/workflow.nf` file, as well as a `workflow` block that sets up an input channel and invokes the `kraken2Flow` workflow:
 
 ```groovy title="main.nf" linenums="18"
 include {KrakenFlow} from './workflow.nf'
