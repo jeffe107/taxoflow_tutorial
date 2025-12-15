@@ -312,6 +312,8 @@ workflow KrakenFlow {
 		BRACKEN(KRAKEN2.out, kraken2_db)
 		K_REPORT_TO_KRONA(BRACKEN.out)
 		KT_IMPORT_TEXT(K_REPORT_TO_KRONA.out)
+
+}
 ```
 
 In this declaration you see that we need three primary inputs for the pipeline: the indexed reference genome for Bowtie2, the indexed database for Kraken2 and Bracken, and the paths to the reads; when creating the `nextflow.config`, you will see how to specify these paths.
@@ -361,7 +363,7 @@ include {KrakenFlow} from './workflow.nf'
 
 workflow {
 
-	reads_ch = Channel.fromFilePairs( params.reads, checkIfExists:true)
+	reads_ch = Channel.fromFilePairs(params.reads, checkIfExists:true)
 	KrakenFlow(params.bowtie2_index, params.kraken2_db, reads_ch)
 }
 ```
