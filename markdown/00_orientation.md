@@ -33,7 +33,7 @@ Briefly, this creates a directory called `krakendb` under `data/` and moves into
 Then, it downloads an archive file with `wget`, unpacks its contents with `tar`, and deletes the original archive file.
 Finally, it moves you back up to the original `nf4-science/KrakenFlow/` directory.
 
-Now, we need to retrieve the indexed genome to remove host reads. We are going to use the _Arabidopsis thaliana_ genome assembly TAIR10 that has been already indexed. There more available indexed genomes [here](https://benlangmead.github.io/aws-indexes/bowtie) or you can build [your own index](https://www.metagenomics.wiki/tools/bowtie2/index). Run the following commands then:
+Now, we need to retrieve the indexed genome to remove host reads. We are going to use the *Arabidopsis thaliana* genome assembly TAIR10 (**only for an educational perspective**) that has been already indexed. There more available indexed genomes [here](https://benlangmead.github.io/aws-indexes/bowtie) or you can build [your own index](https://www.metagenomics.wiki/tools/bowtie2/index). Run the following commands then:
 
 ```bash
 mkdir -p data/genome && cd "$_"
