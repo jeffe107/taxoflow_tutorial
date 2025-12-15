@@ -81,7 +81,7 @@ The `script` block contains two commands:
 
 2. The Bowtie2 command that includes again the path to the indexed genome.
    The `-1` and `-2` arguments capture the path to forward and reverse reads, respectively.The `-S` argument sets the desired format output.
-   The `--un-conc-gz` argument is used to write out any paired-end reads that fail to align concordantly to the reference genome.
+   The `--un-conc-gz` argument is used to write out any paired-end reads that fail to align concordantly to the reference genome. It is important to keep that these are the reads we are actually looking for, and therefore the ones we are passing to next process (Kraken2) to proceed with the taxonomic classification.
    To learn more about this parameter, see the [Bowtie2](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) manual.
 
 ### 1.2. Apply taxonomic classification with Kraken2
