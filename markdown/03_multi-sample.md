@@ -31,9 +31,9 @@ To move forward, let's create the file `samplesheet.csv` inside the folder `data
 
 ```csv title="data/samplesheet.csv" linenums="1"
 sample_id,fastq_1,fastq_2
-ERR2143768,/workspaces/training/nf4-science/KrakenFlow/data/samples/ERR2143768/ERR2143768_1.fastq,/workspaces/training/nf4-science/KrakenFlow/data/samples/ERR2143768/ERR2143768_2.fastq
-ERR2143770,/workspaces/training/nf4-science/KrakenFlow/data/samples/ERR2143770/ERR2143770_1.fastq,/workspaces/training/nf4-science/KrakenFlow/data/samples/ERR2143770/ERR2143770_2.fastq
-ERR2143774,/workspaces/training/nf4-science/KrakenFlow/data/samples/ERR2143774/ERR2143774_1.fastq,/workspaces/training/nf4-science/KrakenFlow/data/samples/ERR2143774/ERR2143774_2.fastq
+ERR2143768,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143768/ERR2143768_1.fastq,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143768/ERR2143768_2.fastq
+ERR2143770,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143770/ERR2143770_1.fastq,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143770/ERR2143770_2.fastq
+ERR2143774,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143774/ERR2143774_1.fastq,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143774/ERR2143774_2.fastq
 ```
 
 Here, we have provided the `sample id` and the absolute paths to both forward and reverse reads per sample.
@@ -162,7 +162,7 @@ Nevertheless, as we are not "running the script" directly but we are calling `Rs
 As a result the output from this process is just a standard/command-line output, and we have to include an additional parameter in the `multi/nextflow.config` file:
 
 ```groovy title="multi/nextflow.config" linenums="11"
-    report                             = "/workspaces/training/nf4-science/KrakenFlow/multi/bin/report.Rmd"
+    report                             = "/workspaces/training/nf4-science/TaxoFlow/multi/bin/report.Rmd"
 ```
 
 In addition, please notice the `container` used for the `KNIT_PHYLOSEQ`, which is combination of multiple packages required to render the `*.html` report.
@@ -199,25 +199,25 @@ Launching `main.nf` [stoic_miescher] DSL2 - revision: 8f65b983e6
 
 	___________________________________________________________________________________________________
 	___________________________________________________________________________________________________
-	>=>   >=>                       >=>                          >=======>  >=>                         
-	>=>  >=>                        >=>                          >=>        >=>                         
-	>=> >=>     >> >==>    >=> >=>  >=>  >=>   >==>    >==>>==>  >=>        >=>    >=>     >=>      >=> 
-	>>=>>        >=>     >=>   >=>  >=> >=>  >>   >=>   >=>  >=> >=====>    >=>  >=>  >=>   >=>  >  >=> 
-	>=>  >=>     >=>    >=>    >=>  >=>=>    >>===>>=>  >=>  >=> >=>        >=> >=>    >=>  >=> >>  >=> 
-	>=>   >=>    >=>     >=>   >=>  >=> >=>  >>         >=>  >=> >=>        >=>  >=>  >=>   >=>>  >=>=> 
-	>=>     >=> >==>      >==>>>==> >=>  >=>  >====>   >==>  >=> >=>       >==>    >=>     >==>    >==> 
+	>===>>=====>                                  >=======>  >=>                         
+     	>=>                                      >=>        >=>                         
+     	>=>        >=> >=>  >=>   >=>    >=>     >=>        >=>    >=>     >=>      >=> 
+     	>=>      >=>   >=>    >> >=>   >=>  >=>  >=====>    >=>  >=>  >=>   >=>  >  >=> 
+     	>=>     >=>    >=>     >>     >=>    >=> >=>        >=> >=>    >=>  >=> >>  >=> 
+     	>=>      >=>   >=>   >>  >=>   >=>  >=>  >=>        >=>  >=>  >=>   >=>>  >=>=> 
+     	>=>       >==>>>==> >=>   >=>    >=>     >=>       >==>    >=>     >==>    >==>     
                                                                                                     
 	___________________________________________________________________________________________________
 	___________________________________________________________________________________________________
 
 executor >  local (22)
-[4e/914152] KrakenFlow:BOWTIE2 (ERR2143774)           [100%] 3 of 3 ✔
-[bf/7fcac7] KrakenFlow:KRAKEN2 (ERR2143774)           [100%] 3 of 3 ✔
-[f5/aa12aa] KrakenFlow:BRACKEN (ERR2143774)           [100%] 3 of 3 ✔
-[e9/84eb9d] KrakenFlow:K_REPORT_TO_KRONA (ERR2143774) [100%] 3 of 3 ✔
-[59/456551] KrakenFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 3 of 3 ✔
-[da/7b9f45] KrakenFlow:KRAKEN_BIOM (merge_samples)    [100%] 1 of 1 ✔
-[d0/deccc9] KrakenFlow:KNIT_PHYLOSEQ (knit_phyloseq)  [100%] 1 of 1 ✔
+[4e/914152] TaxoFlow:BOWTIE2 (ERR2143774)           [100%] 3 of 3 ✔
+[bf/7fcac7] TaxoFlow:KRAKEN2 (ERR2143774)           [100%] 3 of 3 ✔
+[f5/aa12aa] TaxoFlow:BRACKEN (ERR2143774)           [100%] 3 of 3 ✔
+[e9/84eb9d] TaxoFlow:K_REPORT_TO_KRONA (ERR2143774) [100%] 3 of 3 ✔
+[59/456551] TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 3 of 3 ✔
+[da/7b9f45] TaxoFlow:KRAKEN_BIOM (merge_samples)    [100%] 1 of 1 ✔
+[d0/deccc9] TaxoFlow:KNIT_PHYLOSEQ (knit_phyloseq)  [100%] 1 of 1 ✔
 
 Completed at: 27-Nov-2025 13:03:40
 Duration    : 1m 36s
@@ -241,7 +241,7 @@ Below you can see one the plots included in the report: an absolute abundance pl
 
 !!!note
 
-    In case that the pipeline does not run in your environment, the output is available for you to check [here](https://github.com/jeffe107/krakenflow_tutorial/tree/main/output).
+    In case that the pipeline does not run in your environment, the output is available for you to check [here](https://github.com/jeffe107/TaxoFlow_tutorial/tree/main/output).
 
 
 ---
