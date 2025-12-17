@@ -1,4 +1,4 @@
-# KrakenFlow: The tutorial
+# TaxoFlow: The tutorial
 <p align="center">
     <img class="brand" src="assets/Kraken_logo.png" alt="KrakenFlow logo" width="50%">
 </p>
@@ -30,5 +30,6 @@ The tutorial assumes some minimal familiarity with the following:
 - Tools and file formats commonly used in this scientific domain
 - Experience with the command line
 - Foundational Nextflow concepts and tooling covered in the [Hello Nextflow](https://training.nextflow.io/latest/hello_nextflow/) and [Nextflow for RNAseq](https://training.nextflow.io/latest/nf4_science/rnaseq/) beginner training.
+
 
 
