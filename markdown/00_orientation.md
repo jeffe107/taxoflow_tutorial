@@ -12,8 +12,8 @@ To move into it, run the following command:
 
 ```bash
 cd nf4-science
-git clone https://github.com/jeffe107/KrakenFlow
-cd KrakenFlow
+git clone https://github.com/jeffe107/TaxoFlow
+cd TaxoFlow
 ```
 
 Before we go any further, we are going to download some files that are too large to be permanently stored within the GitHub repository.
@@ -31,7 +31,7 @@ cd -
 
 Briefly, this creates a directory called `krakendb` under `data/` and moves into it.
 Then, it downloads an archive file with `wget`, unpacks its contents with `tar`, and deletes the original archive file.
-Finally, it moves you back up to the original `nf4-science/KrakenFlow/` directory.
+Finally, it moves you back up to the original `nf4-science/TaxoFlow/` directory.
 
 Now, we need to retrieve the indexed genome to remove host reads. We are going to use the *Arabidopsis thaliana* genome assembly TAIR10 (**only for an educational perspective**) that has been already indexed. There more available indexed genomes [here](https://benlangmead.github.io/aws-indexes/bowtie) or you can build [your own index](https://www.metagenomics.wiki/tools/bowtie2/index). Run the following commands then:
 
@@ -56,8 +56,8 @@ Here you should see the following directory structure:
 ```console title="Directory contents"
 .
 ├── assets
-│   ├── logo_krakenflow.png
-│   └── workflow_krakenflow.png
+│   ├── logo_TaxoFlow.png
+│   └── workflow_TaxoFlow.png
 ├── bin
 │   └── report.Rmd
 ├── data
