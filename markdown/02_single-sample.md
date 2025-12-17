@@ -38,7 +38,7 @@ process BOWTIE2 {
 
     script:
     """
-    export BOWTIE2_INDEXES=/workspaces/training/nf4-science/KrakenFlow/data/genome/TAIR10
+    export BOWTIE2_INDEXES=/workspaces/training/nf4-science/TaxoFlow/data/genome/TAIR10
     bowtie2 -x $bowtie2_index -1 ${reads[0]} -2 ${reads[1]} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}
     """
     }
@@ -299,7 +299,7 @@ We need to declare the primary input for the workflow and invoke the processes o
  * workflow
  */
 
-workflow KrakenFlow {
+workflow TaxoFlow {
 	// required inputs
 	take:
 		bowtie2_index
@@ -359,12 +359,12 @@ log.info """\
 Then we add an `include` statement to import the `kraken2Flow` workflow from the `single/workflow.nf` file, as well as a `workflow` block that sets up an input channel and invokes the `kraken2Flow` workflow:
 
 ```groovy title="main.nf" linenums="18"
-include {KrakenFlow} from './workflow.nf'
+include {TaxoFlow} from './workflow.nf'
 
 workflow {
 
 	reads_ch = Channel.fromFilePairs(params.reads, checkIfExists:true)
-	KrakenFlow(params.bowtie2_index, params.kraken2_db, reads_ch)
+	TaxoFlow(params.bowtie2_index, params.kraken2_db, reads_ch)
 }
 ```
 
@@ -387,9 +387,9 @@ This is where we provide default input parameters for the pipeline and enable th
 
 params {
     reads                                 = null
-    outdir                                = "/workspaces/training/nf4-science/KrakenFlow/output"
-    bowtie2_index                         = "/workspaces/training/nf4-science/KrakenFlow/data/genome/TAIR10/TAIR10"
-    kraken2_db                            = "/workspaces/training/nf4-science/KrakenFlow/data/krakendb"
+    outdir                                = "/workspaces/training/nf4-science/TaxoFlow/output"
+    bowtie2_index                         = "/workspaces/training/nf4-science/TaxoFlow/data/genome/TAIR10/TAIR10"
+    kraken2_db                            = "/workspaces/training/nf4-science/TaxoFlow/data/krakendb"
     }
 
 // Enable using docker as the container engine to run the pipeline
@@ -433,11 +433,11 @@ Launching `main.nf` [determined_lorenz] DSL2 - revision: 8f65b983e6
 	___________________________________________________________________________________________________
 
 executor >  local (5)
-[fe/4b8409] process > KrakenFlow:BOWTIE2 (ERR2143768)           [100%] 1 of 1 ✔
-[14/c3d787] process > KrakenFlow:KRAKEN2 (ERR2143768)           [100%] 1 of 1 ✔
-[4c/5d2db3] process > KrakenFlow:BRACKEN (ERR2143768)           [100%] 1 of 1 ✔
-[e4/c305af] process > KrakenFlow:K_REPORT_TO_KRONA (ERR2143768) [100%] 1 of 1 ✔
-[39/08b32c] process > KrakenFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 1 of 1 ✔
+[fe/4b8409] process > TaxoFlow:BOWTIE2 (ERR2143768)           [100%] 1 of 1 ✔
+[14/c3d787] process > TaxoFlow:KRAKEN2 (ERR2143768)           [100%] 1 of 1 ✔
+[4c/5d2db3] process > TaxoFlow:BRACKEN (ERR2143768)           [100%] 1 of 1 ✔
+[e4/c305af] process > TaxoFlow:K_REPORT_TO_KRONA (ERR2143768) [100%] 1 of 1 ✔
+[39/08b32c] process > TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 1 of 1 ✔
 ```
 
 If that worked for you, it's finally time to analyze the results!
@@ -475,7 +475,7 @@ You can either download it and open it in your browser, or install the [preview]
 
 !!!note
 
-    In case that the pipeline does not run in your environment, the output is available for you to check [here](https://github.com/jeffe107/krakenflow_tutorial/tree/main/output).
+    In case that the pipeline does not run in your environment, the output is available for you to check [here](https://github.com/jeffe107/TaxoFlow_tutorial/tree/main/output).
 
 ---
 
