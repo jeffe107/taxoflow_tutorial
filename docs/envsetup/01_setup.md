@@ -14,11 +14,11 @@ You can create a free GitHub account from the [GitHub home page](https://github.
 
 ## Launching your GitHub Codespace
 
-Once you are logged in to GitHub, open this link in your browser to open the Nextflow training environment: <https://codespaces.new/nextflow-io/training?quickstart=1&ref=master>
+Once you are logged in to GitHub, open this link in your browser to open the Taxoflow environment: <https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1&ref=master>
 
 Alternatively, you can click on the button shown below, which is repeated in each training course (typically on the Orientation page).
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/nextflow-io/training?quickstart=1&ref=master)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1&ref=master)
 
 You should be presented with a page where you can create a new GitHub Codespace:
 
@@ -87,7 +87,7 @@ Click a session to resume it.
 If you have saved the URL for your previous GitHub Codespaces environment, you can simply open it in your browser.
 Alternatively, click the same button that you used to create it in the first place:
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/nextflow-io/training?quickstart=1&ref=master)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1&ref=master)
 
 You should see the previous session, the default option is to resume it:
 

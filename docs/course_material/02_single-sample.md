@@ -416,30 +416,31 @@ nextflow run single/main.nf --reads 'data/samples/ERR2143768/ERR2143768_{1,2}.fa
 
 On the output of the command line, you will see:
 
-```console title="Output"
- N E X T F L O W   ~  version 24.10.4
+??? success "Single-sample execution"
+	```console title="Output"
+	N E X T F L O W   ~  version 24.10.4
 
-Launching `main.nf` [determined_lorenz] DSL2 - revision: 8f65b983e6
+	Launching `main.nf` [determined_lorenz] DSL2 - revision: 8f65b983e6
 
-	___________________________________________________________________________________________________
-	___________________________________________________________________________________________________
-	>===>>=====>                                 >=======>  >=>                         
-     	>=>                                      >=>        >=>                         
-     	>=>        >=> >=>  >=>   >=>    >=>     >=>        >=>    >=>     >=>      >=> 
-     	>=>      >=>   >=>    >> >=>   >=>  >=>  >=====>    >=>  >=>  >=>   >=>  >  >=> 
-     	>=>     >=>    >=>     >>     >=>    >=> >=>        >=> >=>    >=>  >=> >>  >=> 
-     	>=>      >=>   >=>   >>  >=>   >=>  >=>  >=>        >=>  >=>  >=>   >=>>  >=>=> 
-     	>=>       >==>>>==> >=>   >=>    >=>     >=>       >==>    >=>     >==>    >==>                                                                                                                                                                      
-	___________________________________________________________________________________________________
-	___________________________________________________________________________________________________
+		___________________________________________________________________________________________________
+		___________________________________________________________________________________________________
+		>===>>=====>                                 >=======>  >=>                         
+			>=>                                      >=>        >=>                         
+			>=>        >=> >=>  >=>   >=>    >=>     >=>        >=>    >=>     >=>      >=> 
+			>=>      >=>   >=>    >> >=>   >=>  >=>  >=====>    >=>  >=>  >=>   >=>  >  >=> 
+			>=>     >=>    >=>     >>     >=>    >=> >=>        >=> >=>    >=>  >=> >>  >=> 
+			>=>      >=>   >=>   >>  >=>   >=>  >=>  >=>        >=>  >=>  >=>   >=>>  >=>=> 
+			>=>       >==>>>==> >=>   >=>    >=>     >=>       >==>    >=>     >==>    >==>                                                                                                                                                                      
+		___________________________________________________________________________________________________
+		___________________________________________________________________________________________________
 
-executor >  local (5)
-[fe/4b8409] process > TaxoFlow:BOWTIE2 (ERR2143768)           [100%] 1 of 1 ✔
-[14/c3d787] process > TaxoFlow:KRAKEN2 (ERR2143768)           [100%] 1 of 1 ✔
-[4c/5d2db3] process > TaxoFlow:BRACKEN (ERR2143768)           [100%] 1 of 1 ✔
-[e4/c305af] process > TaxoFlow:K_REPORT_TO_KRONA (ERR2143768) [100%] 1 of 1 ✔
-[39/08b32c] process > TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 1 of 1 ✔
-```
+	executor >  local (5)
+	[fe/4b8409] process > TaxoFlow:BOWTIE2 (ERR2143768)           [100%] 1 of 1 ✔
+	[14/c3d787] process > TaxoFlow:KRAKEN2 (ERR2143768)           [100%] 1 of 1 ✔
+	[4c/5d2db3] process > TaxoFlow:BRACKEN (ERR2143768)           [100%] 1 of 1 ✔
+	[e4/c305af] process > TaxoFlow:K_REPORT_TO_KRONA (ERR2143768) [100%] 1 of 1 ✔
+	[39/08b32c] process > TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 1 of 1 ✔
+	```
 
 If that worked for you, it's finally time to analyze the results!
 
@@ -451,19 +452,20 @@ tree output
 
 You should see the following:
 
-```console title="Output contents"
-output/
-└── ERR2143758
-    ├── ERR2143768.b.krona.txt
-    ├── ERR2143768.bracken
-    ├── ERR2143768.breport
-    ├── ERR2143768.k2report
-    ├── ERR2143768.kraken2
-    ├── ERR2143768.krona.html
-    └── ERR2143768.sam
-```
+!!! abstract "Output directory content" 
+	```console title="Output contents"
+	output/
+	└── ERR2143758
+		├── ERR2143768.b.krona.txt
+		├── ERR2143768.bracken
+		├── ERR2143768.breport
+		├── ERR2143768.k2report
+		├── ERR2143768.kraken2
+		├── ERR2143768.krona.html
+		└── ERR2143768.sam
+	```
 
-Feel free to explore each of the files to understand each process and how data were handled.
+Please feel free to explore each of the files to understand each process and how data were handled.
 
 The file we are most interested in is the `*.html` file containing the Krona plot.
 You can either download it and open it in your browser, or install the [preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) extension for Visual Studio. Below you can see a snapshot of how it should look like (**keep in mind that this is the Bracken output!**):

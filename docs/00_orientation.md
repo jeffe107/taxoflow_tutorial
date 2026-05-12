@@ -57,56 +57,57 @@ tree . -L 3
 
 Here you should see the following directory structure:
 
-```console title="Directory contents"
-.
-├── assets
-│   ├── taxoflow_logo.png
-│   └── workflow_taxoflow.png
-├── data
-│   ├── genome
-│   │   └── TAIR10
-│   ├── krakendb
-│   │   ├── database250mers.kmer_distrib
-│   │   ├── database250mers.kraken
-│   │   ├── database.kraken
-│   │   ├── hash.k2d
-│   │   ├── names.dmp
-│   │   ├── nodes.dmp
-│   │   ├── opts.k2d
-│   │   ├── seqid2taxid.map
-│   │   └── taxo.k2d
-│   ├── samples
-│   │   ├── ERR2143768
-│   │   ├── ERR2143770
-│   │   └── ERR2143774
-│   └── samplesheet.csv
-├── LICENSE
-├── multi
-│   ├── bin
-│   │   └── report.Rmd
-│   ├── main.nf
-│   ├── modules
-│   │   ├── bowtie2.nf
-│   │   ├── bracken.nf
-│   │   ├── knit_phyloseq.nf
-│   │   ├── kraken2.nf
-│   │   ├── kraken_biom.nf
-│   │   ├── kReport2Krona.nf
-│   │   └── ktImportText.nf
-│   ├── nextflow.config
-│   └── workflow.nf
-├── README.md
-└── single
-    ├── main.nf
-    ├── modules
-    │   ├── bowtie2.nf
-    │   ├── bracken.nf
-    │   ├── kraken2.nf
-    │   ├── kReport2Krona.nf
-    │   └── ktImportText.nf
-    ├── nextflow.config
-    └── workflow.nf
-```
+??? abstract "Materials provided within Taxoflow's directory"
+    ```console title="Directory contents"
+    .
+    ├── assets
+    │   ├── taxoflow_logo.png
+    │   └── workflow_taxoflow.png
+    ├── data
+    │   ├── genome
+    │   │   └── TAIR10
+    │   ├── krakendb
+    │   │   ├── database250mers.kmer_distrib
+    │   │   ├── database250mers.kraken
+    │   │   ├── database.kraken
+    │   │   ├── hash.k2d
+    │   │   ├── names.dmp
+    │   │   ├── nodes.dmp
+    │   │   ├── opts.k2d
+    │   │   ├── seqid2taxid.map
+    │   │   └── taxo.k2d
+    │   ├── samples
+    │   │   ├── ERR2143768
+    │   │   ├── ERR2143770
+    │   │   └── ERR2143774
+    │   └── samplesheet.csv
+    ├── LICENSE
+    ├── multi
+    │   ├── bin
+    │   │   └── report.Rmd
+    │   ├── main.nf
+    │   ├── modules
+    │   │   ├── bowtie2.nf
+    │   │   ├── bracken.nf
+    │   │   ├── knit_phyloseq.nf
+    │   │   ├── kraken2.nf
+    │   │   ├── kraken_biom.nf
+    │   │   ├── kReport2Krona.nf
+    │   │   └── ktImportText.nf
+    │   ├── nextflow.config
+    │   └── workflow.nf
+    ├── README.md
+    └── single
+        ├── main.nf
+        ├── modules
+        │   ├── bowtie2.nf
+        │   ├── bracken.nf
+        │   ├── kraken2.nf
+        │   ├── kReport2Krona.nf
+        │   └── ktImportText.nf
+        ├── nextflow.config
+        └── workflow.nf
+    ```
 
 **This a summarized description of the files and directories found:**
 

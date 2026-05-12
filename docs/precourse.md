@@ -26,6 +26,9 @@ All the software needed in this workflow is either:
 
 All information of this course is based on the [official Nextflow documentation](https://docs.seqera.io/nextflow/) and uses **Nextflow DSL2** syntax.
 
+!!! info "Nextflow version"
+    This tutorial uses a pinned version of Nextflow (**24.10.6**) with parser **v1**. This important considering the rapid evolution of this Domain Specific Language, thus ensuring the proper execution of the pipeline.
+
 ### GitHub Codespaces - Code editor
 
 <p style='text-align: justify;'>GitHub Codespaces is one of its kind nowadays services as there are really only a few alternative options to replace in case of any problem. It provides a complete self-contained execution environment and connected to an IDE for free! However, the resources are limited on the free tier we will be using for this course. Good news is that it should be sufficient for the purpose of the course, and in normal conditions no one would (hopefully) run out the resources allocated by Codespaces on the free tier.</p>
@@ -36,7 +39,7 @@ Without further ado, you can start here:
 
 This link will open VS code on your browser, and hence it is expected that you are familiar with the layout and basic functionalities VS code has. Otherwise, please check this quick [tutorial](https://code.visualstudio.com/docs/getstarted/getting-started) before the course to understand where everything is.
 
-#### Video tutorial
+#### VS code video tutorial
 
 You can find a (cool) video tutorial to learn about VS code:
 
@@ -52,9 +55,9 @@ We tried to use a colour code throughout the website to make the different piece
 
 !!! info "This is a supplementary piece of information"
 
-!!! tip "This is a tip to help you solve an exercise"
+!!! tip "This is a tip to help you advance with the course"
 
-!!! success "This is the answer to an exercise"
+!!! success "This is the output on the console"
 
 !!! warning "This is a warning about a potential problem"
 

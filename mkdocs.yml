@@ -3,7 +3,7 @@ nav:
     - Home: index.md
     - Precourse preparations: precourse.md
     - Environment:
-      - Options: envsetup/index.md
+      - Environment options: envsetup/index.md
       - GitHub Codespaces: envsetup/01_setup.md
       - Local Devcontainers: envsetup/03_devcontainer.md
       - Manual installation: envsetup/02_local.md

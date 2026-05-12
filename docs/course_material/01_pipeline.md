@@ -28,6 +28,26 @@ To perform these steps, we will use the following tools:
 5. (Multi-sample) **Concatenation with kraken-biom.** If multiple samples are provided, the Bracken reports will be concatenated and converted into a [Biological Observation Matrix (BIOM)](https://biom-format.org/) file.
 6. (Multi-sample) **Generation of final report with Phyloseq** The BIOM file will be converted to a [Phyloseq](https://joey711.github.io/phyloseq/index.html) object, and this object will be further processed to generate absolute plots, estimate both α and β-diversity and perform a network analysis. This information will be presented in a final `report.html`. To learn more about the code used to generate the plots and metrics, check out this Phyloseq [tutorial](https://vaulot.github.io/tutorials/Phyloseq_tutorial.html).
 
+The specific versions used by the current version of Taxoflow for each tool are as follows:
+
+??? info "Specific software versions"
+    | Tool        | Version | Container\* (Seqera\*\*)                                                     |
+    | ----------- | ------: | ------------------------------------------------------------------------- |
+    | Bowtie2     |   2.5.4 | bowtie2:2.5.4--d51920539234bea7                                           |
+    | Kraken2     |    2.14 | kraken2:2.14--83aa57048e304f01                                            |
+    | Bracken     |     3.1 | bracken:3.1--22a4e66ce04c5e01                                             |
+    | KrakenTools |     1.2 | krakentools:1.2--db94e0b19cfa397b                                         |
+    | Krona       |   2.8.1 | krona:2.8.1--2f750080982f027e                                             |
+    | Kraken-BIOM |   1.2.0 | kraken-biom:1.2.0--f040ab91c9691136                                       |
+    | R           |   4.4.3 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 |
+    | Phyloseq    |  1.50.0 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 |
+    | ggplot2     |   3.5.1 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 |
+
+    \* Containers found at: [community.wave.seqera.io/library/](https://community.wave.seqera.io/browse/library)
+
+    ** Containers compatible with Docker engine.
+
+
 !!!tip
 
     If you feel a bit overwhelmed by the theoretical background of the methodology, we strongly encourage you to check this [Carpentries](https://carpentries-lab.github.io/metagenomics-analysis/) lesson first, where the concepts are explained step by step using interesting examples.

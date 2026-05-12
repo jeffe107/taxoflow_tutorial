@@ -63,6 +63,43 @@ Now, we need to modify the `main.nf` file to state how the input should be handl
 This modified declaration states that if we use the parameter `--reads` when we invoke the `nextflow run main.nf`, the _reads_ channel will be created using only the path to paired-end files.
 Otherwise, we must include the parameter `--sheet_csv` with the corresponding file containing the sample information.
 
+### 1.1 Conditional execution with `if` statements
+
+TaxoFlow showcases **two layers** of conditional logic:
+
+- At the **top‑level workflow** (`main.nf`) to decide how to build the read channel.
+- Inside the **`TaxoFlow` workflow** (`workflow.nf`) to decide whether to run downstream reporting steps (shown below).
+
+The `if` statement decides **how inputs are parsed**:
+
+- **Branch 1 – `params.reads` is set**:
+    - Use `channel.fromFilePairs(params.reads, checkIfExists:true)` to build a channel of paired‑end read files directly from a glob pattern.
+    - This is convenient when your reads are already organised on disk and you do not need a sample sheet.
+- **Branch 2 – `params.reads` is not set**:
+    - Use `channel.fromPath(params.sheet_csv)` followed by `.splitCsv(header:true)` to read a CSV samplesheet.
+    - Map each row into a tuple: `tuple(row.sample_id, [file(row.fastq_1), file(row.fastq_2)])`.
+    - This is useful when metadata such as `sample_id` is stored in a table.
+
+In both cases the result is a **single channel `reads_ch`** that emits:
+
+- A `sample_id` value.
+- A list with the two FASTQ files.
+
+The rest of the pipeline (`TaxoFlow(...)`) is **independent of how `reads_ch` was created**, illustrating a common pattern:
+
+- Use `if` blocks early in the workflow to normalize different input formats into a **canonical channel shape**.
+
+??? tip "If structure"
+    Abstracting the `if` block from `main.nf`:
+        ```groovy title="if statement" linenums="1"
+        if(condition){
+            do something
+        } else {
+            do something different
+        }
+        ```
+    The `else` statement is not always required.
+
 Being so, it is necessary to use one of the two forms of input; if we use both at the same time, the `--reads` will predominate or if none of them is indicated, the pipeline will fail.
 Do not worry now for the way in which channel is created using the `.csv` file, this declaration is quite standard and you can just copy and paste for other pipelines in which you would like to use it; however, you can learn more about this [here](https://nextflow-io.github.io/patterns/process-per-csv-record/).
 
@@ -133,7 +170,7 @@ We are at the last step of the pipeline execution, and now we need to process th
 Another amazing feature by Nextflow is the possibility to run the so-called _Scripts à la carte_, which means that a process does not necessarily require an external tool to execute, and hence you can develop your own analysis with customized scripts, i.e., R or Python.
 Here, we will run an R script inside the module `multi/modules/knit_phyloseq.nf` to create and process the Phyloseq object taking as input the output from `multi/modules/kraken_biom.nf`:
 
-```groovy title="multi/modules/kraken_biom.nf" linenums="1"
+```groovy title="multi/modules/knit_phyloseq.nf" linenums="1"
 process KNIT_PHYLOSEQ {
 	tag "knit_phyloseq"
     publishDir "$params.outdir", mode:'copy'
@@ -155,6 +192,9 @@ process KNIT_PHYLOSEQ {
     """
     }
 ```
+
+??? tip "Global vs Nextflow variables"
+    Within the `modules/knit_phyloseq.nf` you can notice that some variables like `biom_pat` and `outreport` are preceded by a backslash (\\). In Nextflow, it is really important to distinguish Nextflow variables from Bash or environment variables. This is achieved through the use of double quotes in the script section plus adding the _escape_ character (backslash) **before Bash variables**. [More about this](https://docs.seqera.io/nextflow/process#script:~:text=the%20pipeline%20script.-,WARNING,-Since%20Nextflow%20uses)
 
 As you can see, we are declaring some variables both in Nextflow and bash to be able to call the script.
 This is a special case since this type of scripts can be stored in the **bin** directory for Nextflow to find them directly.
@@ -180,6 +220,23 @@ We need to call it as well inside the conditional execution if multi-sample is b
         KNIT_PHYLOSEQ(KRAKEN_BIOM.out)
 ```
 
+### 2.3 Conditional reporting inside `workflow.nf`
+
+The inner `if (params.sheet_csv)` controls whether to:
+
+- **Merge Bracken outputs across samples** with `KRAKEN_BIOM(BRACKEN.out.collect())`.
+- **Render a Phyloseq HTML report** with `KNIT_PHYLOSEQ(KRAKEN_BIOM.out)`.
+
+Key ideas:
+
+- When running from a **samplesheet**, we know which samples belong together, so it makes sense to aggregate them into a single biom file and downstream report.
+- When running from **raw file pairs only** (`params.reads`), `params.sheet_csv` is `null` in `nextflow.config`, so the extra report is skipped.
+
+This is a clean way to:
+
+- Keep **core processing** always enabled.
+- Toggle **extra reporting or QC steps** based on parameters.
+
 ---
 
 ## 3. Execution
@@ -192,38 +249,39 @@ nextflow run multi/main.nf --sheet_csv 'data/samplesheet.csv'
 
 On the output of the command line, you will see:
 
-```console title="Output"
- N E X T F L O W   ~  version 24.10.4
+??? success "Multi-sample execution"
+    ```console title="Output"
+    N E X T F L O W   ~  version 24.10.4
 
-Launching `main.nf` [stoic_miescher] DSL2 - revision: 8f65b983e6
+    Launching `main.nf` [stoic_miescher] DSL2 - revision: 8f65b983e6
 
-	___________________________________________________________________________________________________
-	___________________________________________________________________________________________________
-	>===>>=====>                                 >=======>  >=>                         
-     	>=>                                      >=>        >=>                         
-     	>=>        >=> >=>  >=>   >=>    >=>     >=>        >=>    >=>     >=>      >=> 
-     	>=>      >=>   >=>    >> >=>   >=>  >=>  >=====>    >=>  >=>  >=>   >=>  >  >=> 
-     	>=>     >=>    >=>     >>     >=>    >=> >=>        >=> >=>    >=>  >=> >>  >=> 
-     	>=>      >=>   >=>   >>  >=>   >=>  >=>  >=>        >=>  >=>  >=>   >=>>  >=>=> 
-     	>=>       >==>>>==> >=>   >=>    >=>     >=>       >==>    >=>     >==>    >==>     
-                                                                                                    
-	___________________________________________________________________________________________________
-	___________________________________________________________________________________________________
+        ___________________________________________________________________________________________________
+        ___________________________________________________________________________________________________
+        >===>>=====>                                 >=======>  >=>                         
+            >=>                                      >=>        >=>                         
+            >=>        >=> >=>  >=>   >=>    >=>     >=>        >=>    >=>     >=>      >=> 
+            >=>      >=>   >=>    >> >=>   >=>  >=>  >=====>    >=>  >=>  >=>   >=>  >  >=> 
+            >=>     >=>    >=>     >>     >=>    >=> >=>        >=> >=>    >=>  >=> >>  >=> 
+            >=>      >=>   >=>   >>  >=>   >=>  >=>  >=>        >=>  >=>  >=>   >=>>  >=>=> 
+            >=>       >==>>>==> >=>   >=>    >=>     >=>       >==>    >=>     >==>    >==>     
+                                                                                                        
+        ___________________________________________________________________________________________________
+        ___________________________________________________________________________________________________
 
-executor >  local (22)
-[4e/914152] TaxoFlow:BOWTIE2 (ERR2143774)           [100%] 3 of 3 ✔
-[bf/7fcac7] TaxoFlow:KRAKEN2 (ERR2143774)           [100%] 3 of 3 ✔
-[f5/aa12aa] TaxoFlow:BRACKEN (ERR2143774)           [100%] 3 of 3 ✔
-[e9/84eb9d] TaxoFlow:K_REPORT_TO_KRONA (ERR2143774) [100%] 3 of 3 ✔
-[59/456551] TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 3 of 3 ✔
-[da/7b9f45] TaxoFlow:KRAKEN_BIOM (merge_samples)    [100%] 1 of 1 ✔
-[d0/deccc9] TaxoFlow:KNIT_PHYLOSEQ (knit_phyloseq)  [100%] 1 of 1 ✔
+    executor >  local (22)
+    [4e/914152] TaxoFlow:BOWTIE2 (ERR2143774)           [100%] 3 of 3 ✔
+    [bf/7fcac7] TaxoFlow:KRAKEN2 (ERR2143774)           [100%] 3 of 3 ✔
+    [f5/aa12aa] TaxoFlow:BRACKEN (ERR2143774)           [100%] 3 of 3 ✔
+    [e9/84eb9d] TaxoFlow:K_REPORT_TO_KRONA (ERR2143774) [100%] 3 of 3 ✔
+    [59/456551] TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 3 of 3 ✔
+    [da/7b9f45] TaxoFlow:KRAKEN_BIOM (merge_samples)    [100%] 1 of 1 ✔
+    [d0/deccc9] TaxoFlow:KNIT_PHYLOSEQ (knit_phyloseq)  [100%] 1 of 1 ✔
 
-Completed at: 27-Nov-2025 13:03:40
-Duration    : 1m 36s
-CPU hours   : (a few seconds)
-Succeeded   : 10
-```
+    Completed at: 27-Nov-2025 13:03:40
+    Duration    : 1m 36s
+    CPU hours   : (a few seconds)
+    Succeeded   : 10
+    ```
 
 Keep in mind that since the execution is in parallel, the order in which the samples are processed is random and the order in which `sample ids` appear will differ among executions.
 Also, while the pipeline is running you will see that `KRAKEN_BIOM`, and hence `KNIT_PHYLOSEQ`, will not be triggered until all the samples are processed by the previous processes.
