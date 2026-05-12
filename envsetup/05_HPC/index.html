@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../../00_orientation/">
+        <link rel="prev" href="../04_sandbox/">
       
       
-        <link rel="next" href="../02_single-sample/">
+        <link rel="next" href="../../00_orientation/">
       
       
         
@@ -23,7 +23,7 @@
     
     
       
-        <title>Part 1 - Pipeline - TaxoFlow - The Tutorial</title>
+        <title>HPC installation - TaxoFlow - The Tutorial</title>
       
     
     
@@ -75,11 +75,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#part-1-method-overview" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -127,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Part 1 - Pipeline
+              HPC installation
             
           </span>
         </div>
@@ -323,18 +318,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -355,7 +352,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -373,7 +370,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../envsetup/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -401,7 +398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../envsetup/01_setup/" class="md-nav__link">
+      <a href="../01_setup/" class="md-nav__link">
         
   
   
@@ -429,7 +426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../envsetup/03_devcontainer/" class="md-nav__link">
+      <a href="../03_devcontainer/" class="md-nav__link">
         
   
   
@@ -457,7 +454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../envsetup/02_local/" class="md-nav__link">
+      <a href="../02_local/" class="md-nav__link">
         
   
   
@@ -485,7 +482,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../envsetup/04_sandbox/" class="md-nav__link">
+      <a href="../04_sandbox/" class="md-nav__link">
         
   
   
@@ -510,10 +507,17 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../envsetup/05_HPC/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -529,6 +533,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -572,20 +577,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -606,7 +609,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -621,37 +624,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Part 1 - Pipeline
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../course_material/01_pipeline/" class="md-nav__link">
         
   
   
@@ -667,65 +643,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-workflow-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Workflow design
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Workflow design">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Takeaway
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What&rsquo;s next?
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -738,7 +655,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../02_single-sample/" class="md-nav__link">
+      <a href="../../course_material/02_single-sample/" class="md-nav__link">
         
   
   
@@ -766,7 +683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../03_multi-sample/" class="md-nav__link">
+      <a href="../../course_material/03_multi-sample/" class="md-nav__link">
         
   
   
@@ -811,55 +728,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-workflow-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Workflow design
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Workflow design">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Takeaway
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What&rsquo;s next?
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -879,98 +747,35 @@
   
 
 
-<h1 id="part-1-method-overview">Part 1: Method overview</h1>
-<p>In the field of metagenomics data analysis, there is an endless universe of pipelines or methodologies you can follow to explore and characterize your samples.
-We recommend this comprehensive <a href="https://www.sciencedirect.com/science/article/pii/S2001037021004931">review</a> for you to explore the different existing approaches.
-For this course, we propose to wrap with Nextflow the protocol published by <a href="https://www.nature.com/articles/s41596-022-00738-y">Jennifer Lu <em>et al.</em> (2022)</a>.</p>
-<p>The example dataset we will use to demonstrate the analysis consists of only paired-end reads recovered from an oligotrophic, phosphorus-deficient pond in Cuatro Ciénegas, Mexico (<a href="https://elifesciences.org/articles/49816">Okie <em>et al.</em>, 2020</a>) in FASTQ format.
-The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproject/PRJEB22811">PRJEB22811</a>.</p>
-<hr />
-<h2 id="1-workflow-design">1. Workflow design</h2>
-<p>Our goal is to develop a workflow that takes <strong>FASTQ</strong> files from one or multiple samples as input and applies the following processing steps: host removal, taxonomic classification, Bayesian re-estimation of species abundance, and generation of plots and metrics.</p>
-<div class="metagenomics">
-<p><img alt="Metagenomics" src="../../assets/images/workflow_taxoflow.png" /></p>
+  <h1>HPC installation</h1>
+
+<p style='text-align: justify;'>If you are aiming at installing and executing TaxoFlow on an HPC cluster, you must be aware that probably you can't rely on Docker as it requires _root_ privileges. Fortunately, Nextflow can easily handle this for you by just changing the container images and enabling Apptainer/Singularity in the config files. For instance:</p>
+
+<p>On a given process this would be a Singularity/Apptainer container created using Seqera Containers for an AMD64 architecture:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">bracken.nf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">process</span><span class="w"> </span><span class="n">BRACKEN</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="o">...</span>
+<span class="w">    </span><span class="n">container</span><span class="w"> </span><span class="s2">&quot;community.wave.seqera.io/library/bracken:3.1--77382b4340548c89&quot;</span>
+<span class="w">    </span><span class="o">...</span>
+</code></pre></div></td></tr></table></div>
+<div class="admonition warning">
+<p class="admonition-title">Specific Architecture</p>
+<p>Considering that the architecture of the HPC can change, we can&rsquo;t provide images for all infrastuctures. However, by using the above-mentioned tutorial and the software versions provided on <a href="../../course_material/01_pipeline/">Part 1 - Pipeline</a>, you can build the images for each process using <a href="https://seqera.io/containers/">Seqera Containers</a></p>
 </div>
-<p>To perform these steps, we will use the following tools:</p>
-<ol>
-<li><strong>Host removal</strong> with <a href="https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml"><strong>Bowtie2</strong></a> by aligning the reads against an indexed reference genome. Nonetheless, you can use any organism you are interested in by building <a href="https://www.metagenomics.wiki/tools/bowtie2/index">your own index</a> or downloading a <a href="https://benlangmead.github.io/aws-indexes/bowtie">precomputed one</a>.</li>
-<li><strong>Taxonomic classification</strong> with <a href="https://ccb.jhu.edu/software/kraken2/"><strong>Kraken2</strong></a>. This tool relies on an indexed database that can be <a href="https://benlangmead.github.io/aws-indexes/k2">downloaded</a>. Alternatively, you can build your customized version following <a href="https://avilpage.com/2024/07/mastering-kraken2-build-custom-db.html">these instructions</a>. Here, we will use the custom database with 50 bacterial species that we have selected only for the purpose of this tutorial. However, you can expand the annotation simply by switching to another database.</li>
-<li><strong>Bayesian re-estimation of species abundance</strong> with <a href="https://ccb.jhu.edu/software/bracken/index.shtml?t=manual"><strong>Bracken</strong></a>. This software is designed to compute species abundance using Kraken classification results as described in the reference paper. It also uses some files contained in the database folders such as the kmer distribution files. This is a fairly complex analysis, but you don&rsquo;t need to know the details in order to follow this tutorial; you can learn about how the method works afterwards.</li>
-<li><strong>Plot generation</strong> with <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-385"><strong>Krona</strong></a> from the Bracken output. This will allow us to visualize interactively the relative abundance of each annotated species.</li>
-<li>(Multi-sample) <strong>Concatenation with kraken-biom.</strong> If multiple samples are provided, the Bracken reports will be concatenated and converted into a <a href="https://biom-format.org/">Biological Observation Matrix (BIOM)</a> file.</li>
-<li>(Multi-sample) <strong>Generation of final report with Phyloseq</strong> The BIOM file will be converted to a <a href="https://joey711.github.io/phyloseq/index.html">Phyloseq</a> object, and this object will be further processed to generate absolute plots, estimate both α and β-diversity and perform a network analysis. This information will be presented in a final <code>report.html</code>. To learn more about the code used to generate the plots and metrics, check out this Phyloseq <a href="https://vaulot.github.io/tutorials/Phyloseq_tutorial.html">tutorial</a>.</li>
-</ol>
-<p>The specific versions used by the current version of Taxoflow for each tool are as follows:</p>
-<details class="info">
-<summary>Specific software versions</summary>
-<table>
-<thead>
-<tr>
-<th>Tool</th>
-<th style="text-align: right;">Version</th>
-<th>Container* (Seqera**)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Bowtie2</td>
-<td style="text-align: right;">2.5.4</td>
-<td>bowtie2:2.5.4&ndash;d51920539234bea7</td>
-</tr>
-<tr>
-<td>Kraken2</td>
-<td style="text-align: right;">2.14</td>
-<td>kraken2:2.14&ndash;83aa57048e304f01</td>
-</tr>
-<tr>
-<td>Bracken</td>
-<td style="text-align: right;">3.1</td>
-<td>bracken:3.1&ndash;22a4e66ce04c5e01</td>
-</tr>
-<tr>
-<td>KrakenTools</td>
-<td style="text-align: right;">1.2</td>
-<td>krakentools:1.2&ndash;db94e0b19cfa397b</td>
-</tr>
-<tr>
-<td>Krona</td>
-<td style="text-align: right;">2.8.1</td>
-<td>krona:2.8.1&ndash;2f750080982f027e</td>
-</tr>
-<tr>
-<td>Kraken-BIOM</td>
-<td style="text-align: right;">1.2.0</td>
-<td>kraken-biom:1.2.0&ndash;f040ab91c9691136</td>
-</tr>
-<tr>
-<td>R</td>
-<td style="text-align: right;">4.4.3</td>
-<td>bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44</td>
-</tr>
-<tr>
-<td>Phyloseq</td>
-<td style="text-align: right;">1.50.0</td>
-<td>bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44</td>
-</tr>
-<tr>
-<td>ggplot2</td>
-<td style="text-align: right;">3.5.1</td>
-<td>bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44</td>
-</tr>
-</tbody>
-</table>
-<p>* Containers found at: <a href="https://community.wave.seqera.io/browse/library">community.wave.seqera.io/library/</a></p>
-<p>** Containers compatible with Docker engine.</p>
-</details>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>If you feel a bit overwhelmed by the theoretical background of the methodology, we strongly encourage you to check this <a href="https://carpentries-lab.github.io/metagenomics-analysis/">Carpentries</a> lesson first, where the concepts are explained step by step using interesting examples.</p>
+<p>And on the config file, enable using Apptainer/Singularity as the container engine to run the pipeline:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">nextflow.config</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">apptainer</span><span class="o">.</span><span class="na">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">singularity</span><span class="o">.</span><span class="na">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div></td></tr></table></div>
+<div class="admonition warning">
+<p class="admonition-title">Mounting directories</p>
+<p>It is important to keep in mind that using Singularity/Apptainer requires a bit of extra-work in terms of configuration to use files/directories. It is highly recommended to check the Nextflow official <a href="https://docs.seqera.io/nextflow/container#apptainer">documentation</a> in this regard before executing the pipeline.</p>
 </div>
-<hr />
-<h3 id="takeaway">Takeaway</h3>
-<p>You understand the underlying method and the overall design of the workflow.</p>
-<h3 id="whats-next">What&rsquo;s next?</h3>
-<p>Learn how to wrap those same commands into a multi-step workflow that uses containers to execute the work.</p>
+<p>During the pipeline development, you will notice that the Docker/Wave images are provided for each process using <a href="https://seqera.io/containers/">Seqera Containers</a>, a platform where you just need to change the desired container engine and the computing architecture. </p>
+<p>Please check this video to learn how to create your own Apptainer/Singularity images that you will place inside each process:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Xqr--bKEN9U?si=ZgjrmfY5AXDTFjq_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 
@@ -1006,7 +811,7 @@ The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproj
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../00_orientation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Orientation">
+          <a href="../04_sandbox/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CodeSandbox">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1016,20 +821,20 @@ The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproj
                 Previous
               </span>
               <div class="md-ellipsis">
-                Orientation
+                CodeSandbox
               </div>
             </div>
           </a>
         
         
           
-          <a href="../02_single-sample/" class="md-footer__link md-footer__link--next" aria-label="Next: Part 2 - Single sample">
+          <a href="../../00_orientation/" class="md-footer__link md-footer__link--next" aria-label="Next: Orientation">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Part 2 - Single sample
+                Orientation
               </div>
             </div>
             <div class="md-footer__button md-icon">

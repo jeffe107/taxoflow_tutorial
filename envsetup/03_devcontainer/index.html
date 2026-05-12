@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../../00_orientation/">
+        <link rel="prev" href="../01_setup/">
       
       
-        <link rel="next" href="../02_single-sample/">
+        <link rel="next" href="../02_local/">
       
       
         
@@ -23,7 +23,7 @@
     
     
       
-        <title>Part 1 - Pipeline - TaxoFlow - The Tutorial</title>
+        <title>Local Devcontainers - TaxoFlow - The Tutorial</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#part-1-method-overview" class="md-skip">
+        <a href="#local-devcontainers" class="md-skip">
           Skip to content
         </a>
       
@@ -127,7 +127,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Part 1 - Pipeline
+              Local Devcontainers
             
           </span>
         </div>
@@ -323,18 +323,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -355,7 +357,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -373,7 +375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../envsetup/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -401,7 +403,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../envsetup/01_setup/" class="md-nav__link">
+      <a href="../01_setup/" class="md-nav__link">
         
   
   
@@ -426,10 +428,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../envsetup/03_devcontainer/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local Devcontainers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -445,6 +474,131 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup Instructions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-the-dev-containers-extension-in-vs-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install the &ldquo;Dev Containers&rdquo; extension in VS Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clone-the-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clone the repository:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-the-repository-in-vs-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open the repository in VS Code:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reopen-in-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reopen in Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benefits-of-using-devcontainers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benefits of Using Devcontainers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-your-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking Your Environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -457,7 +611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../envsetup/02_local/" class="md-nav__link">
+      <a href="../02_local/" class="md-nav__link">
         
   
   
@@ -485,7 +639,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../envsetup/04_sandbox/" class="md-nav__link">
+      <a href="../04_sandbox/" class="md-nav__link">
         
   
   
@@ -513,7 +667,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../envsetup/05_HPC/" class="md-nav__link">
+      <a href="../05_HPC/" class="md-nav__link">
         
   
   
@@ -572,20 +726,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -606,7 +758,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -621,37 +773,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Part 1 - Pipeline
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../course_material/01_pipeline/" class="md-nav__link">
         
   
   
@@ -667,65 +792,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-workflow-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Workflow design
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Workflow design">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Takeaway
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What&rsquo;s next?
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -738,7 +804,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../02_single-sample/" class="md-nav__link">
+      <a href="../../course_material/02_single-sample/" class="md-nav__link">
         
   
   
@@ -766,7 +832,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../03_multi-sample/" class="md-nav__link">
+      <a href="../../course_material/03_multi-sample/" class="md-nav__link">
         
   
   
@@ -821,22 +887,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-workflow-design" class="md-nav__link">
+  <a href="#requirements" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Workflow design
+        Requirements
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Workflow design">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup Instructions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup Instructions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
+  <a href="#install-the-dev-containers-extension-in-vs-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Takeaway
+        Install the &ldquo;Dev Containers&rdquo; extension in VS Code
       
     </span>
   </a>
@@ -844,10 +921,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
+  <a href="#clone-the-repository" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What&rsquo;s next?
+        Clone the repository:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-the-repository-in-vs-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open the repository in VS Code:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reopen-in-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reopen in Container
       
     </span>
   </a>
@@ -856,6 +955,39 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benefits-of-using-devcontainers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benefits of Using Devcontainers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-your-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking Your Environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
   
 </li>
       
@@ -879,98 +1011,87 @@
   
 
 
-<h1 id="part-1-method-overview">Part 1: Method overview</h1>
-<p>In the field of metagenomics data analysis, there is an endless universe of pipelines or methodologies you can follow to explore and characterize your samples.
-We recommend this comprehensive <a href="https://www.sciencedirect.com/science/article/pii/S2001037021004931">review</a> for you to explore the different existing approaches.
-For this course, we propose to wrap with Nextflow the protocol published by <a href="https://www.nature.com/articles/s41596-022-00738-y">Jennifer Lu <em>et al.</em> (2022)</a>.</p>
-<p>The example dataset we will use to demonstrate the analysis consists of only paired-end reads recovered from an oligotrophic, phosphorus-deficient pond in Cuatro Ciénegas, Mexico (<a href="https://elifesciences.org/articles/49816">Okie <em>et al.</em>, 2020</a>) in FASTQ format.
-The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproject/PRJEB22811">PRJEB22811</a>.</p>
-<hr />
-<h2 id="1-workflow-design">1. Workflow design</h2>
-<p>Our goal is to develop a workflow that takes <strong>FASTQ</strong> files from one or multiple samples as input and applies the following processing steps: host removal, taxonomic classification, Bayesian re-estimation of species abundance, and generation of plots and metrics.</p>
-<div class="metagenomics">
-<p><img alt="Metagenomics" src="../../assets/images/workflow_taxoflow.png" /></p>
-</div>
-<p>To perform these steps, we will use the following tools:</p>
+<h1 id="local-devcontainers">Local Devcontainers</h1>
+<p>If you have a local Docker installation or are happy to install one, the easiest way to work locally with these materials is to use Visual Studio Code&rsquo;s devcontainer feature. This approach provides all the necessary tools and dependencies without requiring manual installation.</p>
+<h2 id="requirements">Requirements</h2>
+<p>To use the local devcontainer setup, you&rsquo;ll need:</p>
+<ul>
+<li><a href="https://code.visualstudio.com/">Visual Studio Code</a></li>
+<li>A local Docker installation, for example:</li>
+<li><a href="https://docs.docker.com/get-docker/">Docker Desktop</a> (for Windows/macOS)</li>
+<li><a href="https://docs.docker.com/engine/install/">Docker Engine</a> (for Linux)</li>
+<li><a href="https://github.com/abiosoft/colima">Colima</a> (alternative for macOS)</li>
+<li><a href="https://docs.docker.com/build/concepts/overview/#install-buildx">Docker Buildx</a> (included in Docker Desktop, but may need separate installation with other Docker setups)</li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers">Dev Containers extension</a> for VS Code</li>
+</ul>
+<p>Your Docker installation must be running before you attempt to open the devcontainer.</p>
+<p>To verify that Docker buildx is available, run:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>buildx<span class="w"> </span>version
+</code></pre></div>
+<p>If this command fails, you&rsquo;ll need to install the buildx extension before proceeding.</p>
+<h2 id="setup-instructions">Setup Instructions</h2>
+<p>Follow these steps to set up your local environment using VS Code devcontainers:</p>
+<h3 id="install-the-dev-containers-extension-in-vs-code">Install the &ldquo;Dev Containers&rdquo; extension in VS Code</h3>
+<ul>
+<li>Open VS Code</li>
+<li>Go to Extensions (Ctrl+Shift+X or Cmd+Shift+X on macOS)</li>
+<li>Search for &ldquo;Dev Containers&rdquo;</li>
+<li>Click &ldquo;Install&rdquo;</li>
+</ul>
+<p><img alt="Installing Dev Containers extension in VS Code" src="../img/install_extension.png" /></p>
+<h3 id="clone-the-repository">Clone the repository:</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/jeffe107/taxoflow_tutorial.git
+<span class="nb">cd</span><span class="w"> </span>training
+</code></pre></div>
+<h3 id="open-the-repository-in-vs-code">Open the repository in VS Code:</h3>
+<ul>
+<li>Launch VS Code</li>
+<li>Select <strong>File -&gt; Open Folder</strong> from the menu</li>
+<li>Navigate to and select the training repository folder you just cloned</li>
+<li>Click <strong>Open</strong></li>
+</ul>
+<h3 id="reopen-in-container">Reopen in Container</h3>
+<p>If prompted by VS Code to &ldquo;Reopen in Container&rdquo;, click on it. Alternatively:</p>
+<ul>
+<li>Press F1 (or Ctrl+Shift+P / Cmd+Shift+P on macOS)</li>
+<li>Type &ldquo;Dev Containers: Reopen in Container&rdquo;</li>
+<li><strong>Important</strong>: When prompted to select a configuration, choose the <strong>local-dev</strong> devcontainer configuration</li>
+</ul>
+<p><img alt="Reopen in Container prompt" src="../img/reopen_prompt.png" /></p>
+<p><img alt="Selecting local configuration" src="../img/select_local_config.png" /></p>
+<p>Wait for the container to build. This may take a few minutes the first time as it downloads and sets up all the necessary components.</p>
+<p>Once the container is built and running, you&rsquo;ll have a fully configured environment with all the necessary tools installed, including:</p>
+<ul>
+<li>Java</li>
+<li>Nextflow</li>
+<li>Docker</li>
+<li>Git</li>
+<li>And all other dependencies required for the training</li>
+</ul>
+<p><img alt="VS Code with devcontainer running" src="../img/running_container.png" /></p>
+<h2 id="benefits-of-using-devcontainers">Benefits of Using Devcontainers</h2>
+<p>Using the devcontainer approach offers several advantages:</p>
+<ul>
+<li><strong>Consistency</strong>: Ensures a consistent development environment across different machines</li>
+<li><strong>Simplicity</strong>: All dependencies are pre-installed and configured</li>
+<li><strong>Isolation</strong>: The development environment is isolated from your local system</li>
+<li><strong>Reproducibility</strong>: Everyone using the devcontainer gets the same setup</li>
+<li><strong>No manual installation</strong>: No need to manually install Java, Nextflow, and other tools</li>
+</ul>
+<h2 id="checking-your-environment">Checking Your Environment</h2>
+<p>Once your devcontainer is running, you can verify that everything is set up correctly by running:</p>
+<div class="highlight"><pre><span></span><code>nextflow<span class="w"> </span>info
+</code></pre></div>
+<p>This should display the Nextflow version and runtime information, confirming that your environment is properly configured.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>If you encounter issues with the devcontainer setup:</p>
 <ol>
-<li><strong>Host removal</strong> with <a href="https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml"><strong>Bowtie2</strong></a> by aligning the reads against an indexed reference genome. Nonetheless, you can use any organism you are interested in by building <a href="https://www.metagenomics.wiki/tools/bowtie2/index">your own index</a> or downloading a <a href="https://benlangmead.github.io/aws-indexes/bowtie">precomputed one</a>.</li>
-<li><strong>Taxonomic classification</strong> with <a href="https://ccb.jhu.edu/software/kraken2/"><strong>Kraken2</strong></a>. This tool relies on an indexed database that can be <a href="https://benlangmead.github.io/aws-indexes/k2">downloaded</a>. Alternatively, you can build your customized version following <a href="https://avilpage.com/2024/07/mastering-kraken2-build-custom-db.html">these instructions</a>. Here, we will use the custom database with 50 bacterial species that we have selected only for the purpose of this tutorial. However, you can expand the annotation simply by switching to another database.</li>
-<li><strong>Bayesian re-estimation of species abundance</strong> with <a href="https://ccb.jhu.edu/software/bracken/index.shtml?t=manual"><strong>Bracken</strong></a>. This software is designed to compute species abundance using Kraken classification results as described in the reference paper. It also uses some files contained in the database folders such as the kmer distribution files. This is a fairly complex analysis, but you don&rsquo;t need to know the details in order to follow this tutorial; you can learn about how the method works afterwards.</li>
-<li><strong>Plot generation</strong> with <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-385"><strong>Krona</strong></a> from the Bracken output. This will allow us to visualize interactively the relative abundance of each annotated species.</li>
-<li>(Multi-sample) <strong>Concatenation with kraken-biom.</strong> If multiple samples are provided, the Bracken reports will be concatenated and converted into a <a href="https://biom-format.org/">Biological Observation Matrix (BIOM)</a> file.</li>
-<li>(Multi-sample) <strong>Generation of final report with Phyloseq</strong> The BIOM file will be converted to a <a href="https://joey711.github.io/phyloseq/index.html">Phyloseq</a> object, and this object will be further processed to generate absolute plots, estimate both α and β-diversity and perform a network analysis. This information will be presented in a final <code>report.html</code>. To learn more about the code used to generate the plots and metrics, check out this Phyloseq <a href="https://vaulot.github.io/tutorials/Phyloseq_tutorial.html">tutorial</a>.</li>
+<li>Ensure your Docker installation (Docker Desktop, Colima, Docker Engine, etc.) is running before opening the devcontainer</li>
+<li>Check that you&rsquo;ve selected the <strong>local-dev</strong> configuration when prompted</li>
+<li>Verify that Docker buildx is installed and working by running <code>docker buildx version</code></li>
+<li>If the container fails to build, try rebuilding it by running the &ldquo;Dev Containers: Rebuild Container&rdquo; command</li>
+<li>For persistent issues, refer to the <a href="https://code.visualstudio.com/docs/devcontainers/troubleshooting">VS Code Dev Containers troubleshooting guide</a></li>
 </ol>
-<p>The specific versions used by the current version of Taxoflow for each tool are as follows:</p>
-<details class="info">
-<summary>Specific software versions</summary>
-<table>
-<thead>
-<tr>
-<th>Tool</th>
-<th style="text-align: right;">Version</th>
-<th>Container* (Seqera**)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Bowtie2</td>
-<td style="text-align: right;">2.5.4</td>
-<td>bowtie2:2.5.4&ndash;d51920539234bea7</td>
-</tr>
-<tr>
-<td>Kraken2</td>
-<td style="text-align: right;">2.14</td>
-<td>kraken2:2.14&ndash;83aa57048e304f01</td>
-</tr>
-<tr>
-<td>Bracken</td>
-<td style="text-align: right;">3.1</td>
-<td>bracken:3.1&ndash;22a4e66ce04c5e01</td>
-</tr>
-<tr>
-<td>KrakenTools</td>
-<td style="text-align: right;">1.2</td>
-<td>krakentools:1.2&ndash;db94e0b19cfa397b</td>
-</tr>
-<tr>
-<td>Krona</td>
-<td style="text-align: right;">2.8.1</td>
-<td>krona:2.8.1&ndash;2f750080982f027e</td>
-</tr>
-<tr>
-<td>Kraken-BIOM</td>
-<td style="text-align: right;">1.2.0</td>
-<td>kraken-biom:1.2.0&ndash;f040ab91c9691136</td>
-</tr>
-<tr>
-<td>R</td>
-<td style="text-align: right;">4.4.3</td>
-<td>bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44</td>
-</tr>
-<tr>
-<td>Phyloseq</td>
-<td style="text-align: right;">1.50.0</td>
-<td>bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44</td>
-</tr>
-<tr>
-<td>ggplot2</td>
-<td style="text-align: right;">3.5.1</td>
-<td>bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44</td>
-</tr>
-</tbody>
-</table>
-<p>* Containers found at: <a href="https://community.wave.seqera.io/browse/library">community.wave.seqera.io/library/</a></p>
-<p>** Containers compatible with Docker engine.</p>
-</details>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>If you feel a bit overwhelmed by the theoretical background of the methodology, we strongly encourage you to check this <a href="https://carpentries-lab.github.io/metagenomics-analysis/">Carpentries</a> lesson first, where the concepts are explained step by step using interesting examples.</p>
-</div>
-<hr />
-<h3 id="takeaway">Takeaway</h3>
-<p>You understand the underlying method and the overall design of the workflow.</p>
-<h3 id="whats-next">What&rsquo;s next?</h3>
-<p>Learn how to wrap those same commands into a multi-step workflow that uses containers to execute the work.</p>
 
 
 
@@ -1006,7 +1127,7 @@ The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproj
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../00_orientation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Orientation">
+          <a href="../01_setup/" class="md-footer__link md-footer__link--prev" aria-label="Previous: GitHub Codespaces">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1016,20 +1137,20 @@ The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproj
                 Previous
               </span>
               <div class="md-ellipsis">
-                Orientation
+                GitHub Codespaces
               </div>
             </div>
           </a>
         
         
           
-          <a href="../02_single-sample/" class="md-footer__link md-footer__link--next" aria-label="Next: Part 2 - Single sample">
+          <a href="../02_local/" class="md-footer__link md-footer__link--next" aria-label="Next: Manual installation">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Part 2 - Single sample
+                Manual installation
               </div>
             </div>
             <div class="md-footer__button md-icon">

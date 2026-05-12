@@ -392,6 +392,228 @@
   
   
   
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Environment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Environment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="envsetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Environment options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="envsetup/01_setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Codespaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="envsetup/03_devcontainer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local Devcontainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="envsetup/02_local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manual installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="envsetup/04_sandbox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CodeSandbox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="envsetup/05_HPC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HPC installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="00_orientation/" class="md-nav__link">
         
@@ -428,10 +650,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -449,8 +671,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -626,28 +848,30 @@
 
 <p>This tutorial is designed for researchers on focused metagenomics (WGS/shotgun) data analysis who are interested in developing or customizing taxonomic annotation pipelines.
 It builds on the <a href="https://training.nextflow.io/latest/hello_nextflow/">Hello Nextflow</a> and <a href="https://training.nextflow.io/latest/nf4_science/rnaseq/">Nextflow for RNAseq</a> beginner training and demonstrates how to use Nextflow in the specific context of metagenomics data analysis.</p>
-<p>Specifically, this course demonstrates how to implement a simple read taxonomic annotation starting from removing host sequences, passing through re-estimating species abundance with Bayesian statistics, until generating complete reports.</p>
+<p>Specifically, this course demonstrates how to implement a simple read taxonomic annotation, starting from removing host sequences, passing through re-estimating species abundance with Bayesian statistics, until generating complete reports.</p>
 <p>Let&rsquo;s get started! Click on the &ldquo;Open in GitHub Codespaces&rdquo; button below to launch the training environment (preferably in a separate tab), then read on while it loads.</p>
 <p><a href="https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1"><img alt="Open in GitHub Codespaces" src="https://github.com/codespaces/badge.svg" /></a></p>
 <h2 id="learning-objectives">Learning objectives</h2>
 <p>By the end of this course, you will have learnt how to apply foundational Nextflow concepts and tooling to a typical metagenomics use case.</p>
 <p>Concretely, you will be able to:</p>
 <ul>
-<li>Write a linear workflow to perform host removal, taxonomic annotation and species abundance re-estimation</li>
+<li>Write a linear workflow to perform host removal, taxonomic annotation and species abundance re-estimation.</li>
 <li>Handle domain-specific files such as Kraken2 and Bracken reports resources appropriately</li>
-<li>Run analysis for a single sample or leverage on Nextflow&rsquo;s dataflow paradigm to parallelize multi-sample analysis</li>
-<li>Separate the processes and workflow in a more structured manner attempting to a first step in following <a href="https://nf-co.re/">nf-core</a> guidelines</li>
-<li>Use conditionals and operators to control workflow execution</li>
-<li>Include custom scripts to be run within a given process</li>
+<li>Run analysis for a single sample or leverage on Nextflow&rsquo;s dataflow paradigm to parallelize multi-sample analysis.</li>
+<li>Separate the processes and workflow in a more structured manner attempting to a first step in following <a href="https://nf-co.re/">nf-core</a> guidelines in terms of reproducibility, portability, modularity, scalibility and traceability.</li>
+<li>Use conditionals and operators to control workflow execution.</li>
+<li>Include custom scripts to be run within a given process.</li>
 </ul>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>The course assumes some minimal familiarity with the following:</p>
 <ul>
-<li>Tools and file formats commonly used in this scientific domain</li>
-<li>Experience with the command line</li>
-<li>Foundational Nextflow concepts and tooling covered in the <a href="https://training.nextflow.io/latest/hello_nextflow/">Hello Nextflow</a> and <a href="https://training.nextflow.io/latest/nf4_science/rnaseq/">Nextflow for RNAseq</a> beginner training.</li>
+<li>Tools and file formats commonly used in this scientific domain. We recommend this Metagenomics data analysis <a href="https://carpentries-lab.github.io/metagenomics-analysis/06-taxonomic/index.html">tutorial</a> to get acquainted with taxonomic classification of unassembled reads.</li>
+<li>Experience with the command line. We recommend this <a href="https://edu.sib.swiss/pluginfile.php/2878/mod_resource/content/4/couselab-html/content.html">online UNIX tutorial</a>.</li>
+<li>Foundational Nextflow concepts and tooling covered in the <a href="https://training.nextflow.io/latest/hello_nextflow/">Hello Nextflow</a> and <a href="https://training.nextflow.io/latest/nf4_science/rnaseq/">Nextflow for RNAseq</a> beginner training. We also recommend the SIB course <a href="https://sib-swiss.github.io/nextflow-training/">Nextflow in Action Build Smarter, Faster, Reproducible Pipelines</a></li>
+<li>Familiarity with VS code. We recommend this <a href="https://code.visualstudio.com/docs/getstarted/getting-started">tutorial</a> to get started.</li>
 </ul>
-<p>For technical requirements and environment setup, see the <a href="https://training.nextflow.io/latest/envsetup/">Environment Setup</a> mini-course.</p>
+<p>More information about prerequisites and precourse arrangements can be found <a href="precourse/">here</a></p>
+<p>For technical requirements and environment setup, see the <a href="envsetup/">Environment Setup</a> directions.</p>
 
 
 
