@@ -14,6 +14,12 @@ To move into it, run the following command:
 cd TaxoFlow
 ```
 
+!!! tip "Focus only on the TaxoFlow folder"
+    The repository many other files and directories that may distract you, so just run this command on the terminal to open only the folder where the files are located:
+    ```bash
+    code .
+    ```
+
 Before we go any further, we are going to download some files that are too large to be permanently stored within the GitHub repository.
 Specifically, this is a set of files that constitute the database required by Kraken2 and Bracken.
 

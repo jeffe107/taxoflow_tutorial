@@ -56,6 +56,9 @@ First, let's look at the 'housekeeping' parts of the process, which you should b
 - `container` indicates the docker container with which the process will be run.
   We have retrieved all the containers from [Seqera Containers](https://seqera.io/containers/).
 
+!!! tip "Container images"
+	Please keep in mind that we are using Docker images. If you want to use Apptainer/Singularity images, please refer to the HPC [installation section](../envsetup/05_HPC.md)
+
 Now let's have a look at the interesting bits!
 
 #### 1.1.1. Process inputs
