@@ -1,6 +1,6 @@
 # TaxoFlow: The tutorial
 <p align="center">
-    <img class="brand" src="assets/taxoflow_logo.png" alt="TaxoFlow logo" width="50%">
+    <img class="brand" src="docs/assets/images/taxoflow_logo.png" alt="TaxoFlow logo" width="50%">
 </p>
 
 The tutorial is designed for researchers on focused metagenomics (WGS/shotgun) data analysis who are interested in developing or customizing taxonomic annotation pipelines.

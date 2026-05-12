@@ -38,7 +38,7 @@ process BOWTIE2 {
 
     script:
     """
-    export BOWTIE2_INDEXES=/workspaces/training/nf4-science/TaxoFlow/data/genome/TAIR10
+    export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/data/genome/TAIR10
     bowtie2 -x $bowtie2_index -1 ${reads[0]} -2 ${reads[1]} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}
     """
     }
@@ -386,9 +386,9 @@ This is where we provide default input parameters for the pipeline and enable th
 
 params {
     reads                                 = null
-    outdir                                = "/workspaces/training/nf4-science/TaxoFlow/output"
-    bowtie2_index                         = "/workspaces/training/nf4-science/TaxoFlow/data/genome/TAIR10/TAIR10"
-    kraken2_db                            = "/workspaces/training/nf4-science/TaxoFlow/data/krakendb"
+    outdir                                = "/workspaces/taxoflow_tutorial/TaxoFlow/output"
+    bowtie2_index                         = "/workspaces/taxoflow_tutorial/TaxoFlow/data/genome/TAIR10/TAIR10"
+    kraken2_db                            = "/workspaces/taxoflow_tutorial/TaxoFlow/data/krakendb"
     }
 
 // Enable using docker as the container engine to run the pipeline

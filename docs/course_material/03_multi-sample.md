@@ -31,9 +31,9 @@ To move forward, let's create the file `samplesheet.csv` inside the folder `data
 
 ```csv title="data/samplesheet.csv" linenums="1"
 sample_id,fastq_1,fastq_2
-ERR2143768,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143768/ERR2143768_1.fastq,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143768/ERR2143768_2.fastq
-ERR2143770,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143770/ERR2143770_1.fastq,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143770/ERR2143770_2.fastq
-ERR2143774,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143774/ERR2143774_1.fastq,/workspaces/training/nf4-science/TaxoFlow/data/samples/ERR2143774/ERR2143774_2.fastq
+ERR2143768,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143768/ERR2143768_1.fastq,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143768/ERR2143768_2.fastq
+ERR2143770,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143770/ERR2143770_1.fastq,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143770/ERR2143770_2.fastq
+ERR2143774,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143774/ERR2143774_1.fastq,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143774/ERR2143774_2.fastq
 ```
 
 Here, we have provided the `sample id` and the absolute paths to both forward and reverse reads per sample.
@@ -162,7 +162,7 @@ Nevertheless, as we are not "running the script" directly but we are calling `Rs
 As a result the output from this process is just a standard/command-line output, and we have to include an additional parameter in the `multi/nextflow.config` file:
 
 ```groovy title="multi/nextflow.config" linenums="11"
-    report                             = "/workspaces/training/nf4-science/TaxoFlow/multi/bin/report.Rmd"
+    report                             = "/workspaces/taxoflow_tutorial/TaxoFlow/multi/bin/report.Rmd"
 ```
 
 In addition, please notice the `container` used for the `KNIT_PHYLOSEQ`, which is combination of multiple packages required to render the `*.html` report.

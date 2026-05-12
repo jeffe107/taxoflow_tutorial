@@ -1,10 +1,10 @@
 ## Background knowledge
 
-As is stated in the course prerequisites at the [announcement web page](https://www.sib.swiss/training/course/20260317_NEXAC), we expect participants to have a basic understanding of working with the command line on UNIX-based systems and a [GitHub Codespaces](https://github.com/features/codespaces) account.
+This workshop assumes learners to have a basic understanding of working with the command line on UNIX-based systems and a [GitHub Codespaces](https://github.com/features/codespaces) account.
 
 ### UNIX
 
-You can test your UNIX skills with a quiz [here](https://docs.google.com/forms/d/e/1FAIpQLSd2BEWeOKLbIRGBT_aDEGPce1FOaVYBbhBiaqcaHoBKNB27MQ/viewform?usp=sf_link). If you don't have experience with UNIX command line, or if you are unsure whether you meet the prerequisites, follow our [online UNIX tutorial](https://edu.sib.swiss/pluginfile.php/2878/mod_resource/content/4/couselab-html/content.html).
+You can test your UNIX skills with a quiz [here](https://docs.google.com/forms/d/e/1FAIpQLSd2BEWeOKLbIRGBT_aDEGPce1FOaVYBbhBiaqcaHoBKNB27MQ/viewform?usp=sf_link). If you don't have experience with UNIX command line, or if you are unsure whether you meet the prerequisites, please follow this [online UNIX tutorial](https://edu.sib.swiss/pluginfile.php/2878/mod_resource/content/4/couselab-html/content.html).
 
 ## Software
 
@@ -18,14 +18,11 @@ You will be provided with a link to create the workspace in GitHub Codespaces au
 
 This is the link to GitHub Codespaces:
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/nextflow-training?quickstart=1)
-
-!!! warning "Do not start working on it"
-    We have limited resources with the free tier of GitHub Codespaces, so please do not start working or running thins through it. You just need to create it before the course.
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1)
 
 #### Video tutorial
 
-You can find a (cool) video tutorial to learn about VS code:
+You can find a (cool) video tutorial to learn about Visual Studio Code:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1ZfO149BJvg" title="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen><a href="https://www.ivatech.dev" style="display:none;">website development</a></iframe>
 
@@ -49,8 +46,8 @@ sdk install java 17.0.10-tem
 curl -s https://get.nextflow.io | bash
 chmod +x nextflow
 export PATH=${PATH}:/project/workspace
-git clone https://github.com/jeffe107/nextflow-training
-cd nextflow-training
+git clone https://github.com/jeffe107/taxoflow_tutorial
+cd taxoflow_tutorial
 ```
 
 9. Now you should be into the repository folder, just like on GitHub Codespaces.
