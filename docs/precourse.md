@@ -1,8 +1,8 @@
 ## Course goal
 
-<p style='text-align: justify;'>This is course is designed in two practical parts. In the first part, you will identify key components of the Nextflow dataflow paradigm using a validated pipeline whose purpose is to demonstrate how processes are connected. For the second part,  once you are able to establish how data is flowing, you'll <i>collect()</i> the knowledge from Part 1 to extend the pipeline for multi-sample analysis. </p>
+This is course is designed in two practical parts. In the first part, you will identify key components of the Nextflow dataflow paradigm using a validated pipeline whose purpose is to demonstrate how processes are connected. For the second part,  once you are able to establish how data is flowing, you'll _collect()_ the knowledge from Part 1 to extend the pipeline for multi-sample analysis.
 
-<p style='text-align: justify;'>By the end of the course, you will have constructed/understood a functional workflow implemented in <b>Nextflow DSL2</b>, using common features such as processes, channels, modules and configuration profiles. You will also have gained experience running the workflow in a controlled environment, and you will be equipped with the necessary information to execute the pipelines on a High Performance Computing (HPC) environment.</p>
+By the end of the course, you will have constructed/understood a functional workflow implemented in **Nextflow DSL2**, using common features such as processes, channels, modules and configuration profiles. You will also have gained experience running the workflow in a controlled environment, and you will be equipped with the necessary information to execute the pipelines on a High Performance Computing (HPC) environment.
 
 ## Background knowledge
 
@@ -31,13 +31,16 @@ All information of this course is based on the [official Nextflow documentation]
 
 ### GitHub Codespaces - Code editor
 
-<p style='text-align: justify;'>GitHub Codespaces is one of its kind nowadays services as there are really only a few alternative options to replace in case of any problem. It provides a complete self-contained execution environment and connected to an IDE for free! However, the resources are limited on the free tier we will be using for this course. Good news is that it should be sufficient for the purpose of the course, and in normal conditions no one would (hopefully) run out the resources allocated by Codespaces on the free tier.</p>
+GitHub Codespaces is one of its kind nowadays services as there are really only a few alternative options to replace in case of any problem. It provides a complete self-contained execution environment and connected to an IDE for free! However, the resources are limited on the free tier we will be using for this course. Good news is that it should be sufficient for the purpose of the course, and in normal conditions no one would (hopefully) run out the resources allocated by Codespaces on the free tier.
 
 Without further ado, you can start here:
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1)
 
 This link will open VS code on your browser, and hence it is expected that you are familiar with the layout and basic functionalities VS code has. Otherwise, please check this quick [tutorial](https://code.visualstudio.com/docs/getstarted/getting-started) before the course to understand where everything is.
+
+!!! tip "Setting GitHub Codespaces"
+    More information about setting Codespaces on the [Environment setup section](envsetup/01_setup.md).
 
 #### VS code video tutorial
 
@@ -61,9 +64,4 @@ We tried to use a colour code throughout the website to make the different piece
 
 !!! warning "This is a warning about a potential problem"
 
-!!! bug "This is an explanation about a common bug/error"
-
-!!! full-code "This is a full code file"
-
 !!! abstract "These are directory contents"
-
