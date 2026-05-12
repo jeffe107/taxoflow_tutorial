@@ -9,7 +9,7 @@ This pipeline is part of a tutorial. Please visit [https://taxoflow.work/](https
 It is a reproducible Nextflow pipeline for fast, accurate taxonomic profiling of short‑read metagenomic datasets. It combines host/contaminant filtering with Bowtie2, taxonomic assignment with Kraken2, abundance re‑estimation with Bracken, interactive visualization with Krona, and an optional multi‑sample report built with phyloseq/R Markdown.
 
 ### What it does
-- **Filter reads with Bowtie2**: removes reads mapping to a reference (e.g., yeast) to reduce false positives downstream.
+- **Filter reads with Bowtie2**: removes reads mapping to a reference genome to reduce false positives downstream.
 - **Classify with Kraken2**: generates per‑sample classification output and a `.k2report` summary.
 - **Re‑estimate abundances with Bracken**: produces species‑level abundance tables (`.bracken`) and human‑readable reports (`.breport`).
 - **Visualize with Krona**: creates an interactive `.krona.html` per sample.
@@ -25,13 +25,12 @@ It is a reproducible Nextflow pipeline for fast, accurate taxonomic profiling of
 - **Container engine**: Docker enabled by default in `nextflow.config`.
   - Alternative engines (Podman/Singularity/Apptainer) can work with small config tweaks.
 - **Databases/Indexes**:
-  - A valid **Bowtie2 index** for the host/contaminant you wish to filter (example yeast index is included).
+  - A valid **Bowtie2 index** for the host/contaminant you wish to filter.
   - A **Kraken2 database** (e.g., Standard, PlusPF, or a custom DB). See: https://github.com/DerrickWood/kraken2/wiki/Manual#kraken-2-databases
 
 ### Repository layout
 - `main.nf` and `workflow.nf`: pipeline entry and orchestration
 - `modules/`: individual process modules (`bowtie2`, `kraken2`, `bracken`, `kReport2Krona`, `ktImportText`, `kraken_biom`, `knit_phyloseq`)
-- `data/yeast/`: example Bowtie2 yeast index
 - `data/samples/`: example FASTQs layout
 - `data/samplesheet.csv`: example multi‑sample sheet (columns: `sample_id,fastq_1,fastq_2`)
 - `bin/report.Rmd`: R Markdown template used to build the optional multi‑sample report
@@ -60,13 +59,13 @@ Defaults in `nextflow.config` point to training paths; you will typically overri
 ### Quickstart
 Make sure you have Nextflow and Docker installed, then from the `TaxoFlow` directory:
 
-Basic run with the included example yeast index and sample layout (replace the Kraken2 DB path):
+Basic run with sample layout (replace the Kraken2 DB path and Bowtie2 index):
 
 ```bash
 nextflow run main.nf \
   --reads "data/samples/*/*_{1,2}.fastq" \
   --outdir "output" \
-  --bowtie2_index "data/yeast/yeast" \
+  --bowtie2_index "/path/to/bowti2_index" \
   --kraken2_db "/path/to/kraken2_db"
 ```
 
@@ -76,14 +75,13 @@ Run using a samplesheet (enables merged BIOM + R Markdown report):
 nextflow run main.nf \
   --sheet_csv "data/samplesheet.csv" \
   --outdir "output" \
-  --bowtie2_index "data/yeast/yeast" \
+  --bowtie2_index "/path/to/bowti2_index" \
   --kraken2_db "/path/to/kraken2_db" \
   --report "bin/report.Rmd"
 ```
 
 Notes:
-- The included yeast Bowtie2 index prefix is `data/yeast/yeast`.
-- You must supply a real Kraken2 database path; this repository does not include one.
+- You must supply a real Kraken2 database path and a Bowtie2 index; this repository does not include them.
 
 ### Outputs
 For each `sample_id` in `--outdir`:
