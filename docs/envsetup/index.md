@@ -14,6 +14,9 @@ hide:
 We aim to provide a consistent and thoroughly tested environment that allows learners to focus on learning Nextflow without having to spend time and effort on managing software.
 To that end, we have developed a containerized environment that contains all the necessary software, code files and example data to work through all of our courses.
 
+??? info "Pipeline-specific tools"
+    The specific versions of the software used by TaxoFlow are detailed [here](../course_material/01_pipeline.md/#1-workflow-design)
+
 This containerized environment can be run out of the box on Github Codespaces or locally in VS Code with the Devcontainers extension.
 
 <div class="grid cards" markdown>

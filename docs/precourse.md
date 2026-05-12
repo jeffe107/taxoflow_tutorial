@@ -27,13 +27,13 @@ All the software needed in this workflow is either:
 All information of this course is based on the [official Nextflow documentation](https://docs.seqera.io/nextflow/) and uses **Nextflow DSL2** syntax.
 
 !!! info "Nextflow version"
-    This tutorial uses a pinned version of Nextflow (**24.10.6**) with parser **v1**. This important considering the rapid evolution of this Domain Specific Language, thus ensuring the proper execution of the pipeline.
+    This tutorial uses a pinned version of Nextflow (**24.10.6**) with parser **v1**. This is important considering the rapid evolution of Nextflow, thus ensuring the proper execution of the pipeline.
 
 ### GitHub Codespaces - Code editor
 
 GitHub Codespaces is one of its kind nowadays services as there are really only a few alternative options to replace in case of any problem. It provides a complete self-contained execution environment and connected to an IDE for free! However, the resources are limited on the free tier we will be using for this course. Good news is that it should be sufficient for the purpose of the course, and in normal conditions no one would (hopefully) run out the resources allocated by Codespaces on the free tier.
 
-Without further ado, you can start here:
+You can start here:
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1)
 
@@ -44,13 +44,17 @@ This link will open VS code on your browser, and hence it is expected that you a
 
 #### VS code video tutorial
 
-You can find a (cool) video tutorial to learn about VS code:
+You can find a video tutorial to learn about VS code:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1ZfO149BJvg" title="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen><a href="https://www.ivatech.dev" style="display:none;">website development</a></iframe>
 
-### Local/HPC installation
+### Alternative installations
 
-You can install and execute the pipeline of this tutorial locally using your local VS Code; please follow the [Local Devcontainers setup](envsetup/03_devcontainer.md). If you wish to use an HPC cluster, you will find specific instructions on the [HPC installation setup](envsetup/05_HPC.md).
+You can install and execute the pipeline of this tutorial locally using your local VS Code; please follow the [Local Devcontainers setup](envsetup/03_devcontainer.md). If you wish to use an HPC cluster, you will find specific instructions on the [HPC installation setup](envsetup/05_HPC.md). On the other hand, an alternative online computing environment is available through [CodeSandbox](envsetup/04_sandbox.md).
+
+### Pipeline-specific tools
+
+The specific versions of the software used by TaxoFlow are detailed [here](../course_material/01_pipeline.md/#1-workflow-design)
 
 ## Website colour code explanation
 
