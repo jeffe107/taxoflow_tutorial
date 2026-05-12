@@ -2,6 +2,11 @@ site_name: TaxoFlow - The Tutorial
 nav:
     - Home: index.md
     - Precourse preparations: precourse.md
+    - Orientation: 00_orientation.md
+    - Course material:
+      - Part 1 - Pipeline: course_material/01_pipeline.md
+      - Part 2 - Single sample: course_material/02_single-sample.md
+      - Part 3 - Multisample: course_material/03_multi-sample.md
     - Environments:
       - Environment options: envsetup/index.md
       - GitHub Codespaces: envsetup/01_setup.md
@@ -9,11 +14,6 @@ nav:
       - Manual installation: envsetup/02_local.md
       - CodeSandbox: envsetup/04_sandbox.md
       - HPC installation: envsetup/05_HPC.md
-    - Orientation: 00_orientation.md
-    - Course material:
-      - Part 1 - Pipeline: course_material/01_pipeline.md
-      - Part 2 - Single sample: course_material/02_single-sample.md
-      - Part 3 - Multisample: course_material/03_multi-sample.md
 
 theme:
   name: material
