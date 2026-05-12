@@ -4,7 +4,7 @@
 // See .devcontainer/devcontainer.json for production config
 //
 {
-    "name": "nextflow-training (local-dev)",
+    "name": "taxoflow_tutorial (local-dev)",
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
 
     "features": {

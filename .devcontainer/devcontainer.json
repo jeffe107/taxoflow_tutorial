@@ -4,9 +4,9 @@
 // See .github/.devcontainer/devcontainer.json for build
 //
 {
-    "name": "nextflow-training",
+    "name": "taxoflow_tutorial",
     "image": "ghcr.io/nextflow-io/training:latest",
-    "workspaceFolder": "/workspaces/nextflow-training",
+    "workspaceFolder": "/workspaces/taxoflow_tutorial",
     "remoteUser": "root",
     "remoteEnv": {
         // Nextflow installation version
@@ -15,7 +15,7 @@
         "NXF_VER": "25.10.4",
         "NXF_SYNTAX_PARSER": "v2",
         // Other env vars
-        "HOST_PROJECT_PATH": "/workspaces/nextflow-training",
+        "HOST_PROJECT_PATH": "/workspaces/taxoflow_tutorial",
         "SHELL": "/bin/bash" // Ush bash
     },
     "containerEnv": {
