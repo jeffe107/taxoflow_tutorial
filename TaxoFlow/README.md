@@ -1,7 +1,7 @@
 ## TaxoFlow
 
 <p align="center">
-    <img src="assets/taxoflow_logo.png" alt="TaxoFlow" width="50%">
+    <img src="assets/taxoflow_logo.png" alt="TaxoFlow" width="20%">
 </p>
 
 This pipeline is part of a tutorial. Please visit [https://taxoflow.work/](https://taxoflow.work/) to learn how it was built. 
