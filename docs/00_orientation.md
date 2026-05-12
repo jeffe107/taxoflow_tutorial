@@ -7,12 +7,10 @@ If you have not yet done so, please follow the [Environment Setup](https://train
 
 ## Materials provided
 
-For the purpose of the course, we'll be working in the `nf4-science/` directory, where you will find all the code files, test data and accessory files you will need.
+For the purpose of the course, we'll be working in the `TaxoFlow` directory, where you will find all the code files, test data and accessory files you will need.
 To move into it, run the following command:
 
 ```bash
-cd nf4-science
-git clone https://github.com/jeffe107/TaxoFlow
 cd TaxoFlow
 ```
 
