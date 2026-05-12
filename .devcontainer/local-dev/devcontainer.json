@@ -34,7 +34,7 @@
         "NXF_HOME": "/workspaces/.nextflow",
         "NXF_EDGE": "0",
         "NXF_VER": "24.10.6",
-        "NXF_SYNTAX_PARSER": "v2",
+        "NXF_SYNTAX_PARSER": "v1",
         // Other env vars
         "HOST_PROJECT_PATH": "/workspaces/taxoflow_tutorial",
         "SHELL": "/bin/bash" // Ush bash
