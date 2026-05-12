@@ -341,7 +341,7 @@
   <span class="md-ellipsis">
     
   
-    Environment
+    Environments
   
 
     
@@ -357,7 +357,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Environment
+    Environments
   
 
           </label>
@@ -751,7 +751,9 @@
 
 <p style='text-align: justify;'>If you are aiming at installing and executing TaxoFlow on an HPC cluster, you must be aware that probably you can't rely on Docker as it requires _root_ privileges. Fortunately, Nextflow can easily handle this for you by just changing the container images and enabling Apptainer/Singularity in the config files. For instance:</p>
 
-<p>On a given process this would be a Singularity/Apptainer container created using Seqera Containers for an AMD64 architecture:</p>
+<ul>
+<li>On a given process, this would be the Singularity/Apptainer container created using Seqera Containers for an AMD64 architecture to execute the Bracken process:</li>
+</ul>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">bracken.nf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -761,10 +763,12 @@
 <span class="w">    </span><span class="o">...</span>
 </code></pre></div></td></tr></table></div>
 <div class="admonition warning">
-<p class="admonition-title">Specific Architecture</p>
+<p class="admonition-title">Specific architecture</p>
 <p>Considering that the architecture of the HPC can change, we can&rsquo;t provide images for all infrastuctures. However, by using the above-mentioned tutorial and the software versions provided on <a href="../../course_material/01_pipeline/">Part 1 - Pipeline</a>, you can build the images for each process using <a href="https://seqera.io/containers/">Seqera Containers</a></p>
 </div>
-<p>And on the config file, enable using Apptainer/Singularity as the container engine to run the pipeline:</p>
+<ul>
+<li>And, on the config file, enable using Apptainer/Singularity as the container engine to run the pipeline:</li>
+</ul>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">nextflow.config</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
 <span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">apptainer</span><span class="o">.</span><span class="na">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
 <span class="n">singularity</span><span class="o">.</span><span class="na">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
