@@ -54,4 +54,7 @@ If you wish to run the pipeline on an HPC cluster, you need to adapt the pipelin
 
 [Setup CodeSandbox :material-arrow-right:](05_HPC.md){ .md-button .md-button--primary .mt-1 }
 
+!!! bug "Paths in different environments"
+    Please keep in mind that if you are using local/HPC/CodeSandbox implementations, you will need to change the paths to the files and directories (i.e Bowtie2 index) accordingly.
+
 ---

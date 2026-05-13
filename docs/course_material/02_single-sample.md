@@ -38,11 +38,14 @@ process BOWTIE2 {
 
     script:
     """
-    export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/data/genome/TAIR10
+    export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/single/data/genome/TAIR10
     bowtie2 -x $bowtie2_index -1 ${reads[0]} -2 ${reads[1]} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}
     """
     }
 ```
+
+!!! bug "Bowtie2 path to index"
+	You may have noticed that we exported the variable BOWTIE2_INDEXES. This is a specific requirement by Bowtie2 to find the proper indexed genome. This path is only exported at runtime, and it is **hard-coded** to the Codespaces environment. If you are using a different environment you will need to adapt this path (we have done it for the multi-sample Bowtie2 module).
 
 Let's take a moment to break down what we are seeing here.
 
@@ -389,18 +392,17 @@ This is where we provide default input parameters for the pipeline and enable th
 
 params {
     reads                                 = null
-    outdir                                = "/workspaces/taxoflow_tutorial/TaxoFlow/output"
-    bowtie2_index                         = "/workspaces/taxoflow_tutorial/TaxoFlow/data/genome/TAIR10/TAIR10"
-    kraken2_db                            = "/workspaces/taxoflow_tutorial/TaxoFlow/data/krakendb"
+    outdir                                = "${projectDir}/output"
+    bowtie2_index                         = "${projectDir}/data/genome/TAIR10/TAIR10"
+    kraken2_db                            = "${projectDir}/data/krakendb"
     }
 
 // Enable using docker as the container engine to run the pipeline
 docker.enabled = true
 ```
 
-!!!tip
-
-    Please note that we are using absolute paths for the parameters. Even though relative paths are preferred for system-independence of the pipelines, often some tools or scripts will fail if parameters are not provided as absolute paths.
+!!! tip "Paths to files and directories"
+	We are providing the paths using the Nextflow `${projectDir}` variable to point to the project directory directly; this ensures system independence. Usually, relative paths are preferred for system-independence of the pipelines, although some tools or scripts will fail if parameters are not provided as absolute paths.
 
 ---
 
@@ -411,7 +413,10 @@ That's it, we are all set to run the pipeline!
 Let's just pick one of the samples provided (you can choose any of them) and run the following command:
 
 ```bash
-nextflow run single/main.nf --reads 'data/samples/ERR2143768/ERR2143768_{1,2}.fastq'
+mv data single/
+cd single
+nextflow run main.nf --reads 'data/samples/ERR2143768/ERR2143768_{1,2}.fastq'
+cd -
 ```
 
 On the output of the command line, you will see:

@@ -54,7 +54,7 @@ You can install and execute the pipeline of this tutorial locally using your loc
 
 ### Pipeline-specific tools
 
-The specific versions of the software used by TaxoFlow are detailed [here](../course_material/01_pipeline.md/#1-workflow-design)
+The specific versions of the software used by TaxoFlow are detailed [here](course_material/01_pipeline.md/#1-workflow-design)
 
 ## Website colour code explanation
 
@@ -69,3 +69,5 @@ We tried to use a colour code throughout the website to make the different piece
 !!! warning "This is a warning about a potential problem"
 
 !!! abstract "These are directory contents"
+
+!!! bug "This is an explanation about a common bug/error"

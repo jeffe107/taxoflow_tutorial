@@ -3,8 +3,11 @@
 In this part, we are going to start from the pipeline structure we built in the previous part and extend it for multi-sample analysis.
 
 !!!note
-
-    We will be working now in the `multi` directory.
+    We will be working now in the `multi` directory. Thus, please make sure you are in the correct directory and move the data:
+    ```bash
+    cd /workspaces/taxoflow_tutorial/TaxoFlow/multi
+    mv ../single/data .
+    ```
 
 This will give us the opportunity to practice using the following Nextflow features:
 
@@ -31,10 +34,13 @@ To move forward, let's create the file `samplesheet.csv` inside the folder `data
 
 ```csv title="data/samplesheet.csv" linenums="1"
 sample_id,fastq_1,fastq_2
-ERR2143768,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143768/ERR2143768_1.fastq,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143768/ERR2143768_2.fastq
-ERR2143770,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143770/ERR2143770_1.fastq,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143770/ERR2143770_2.fastq
-ERR2143774,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143774/ERR2143774_1.fastq,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143774/ERR2143774_2.fastq
+ERR2143768,data/samples/ERR2143768/ERR2143768_1.fastq,data/samples/ERR2143768/ERR2143768_2.fastq
+ERR2143770,data/samples/ERR2143770/ERR2143770_1.fastq,data/samples/ERR2143770/ERR2143770_2.fastq
+ERR2143774,data/samples/ERR2143774/ERR2143774_1.fastq,data/samples/ERR2143774/ERR2143774_2.fastq
 ```
+
+!!! tip "Paths to files"
+    Please notice that these paths are **hard-coded**, and thus, it will work only on Codespaces. If you are using a local installation or CodeSandbox, you need to change the pa
 
 Here, we have provided the `sample id` and the absolute paths to both forward and reverse reads per sample.
 Please notice that the files are not required to be stored in the directory; however, this is recommended in order to maintain a consistent fodirectorylder structure.
@@ -194,7 +200,7 @@ process KNIT_PHYLOSEQ {
 ```
 
 ??? tip "Global vs Nextflow variables"
-    Within the `modules/knit_phyloseq.nf` you can notice that some variables like `biom_pat` and `outreport` are preceded by a backslash (\\). In Nextflow, it is really important to distinguish Nextflow variables from Bash or environment variables. This is achieved through the use of double quotes in the script section plus adding the _escape_ character (backslash) **before Bash variables**. [More about this](https://docs.seqera.io/nextflow/process#script:~:text=the%20pipeline%20script.-,WARNING,-Since%20Nextflow%20uses)
+    Within the `modules/knit_phyloseq.nf` you can notice that some variables like `biom_pat` and `outreport` are preceded by a backslash (\\). In Nextflow, it is really important to distinguish Nextflow variables from Bash or environment variables. This is achieved through the use of double quotes in the script section plus adding the _escape_ character (backslash) **before Bash variables**. [More about this here](https://docs.seqera.io/nextflow/process#script:~:text=the%20pipeline%20script.-,WARNING,-Since%20Nextflow%20uses).
 
 As you can see, we are declaring some variables both in Nextflow and bash to be able to call the script.
 This is a special case since this type of scripts can be stored in the **bin** directory for Nextflow to find them directly.
@@ -202,8 +208,45 @@ Nevertheless, as we are not "running the script" directly but we are calling `Rs
 As a result the output from this process is just a standard/command-line output, and we have to include an additional parameter in the `multi/nextflow.config` file:
 
 ```groovy title="multi/nextflow.config" linenums="11"
-    report                             = "/workspaces/taxoflow_tutorial/TaxoFlow/multi/bin/report.Rmd"
+    report                             = "${projectDir}/bin/report.Rmd"
 ```
+
+This R Markdown file uses a Phyloseq object created from Kraken2/Bracken output (BIOM file), then applies standard functions from for diversity and network analysis. Thus, results should therefore be interpreted as **visual summaries of community structure**, not as statistically validated differences.
+
+??? tip "Diversity and network analysis methods"
+
+    **Input data**  
+    Taxonomic abundance tables generated with Bracken were imported into R as a Phyloseq object. Taxa were agglomerated at the **genus level** (`tax_glom`), and low-abundance genera were filtered by retaining taxa with a **mean relative abundance ≥ 3%** across samples.
+
+    **α-diversity (within-sample diversity)**
+
+    - Calculated using `plot_richness()` from Phyloseq.
+    - Diversity indices:
+        - **Chao1**: richness estimator accounting for unseen taxa.
+        - **Shannon**: richness and evenness estimator.
+    - **Normalization:** raw abundance counts were used directly (no rarefaction or scaling).
+
+    **β-diversity (among-sample diversity)**
+
+    - Community dissimilarity calculated using **Bray–Curtis distance**.
+    - Ordination performed with **Principal Coordinates Analysis (PCoA)**.
+    - Visualizations:
+        - Heatmap of taxonomic abundance with sample ordering based on ordination.
+        - PCoA scatter plot for comparing sample composition.
+    - **Normalization:** Bray–Curtis calculated directly from the filtered abundance table.
+
+    **Network construction**
+
+    - Generated using `plot_net()` from Phyloseq.
+    - Parameters:
+        - **Distance metric:** Bray–Curtis.
+        - **Network type:** taxa co-occurrence (`type = "taxa"`).
+        - **Maximum distance threshold:** `maxdist = 0.9`.
+    - Nodes represent genera; edges connect taxa based on pairwise similarity under the defined threshold.
+
+    **Statistical testing**
+
+    This workflow provides **descriptive exploratory analysis only**. Results should therefore be interpreted as **visual summaries of community structure**, not as statistically validated differences. Please visit the [microbiome R package tutorial](https://microbiome.github.io/tutorials/).
 
 In addition, please notice the `container` used for the `KNIT_PHYLOSEQ`, which is combination of multiple packages required to render the `*.html` report.
 This is possible thanks to an awesome tool called [Seqera Containers](https://seqera.io/containers/), which is able to build almost any container (for docker or singularity!) by just "merging" different PyPI or Conda packages; please give it a try and be amazed by Seqera Containers.
@@ -241,10 +284,10 @@ This is a clean way to:
 
 ## 3. Execution
 
-Now, we are completely set to run the analysis for as many samples as we would like, and we will obtain a final report depicting different metrics regarding taxonomic abundance, network analysis, and α and β-diversity. Let's execute:
+Now, we are completely set to run the analysis for as many samples as we would like, and we will obtain a final report depicting different metrics regarding taxonomic abundance, network analysis, and α and β-diversity. Let's execute (please remember that we are within the **multi** directory):
 
 ```bash
-nextflow run multi/main.nf --sheet_csv 'data/samplesheet.csv'
+nextflow run main.nf --sheet_csv 'data/samplesheet.csv'
 ```
 
 On the output of the command line, you will see:
@@ -301,6 +344,67 @@ Below you can see one the plots included in the report: an absolute abundance pl
 
     In case that the pipeline does not run in your environment, the output is available for you to check [here](https://github.com/jeffe107/TaxoFlow_tutorial/tree/main/output).
 
+### 3.1 Enabling the built‑in report
+
+In `nextflow.config`:
+
+```groovy title="multi/nextflow.config" linenums="17"
+report {
+    enabled = true
+    file = "${projectDir}/output/performance_report.html"
+}
+```
+
+This block tells Nextflow to:
+
+- Generate a **single HTML report** named `report.html` at the end of each run.
+- Place it in the **results directory** from where you launched Nextflow.
+
+You do not need to change `main.nf` or `workflow.nf` to use this feature; it is entirely controlled by configuration.
+
+#### 3.1.1 Running TaxoFlow and inspecting the report
+
+The workflow can be executed without adding anything else. For instance:
+
+```bash
+nextflow run main.nf --sheet_csv data/samplesheet.csv
+```
+
+??? info "Enabling the report as a parameter"
+    It is possible to generate the report just by adding `-with-report <file_name>`. [More about this here](https://docs.seqera.io/nextflow/reports#execution-report).
+
+At the end of the execution you should see a message similar to:
+
+```text
+Execution report saved to: report.html
+```
+
+Open `report.html` in a browser. You will find:
+
+- A **timeline** of all tasks across processes like `BOWTIE2`, `KRAKEN2`, `BRACKEN`, etc.
+- A **resources** table with CPU, memory and time usage per process.
+- A **tasks** section showing how many samples were processed and how long each step took.
+
+<figure markdown align="center">
+  ![TaxoFlow workflow](../assets/images/report.png)
+  <figcaption>Plot example within the performance report.</figcaption>
+</figure>
+
+This native report complements the domain‑specific Phyloseq HTML:
+
+- The **Nextflow report** focuses on **pipeline performance and resource usage**.
+- The **Phyloseq report** focuses on **biological interpretation** of the metagenomic profiles.
+
+??? tip "Customizing the report location"
+    - To save the report under the project directory, you can update `file`:
+      ```groovy title="multi/nextflow.config" linenums="17"
+      report {
+          enabled = true
+          file = "${projectDir}/output/performance_report.html"
+          overwrite = true
+      }
+      ```
+    - This keeps all outputs (taxonomy results, Krona plots, RMarkdown report, Nextflow report) under a single `output/` tree.
 
 ---
 
