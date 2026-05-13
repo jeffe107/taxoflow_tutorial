@@ -409,6 +409,7 @@ docker.enabled = true
 
 	```bash
 	nextflow run main.nf \
+		--reads "path/to/reads" \
 		--outdir "path/to/outdir" \
 		--bowtie2_index "path/to/bowtie2/index" \
 		--kraken2_db "path/to/kraken2/database"
