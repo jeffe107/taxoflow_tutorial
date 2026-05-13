@@ -1,6 +1,6 @@
 ## Course goal
 
-This is course is designed in two practical parts. In the first part, you will identify key components of the Nextflow dataflow paradigm using a validated pipeline whose purpose is to demonstrate how processes are connected. For the second part,  once you are able to establish how data is flowing, you'll _collect()_ the knowledge from Part 1 to extend the pipeline for multi-sample analysis.
+This is course is designed in two practical parts. In the first part (**Part 2 - single sample**), you will identify key components of the Nextflow dataflow paradigm using a validated pipeline whose purpose is to demonstrate how processes are connected. For the second part (**Part 3 - multi-sample**),  once you are able to establish how data is flowing, you'll _collect()_ the knowledge from Part 1 to extend the pipeline for multi-sample analysis.
 
 By the end of the course, you will have constructed/understood a functional workflow implemented in **Nextflow DSL2**, using common features such as processes, channels, modules and configuration profiles. You will also have gained experience running the workflow in a controlled environment, and you will be equipped with the necessary information to execute the pipelines on a High Performance Computing (HPC) environment.
 

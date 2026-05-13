@@ -45,7 +45,7 @@ process BOWTIE2 {
 ```
 
 !!! bug "Bowtie2 path to index"
-	You may have noticed that we exported the variable BOWTIE2_INDEXES. This is a specific requirement by Bowtie2 to find the proper indexed genome. This path is only exported at runtime, and it is **hard-coded** to the Codespaces environment. If you are using a different environment you will need to adapt this path (we have done it for the multi-sample Bowtie2 module).
+	You may have noticed that we exported the variable BOWTIE2_INDEXES. This is a specific requirement by Bowtie2 to find the proper indexed genome. This path is only exported at runtime, and it is **hard-coded** to the Codespaces environment. If you are using a different environment you will need to adapt this path (we have done it for the Bowtie2 module used in the Part 3 of this tutorial).
 
 Let's take a moment to break down what we are seeing here.
 
@@ -416,7 +416,6 @@ Let's just pick one of the samples provided (you can choose any of them) and run
 mv data single/
 cd single
 nextflow run main.nf --reads 'data/samples/ERR2143768/ERR2143768_{1,2}.fastq'
-cd -
 ```
 
 On the output of the command line, you will see:
