@@ -42,7 +42,7 @@ Please remember an important clarification about the Nextflow version:
 !!! info "Nextflow version"
     This tutorial uses a pinned version of Nextflow (**24.10.6**) with parser **v1**. This is important considering the rapid evolution of Nextflow, thus ensuring the proper execution of the pipeline.
 
-Thus, to pin the version:
+Thus, to pin the Nextflow version:
 
 ```bash
 export NXF_VER=24.10.6

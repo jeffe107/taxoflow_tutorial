@@ -408,9 +408,9 @@ docker.enabled = true
 	Parameters can be overridden at run time when included as command flags. You can learn more about this on [Nextflow parameters](https://training.nextflow.io/2.0/basic_training/config/). For example:
 
 	```bash
-	nextflow run hello-pipeline.nf \
+	nextflow run main.nf \
 		--outdir "path/to/outdir" \
-		--bowtie2_index path/to/bowtie2/index \
+		--bowtie2_index "path/to/bowtie2/index" \
 		--kraken2_db "path/to/kraken2/database"
 	```
 
@@ -466,7 +466,7 @@ tree output
 
 You should see the following:
 
-!!! abstract "Output directory content" 
+??? abstract "Output directory content" 
 	```console title="Output contents"
 	output/
 	└── ERR2143758

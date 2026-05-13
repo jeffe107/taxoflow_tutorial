@@ -249,7 +249,7 @@ This R Markdown file uses a Phyloseq object created from Kraken2/Bracken output 
     This workflow provides **descriptive exploratory analysis only**. Results should therefore be interpreted as **visual summaries of community structure**, not as statistically validated differences. Please visit the [microbiome R package tutorial](https://microbiome.github.io/tutorials/) for expanding the statistical analysis of microbiome data.
 
 In addition, please notice the `container` used for the `KNIT_PHYLOSEQ`, which is combination of multiple packages required to render the `*.html` report.
-This is possible thanks to an awesome tool called [Seqera Containers](https://seqera.io/containers/), which is able to build almost any container (for docker or singularity!) by just "merging" different PyPI or Conda packages; please give it a try and be amazed by Seqera Containers.
+This is possible thanks to [Seqera Containers](https://seqera.io/containers/), which is able to build almost any container (for docker or singularity!) by just "merging" different PyPI or Conda packages.
 
 Also, we have to include this new process within `multi/workflow.nf`:
 
@@ -376,7 +376,7 @@ nextflow run main.nf --sheet_csv data/samplesheet.csv
 At the end of the execution you should see a message similar to:
 
 ```text
-Execution report saved to: report.html
+Execution report saved to: performance_report.html
 ```
 
 Open `report.html` in a browser. You will find:
