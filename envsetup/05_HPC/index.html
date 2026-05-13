@@ -747,8 +747,11 @@
 
   <h1>HPC installation</h1>
 
-<p style='text-align: justify;'>If you are aiming at installing and executing TaxoFlow on an HPC cluster, you must be aware that probably you can't rely on Docker as it requires _root_ privileges. Fortunately, Nextflow can easily handle this for you by just changing the container images and enabling Apptainer/Singularity in the config files. For instance:</p>
-
+<p>You can install and execute TaxoFlow in your HPC cluster just by cloning the repository and following the tutorial as for Codespaces environment:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/jeffe107/taxoflow_tutorial.git
+<span class="nb">cd</span><span class="w"> </span>taxoflow_tutorial/TaxoFlow
+</code></pre></div>
+<p>From here, you will need to install Nextflow locally and pin the version (<strong>24.10.6</strong>); you can follow the <a href="../02_local/">local installation directions</a>. Moreover, you must be aware that probably you can&rsquo;t rely on Docker to run the pipeline as it requires <em>root</em> privileges. Fortunately, Nextflow can easily handle this for you by just changing the container images and enabling Apptainer/Singularity in the config files. For instance:</p>
 <ul>
 <li>On a given process, this would be the Singularity/Apptainer container created using Seqera Containers for an AMD64 architecture to execute the Bracken process:</li>
 </ul>

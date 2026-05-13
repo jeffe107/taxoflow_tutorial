@@ -1830,10 +1830,19 @@ You can learn more about this <a href="https://carpentries-incubator.github.io/w
 <span class="c1">// Enable using docker as the container engine to run the pipeline</span>
 <span class="n">docker</span><span class="o">.</span><span class="na">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
 </code></pre></div></td></tr></table></div>
-<div class="admonition tip">
+<div class="admonition warning">
 <p class="admonition-title">Paths to files and directories</p>
 <p>We are providing the paths using the Nextflow <code>${projectDir}</code> variable to point to the project directory directly; this ensures system independence. Usually, relative paths are preferred for system-independence of the pipelines, although some tools or scripts will fail if parameters are not provided as absolute paths.</p>
 </div>
+<details class="tip">
+<summary>Override parameters</summary>
+<p>Parameters can be overridden at run time when included as command flags. You can learn more about this on <a href="https://training.nextflow.io/2.0/basic_training/config/">Nextflow parameters</a>. For example:</p>
+<div class="highlight"><pre><span></span><code>nextflow<span class="w"> </span>run<span class="w"> </span>main.nf<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--outdir<span class="w"> </span><span class="s2">&quot;path/to/outdir&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--bowtie2_index<span class="w"> </span><span class="s2">&quot;path/to/bowtie2/index&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--kraken2_db<span class="w"> </span><span class="s2">&quot;path/to/kraken2/database&quot;</span>
+</code></pre></div>
+</details>
 <hr />
 <h2 id="5-run-the-pipeline">5. Run the pipeline</h2>
 <p>That&rsquo;s it, we are all set to run the pipeline!</p>
@@ -1874,8 +1883,8 @@ nextflow<span class="w"> </span>run<span class="w"> </span>main.nf<span class="w
 <div class="highlight"><pre><span></span><code>tree<span class="w"> </span>output
 </code></pre></div>
 <p>You should see the following:</p>
-<div class="admonition abstract">
-<p class="admonition-title">Output directory content</p>
+<details class="abstract">
+<summary>Output directory content</summary>
 <div class="highlight"><span class="filename">Output contents</span><pre><span></span><code><span class="go">output/</span>
 <span class="go">└── ERR2143758</span>
 <span class="go">    ├── ERR2143768.b.krona.txt</span>
@@ -1886,7 +1895,7 @@ nextflow<span class="w"> </span>run<span class="w"> </span>main.nf<span class="w
 <span class="go">    ├── ERR2143768.krona.html</span>
 <span class="go">    └── ERR2143768.sam</span>
 </code></pre></div>
-</div>
+</details>
 <p>Please feel free to explore each of the files to understand each process and how data were handled.</p>
 <p>The file we are most interested in is the <code>*.html</code> file containing the Krona plot.
 You can either download it and open it in your browser, or install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server">preview</a> extension for Visual Studio. Below you can see a snapshot of how it should look like (<strong>keep in mind that this is the Bracken output!</strong>):</p>

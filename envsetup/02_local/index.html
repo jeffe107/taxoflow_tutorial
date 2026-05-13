@@ -897,6 +897,14 @@ Our training courses have a few additional requirements.</p>
 <li><a href="https://nf-co.re/docs/nf-core-tools/installation">nf-core tools</a></li>
 </ul>
 <p>We recommend using the self-install option for Nextflow and the PyPI option for nf-core tools.</p>
+<p>Please remember an important clarification about the Nextflow version:</p>
+<div class="admonition info">
+<p class="admonition-title">Nextflow version</p>
+<p>This tutorial uses a pinned version of Nextflow (<strong>24.10.6</strong>) with parser <strong>v1</strong>. This is important considering the rapid evolution of Nextflow, thus ensuring the proper execution of the pipeline.</p>
+</div>
+<p>Thus, to pin the Nextflow version:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NXF_VER</span><span class="o">=</span><span class="m">24</span>.10.6
+</code></pre></div>
 <h2 id="training-materials">Training materials</h2>
 <p>The easiest way to download the training materials is to clone the entire repository using this command:</p>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/jeffe107/taxoflow_tutorial.git
