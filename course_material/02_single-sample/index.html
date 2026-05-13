@@ -1412,7 +1412,7 @@ Each module corresponds to a step in the pipeline.</p>
 </code></pre></div></td></tr></table></div>
 <div class="admonition bug">
 <p class="admonition-title">Bowtie2 path to index</p>
-<p>You may have noticed that we exported the variable BOWTIE2_INDEXES. This is a specific requirement by Bowtie2 to find the proper indexed genome. This path is only exported at runtime, and it is <strong>hard-coded</strong> to the Codespaces environment. If you are using a different environment you will need to adapt this path (we have done it for the multi-sample Bowtie2 module).</p>
+<p>You may have noticed that we exported the variable BOWTIE2_INDEXES. This is a specific requirement by Bowtie2 to find the proper indexed genome. This path is only exported at runtime, and it is <strong>hard-coded</strong> to the Codespaces environment. If you are using a different environment you will need to adapt this path (we have done it for the Bowtie2 module used in the Part 3 of this tutorial).</p>
 </div>
 <p>Let&rsquo;s take a moment to break down what we are seeing here.</p>
 <p>First, let&rsquo;s look at the &lsquo;housekeeping&rsquo; parts of the process, which you should be familiar with if you worked through the beginner Nextflow training.</p>
@@ -1841,7 +1841,6 @@ You can learn more about this <a href="https://carpentries-incubator.github.io/w
 <div class="highlight"><pre><span></span><code>mv<span class="w"> </span>data<span class="w"> </span>single/
 <span class="nb">cd</span><span class="w"> </span>single
 nextflow<span class="w"> </span>run<span class="w"> </span>main.nf<span class="w"> </span>--reads<span class="w"> </span><span class="s1">&#39;data/samples/ERR2143768/ERR2143768_{1,2}.fastq&#39;</span>
-<span class="nb">cd</span><span class="w"> </span>-
 </code></pre></div>
 <p>On the output of the command line, you will see:</p>
 <details class="success">
