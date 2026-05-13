@@ -74,7 +74,7 @@ Otherwise, we must include the parameter `--sheet_csv` with the corresponding fi
 TaxoFlow showcases **two layers** of conditional logic:
 
 - At the **top‑level workflow** (`main.nf`) to decide how to build the read channel.
-- Inside the **`TaxoFlow` workflow** (`workflow.nf`) to decide whether to run downstream reporting steps (shown below).
+- Inside the **`TaxoFlow` workflow** (`workflow.nf`) to decide whether to run downstream reporting steps (shown in section **2.3 Conditional reporting inside `workflow.nf`**).
 
 The `if` statement decides **how inputs are parsed**:
 

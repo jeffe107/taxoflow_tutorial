@@ -37,6 +37,17 @@ You will need to install Nextflow itself, plus the nf-core tools, as detailed in
 
 We recommend using the self-install option for Nextflow and the PyPI option for nf-core tools.
 
+Please remember an important clarification about the Nextflow version:
+
+!!! info "Nextflow version"
+    This tutorial uses a pinned version of Nextflow (**24.10.6**) with parser **v1**. This is important considering the rapid evolution of Nextflow, thus ensuring the proper execution of the pipeline.
+
+Thus, to pin the version:
+
+```bash
+export NXF_VER=24.10.6
+```
+
 ## Training materials
 
 The easiest way to download the training materials is to clone the entire repository using this command:

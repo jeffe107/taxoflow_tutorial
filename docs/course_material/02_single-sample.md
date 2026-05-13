@@ -401,8 +401,18 @@ params {
 docker.enabled = true
 ```
 
-!!! tip "Paths to files and directories"
+!!! warning "Paths to files and directories"
 	We are providing the paths using the Nextflow `${projectDir}` variable to point to the project directory directly; this ensures system independence. Usually, relative paths are preferred for system-independence of the pipelines, although some tools or scripts will fail if parameters are not provided as absolute paths.
+
+??? tip "Override parameters"
+	Parameters can be overridden at run time when included as command flags. You can learn more about this on [Nextflow parameters](https://training.nextflow.io/2.0/basic_training/config/). For example:
+
+	```bash
+	nextflow run hello-pipeline.nf \
+		--outdir "path/to/outdir" \
+		--bowtie2_index path/to/bowtie2/index \
+		--kraken2_db "path/to/kraken2/database"
+	```
 
 ---
 
