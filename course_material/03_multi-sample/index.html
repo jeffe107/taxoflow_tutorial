@@ -642,6 +642,34 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#31-enabling-the-builtin-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Enabling the built‑in report
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 Enabling the built‑in report">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311-running-taxoflow-and-inspecting-the-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.1 Running TaxoFlow and inspecting the report
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#takeaway" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1057,6 +1085,34 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#31-enabling-the-builtin-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Enabling the built‑in report
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 Enabling the built‑in report">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311-running-taxoflow-and-inspecting-the-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.1 Running TaxoFlow and inspecting the report
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#takeaway" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1107,7 +1163,10 @@
 <p>In this part, we are going to start from the pipeline structure we built in the previous part and extend it for multi-sample analysis.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>We will be working now in the <code>multi</code> directory.</p>
+<p>We will be working now in the <code>multi</code> directory. Thus, please make sure you are in the correct directory and move the data:
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/workspaces/taxoflow_tutorial/TaxoFlow/multi
+mv<span class="w"> </span>../single/data<span class="w"> </span>.
+</code></pre></div></p>
 </div>
 <p>This will give us the opportunity to practice using the following Nextflow features:</p>
 <ol>
@@ -1131,10 +1190,14 @@ You can think of this as a sort of &ldquo;integrated <em>for</em> loop&rdquo; th
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>sample_id,fastq_1,fastq_2
-ERR2143768,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143768/ERR2143768_1.fastq,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143768/ERR2143768_2.fastq
-ERR2143770,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143770/ERR2143770_1.fastq,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143770/ERR2143770_2.fastq
-ERR2143774,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143774/ERR2143774_1.fastq,/workspaces/taxoflow_tutorial/TaxoFlow/data/samples/ERR2143774/ERR2143774_2.fastq
+ERR2143768,data/samples/ERR2143768/ERR2143768_1.fastq,data/samples/ERR2143768/ERR2143768_2.fastq
+ERR2143770,data/samples/ERR2143770/ERR2143770_1.fastq,data/samples/ERR2143770/ERR2143770_2.fastq
+ERR2143774,data/samples/ERR2143774/ERR2143774_1.fastq,data/samples/ERR2143774/ERR2143774_2.fastq
 </code></pre></div></td></tr></table></div>
+<div class="admonition tip">
+<p class="admonition-title">Paths to files</p>
+<p>Please notice that these paths are <strong>hard-coded</strong>, and thus, it will work only on Codespaces. If you are using a local installation or CodeSandbox, you need to change the pa</p>
+</div>
 <p>Here, we have provided the <code>sample id</code> and the absolute paths to both forward and reverse reads per sample.
 Please notice that the files are not required to be stored in the directory; however, this is recommended in order to maintain a consistent fodirectorylder structure.</p>
 <p>However, we cannot use this file as input in the current state of the pipeline, given that it expects only a path to create a paired-end channel.
@@ -1314,14 +1377,54 @@ Here, we will run an R script inside the module <code>multi/modules/knit_phylose
 </code></pre></div></td></tr></table></div>
 <details class="tip">
 <summary>Global vs Nextflow variables</summary>
-<p>Within the <code>modules/knit_phyloseq.nf</code> you can notice that some variables like <code>biom_pat</code> and <code>outreport</code> are preceded by a backslash (\). In Nextflow, it is really important to distinguish Nextflow variables from Bash or environment variables. This is achieved through the use of double quotes in the script section plus adding the <em>escape</em> character (backslash) <strong>before Bash variables</strong>. <a href="https://docs.seqera.io/nextflow/process#script:~:text=the%20pipeline%20script.-,WARNING,-Since%20Nextflow%20uses">More about this</a></p>
+<p>Within the <code>modules/knit_phyloseq.nf</code> you can notice that some variables like <code>biom_pat</code> and <code>outreport</code> are preceded by a backslash (\). In Nextflow, it is really important to distinguish Nextflow variables from Bash or environment variables. This is achieved through the use of double quotes in the script section plus adding the <em>escape</em> character (backslash) <strong>before Bash variables</strong>. <a href="https://docs.seqera.io/nextflow/process#script:~:text=the%20pipeline%20script.-,WARNING,-Since%20Nextflow%20uses">More about this here</a>.</p>
 </details>
 <p>As you can see, we are declaring some variables both in Nextflow and bash to be able to call the script.
 This is a special case since this type of scripts can be stored in the <strong>bin</strong> directory for Nextflow to find them directly.
 Nevertheless, as we are not &ldquo;running the script&rdquo; directly but we are calling <code>Rscript</code> to render a final <code>*.html</code> report, Nextflow is not able to automatically find the customized script nor detect when the report is rendered.
 As a result the output from this process is just a standard/command-line output, and we have to include an additional parameter in the <code>multi/nextflow.config</code> file:</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">multi/nextflow.config</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="w">    </span><span class="n">report</span><span class="w">                             </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/workspaces/taxoflow_tutorial/TaxoFlow/multi/bin/report.Rmd&quot;</span>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">multi/nextflow.config</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="w">    </span><span class="n">report</span><span class="w">                             </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${projectDir}/bin/report.Rmd&quot;</span>
 </code></pre></div></td></tr></table></div>
+<p>This R Markdown file uses a Phyloseq object created from Kraken2/Bracken output (BIOM file), then applies standard functions from for diversity and network analysis. Thus, results should therefore be interpreted as <strong>visual summaries of community structure</strong>, not as statistically validated differences.</p>
+<details class="tip">
+<summary>Diversity and network analysis methods</summary>
+<p><strong>Input data</strong><br />
+Taxonomic abundance tables generated with Bracken were imported into R as a Phyloseq object. Taxa were agglomerated at the <strong>genus level</strong> (<code>tax_glom</code>), and low-abundance genera were filtered by retaining taxa with a <strong>mean relative abundance ≥ 3%</strong> across samples.</p>
+<p><strong>α-diversity (within-sample diversity)</strong></p>
+<ul>
+<li>Calculated using <code>plot_richness()</code> from Phyloseq.</li>
+<li>Diversity indices:<ul>
+<li><strong>Chao1</strong>: richness estimator accounting for unseen taxa.</li>
+<li><strong>Shannon</strong>: richness and evenness estimator.</li>
+</ul>
+</li>
+<li><strong>Normalization:</strong> raw abundance counts were used directly (no rarefaction or scaling).</li>
+</ul>
+<p><strong>β-diversity (among-sample diversity)</strong></p>
+<ul>
+<li>Community dissimilarity calculated using <strong>Bray–Curtis distance</strong>.</li>
+<li>Ordination performed with <strong>Principal Coordinates Analysis (PCoA)</strong>.</li>
+<li>Visualizations:<ul>
+<li>Heatmap of taxonomic abundance with sample ordering based on ordination.</li>
+<li>PCoA scatter plot for comparing sample composition.</li>
+</ul>
+</li>
+<li><strong>Normalization:</strong> Bray–Curtis calculated directly from the filtered abundance table.</li>
+</ul>
+<p><strong>Network construction</strong></p>
+<ul>
+<li>Generated using <code>plot_net()</code> from Phyloseq.</li>
+<li>Parameters:<ul>
+<li><strong>Distance metric:</strong> Bray–Curtis.</li>
+<li><strong>Network type:</strong> taxa co-occurrence (<code>type = "taxa"</code>).</li>
+<li><strong>Maximum distance threshold:</strong> <code>maxdist = 0.9</code>.</li>
+</ul>
+</li>
+<li>Nodes represent genera; edges connect taxa based on pairwise similarity under the defined threshold.</li>
+</ul>
+<p><strong>Statistical testing</strong></p>
+<p>This workflow provides <strong>descriptive exploratory analysis only</strong>. Results should therefore be interpreted as <strong>visual summaries of community structure</strong>, not as statistically validated differences. Please visit the <a href="https://microbiome.github.io/tutorials/">microbiome R package tutorial</a>.</p>
+</details>
 <p>In addition, please notice the <code>container</code> used for the <code>KNIT_PHYLOSEQ</code>, which is combination of multiple packages required to render the <code>*.html</code> report.
 This is possible thanks to an awesome tool called <a href="https://seqera.io/containers/">Seqera Containers</a>, which is able to build almost any container (for docker or singularity!) by just &ldquo;merging&rdquo; different PyPI or Conda packages; please give it a try and be amazed by Seqera Containers.</p>
 <p>Also, we have to include this new process within <code>multi/workflow.nf</code>:</p>
@@ -1348,8 +1451,8 @@ This is possible thanks to an awesome tool called <a href="https://seqera.io/con
 </ul>
 <hr />
 <h2 id="3-execution">3. Execution</h2>
-<p>Now, we are completely set to run the analysis for as many samples as we would like, and we will obtain a final report depicting different metrics regarding taxonomic abundance, network analysis, and α and β-diversity. Let&rsquo;s execute:</p>
-<div class="highlight"><pre><span></span><code>nextflow<span class="w"> </span>run<span class="w"> </span>multi/main.nf<span class="w"> </span>--sheet_csv<span class="w"> </span><span class="s1">&#39;data/samplesheet.csv&#39;</span>
+<p>Now, we are completely set to run the analysis for as many samples as we would like, and we will obtain a final report depicting different metrics regarding taxonomic abundance, network analysis, and α and β-diversity. Let&rsquo;s execute (please remember that we are within the <strong>multi</strong> directory):</p>
+<div class="highlight"><pre><span></span><code>nextflow<span class="w"> </span>run<span class="w"> </span>main.nf<span class="w"> </span>--sheet_csv<span class="w"> </span><span class="s1">&#39;data/samplesheet.csv&#39;</span>
 </code></pre></div>
 <p>On the output of the command line, you will see:</p>
 <details class="success">
@@ -1398,6 +1501,66 @@ Likewise, in the <strong>output</strong> folder you will see the file <code>repo
 <p class="admonition-title">Note</p>
 <p>In case that the pipeline does not run in your environment, the output is available for you to check <a href="https://github.com/jeffe107/TaxoFlow_tutorial/tree/main/output">here</a>.</p>
 </div>
+<h3 id="31-enabling-the-builtin-report">3.1 Enabling the built‑in report</h3>
+<p>In <code>nextflow.config</code>:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">multi/nextflow.config</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">report</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${projectDir}/output/performance_report.html&quot;</span>
+<span class="o">}</span>
+</code></pre></div></td></tr></table></div>
+<p>This block tells Nextflow to:</p>
+<ul>
+<li>Generate a <strong>single HTML report</strong> named <code>report.html</code> at the end of each run.</li>
+<li>Place it in the <strong>results directory</strong> from where you launched Nextflow.</li>
+</ul>
+<p>You do not need to change <code>main.nf</code> or <code>workflow.nf</code> to use this feature; it is entirely controlled by configuration.</p>
+<h4 id="311-running-taxoflow-and-inspecting-the-report">3.1.1 Running TaxoFlow and inspecting the report</h4>
+<p>The workflow can be executed without adding anything else. For instance:</p>
+<div class="highlight"><pre><span></span><code>nextflow<span class="w"> </span>run<span class="w"> </span>main.nf<span class="w"> </span>--sheet_csv<span class="w"> </span>data/samplesheet.csv
+</code></pre></div>
+<details class="info">
+<summary>Enabling the report as a parameter</summary>
+<p>It is possible to generate the report just by adding <code>-with-report &lt;file_name&gt;</code>. <a href="https://docs.seqera.io/nextflow/reports#execution-report">More about this here</a>.</p>
+</details>
+<p>At the end of the execution you should see a message similar to:</p>
+<div class="highlight"><pre><span></span><code>Execution report saved to: report.html
+</code></pre></div>
+<p>Open <code>report.html</code> in a browser. You will find:</p>
+<ul>
+<li>A <strong>timeline</strong> of all tasks across processes like <code>BOWTIE2</code>, <code>KRAKEN2</code>, <code>BRACKEN</code>, etc.</li>
+<li>A <strong>resources</strong> table with CPU, memory and time usage per process.</li>
+<li>A <strong>tasks</strong> section showing how many samples were processed and how long each step took.</li>
+</ul>
+<figure align="center">
+<p><img alt="TaxoFlow workflow" src="../../assets/images/report.png" />
+  </p>
+<figcaption>Plot example within the performance report.</figcaption>
+</figure>
+<p>This native report complements the domain‑specific Phyloseq HTML:</p>
+<ul>
+<li>The <strong>Nextflow report</strong> focuses on <strong>pipeline performance and resource usage</strong>.</li>
+<li>The <strong>Phyloseq report</strong> focuses on <strong>biological interpretation</strong> of the metagenomic profiles.</li>
+</ul>
+<details class="tip">
+<summary>Customizing the report location</summary>
+<ul>
+<li>To save the report under the project directory, you can update <code>file</code>:
+  <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">multi/nextflow.config</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">report</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${projectDir}/output/performance_report.html&quot;</span>
+<span class="w">    </span><span class="n">overwrite</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="o">}</span>
+</code></pre></div></td></tr></table></div></li>
+<li>This keeps all outputs (taxonomy results, Krona plots, RMarkdown report, Nextflow report) under a single <code>output/</code> tree.</li>
+</ul>
+</details>
 <hr />
 <h3 id="takeaway">Takeaway</h3>
 <p>You just learnt how to control workflow execution by including conditionals and operators, processing multiple samples simultaneously and running a customized script to perform a metagenomics data analysis at read level.</p>

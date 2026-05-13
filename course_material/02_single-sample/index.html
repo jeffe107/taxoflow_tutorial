@@ -1405,11 +1405,15 @@ Each module corresponds to a step in the pipeline.</p>
 
 <span class="w">    </span><span class="nl">script:</span>
 <span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/data/genome/TAIR10</span>
+<span class="s2">    export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/single/data/genome/TAIR10</span>
 <span class="s2">    bowtie2 -x $bowtie2_index -1 ${reads[0]} -2 ${reads[1]} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 <span class="w">    </span><span class="o">}</span>
 </code></pre></div></td></tr></table></div>
+<div class="admonition bug">
+<p class="admonition-title">Bowtie2 path to index</p>
+<p>You may have noticed that we exported the variable BOWTIE2_INDEXES. This is a specific requirement by Bowtie2 to find the proper indexed genome. This path is only exported at runtime, and it is <strong>hard-coded</strong> to the Codespaces environment. If you are using a different environment you will need to adapt this path (we have done it for the multi-sample Bowtie2 module).</p>
+</div>
 <p>Let&rsquo;s take a moment to break down what we are seeing here.</p>
 <p>First, let&rsquo;s look at the &lsquo;housekeeping&rsquo; parts of the process, which you should be familiar with if you worked through the beginner Nextflow training.</p>
 <ul>
@@ -1818,23 +1822,26 @@ You can learn more about this <a href="https://carpentries-incubator.github.io/w
 
 <span class="n">params</span><span class="w"> </span><span class="o">{</span>
 <span class="w">    </span><span class="n">reads</span><span class="w">                                 </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span>
-<span class="w">    </span><span class="n">outdir</span><span class="w">                                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/workspaces/taxoflow_tutorial/TaxoFlow/output&quot;</span>
-<span class="w">    </span><span class="n">bowtie2_index</span><span class="w">                         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/workspaces/taxoflow_tutorial/TaxoFlow/data/genome/TAIR10/TAIR10&quot;</span>
-<span class="w">    </span><span class="n">kraken2_db</span><span class="w">                            </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/workspaces/taxoflow_tutorial/TaxoFlow/data/krakendb&quot;</span>
+<span class="w">    </span><span class="n">outdir</span><span class="w">                                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${projectDir}/output&quot;</span>
+<span class="w">    </span><span class="n">bowtie2_index</span><span class="w">                         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${projectDir}/data/genome/TAIR10/TAIR10&quot;</span>
+<span class="w">    </span><span class="n">kraken2_db</span><span class="w">                            </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${projectDir}/data/krakendb&quot;</span>
 <span class="w">    </span><span class="o">}</span>
 
 <span class="c1">// Enable using docker as the container engine to run the pipeline</span>
 <span class="n">docker</span><span class="o">.</span><span class="na">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
 </code></pre></div></td></tr></table></div>
 <div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Please note that we are using absolute paths for the parameters. Even though relative paths are preferred for system-independence of the pipelines, often some tools or scripts will fail if parameters are not provided as absolute paths.</p>
+<p class="admonition-title">Paths to files and directories</p>
+<p>We are providing the paths using the Nextflow <code>${projectDir}</code> variable to point to the project directory directly; this ensures system independence. Usually, relative paths are preferred for system-independence of the pipelines, although some tools or scripts will fail if parameters are not provided as absolute paths.</p>
 </div>
 <hr />
 <h2 id="5-run-the-pipeline">5. Run the pipeline</h2>
 <p>That&rsquo;s it, we are all set to run the pipeline!</p>
 <p>Let&rsquo;s just pick one of the samples provided (you can choose any of them) and run the following command:</p>
-<div class="highlight"><pre><span></span><code>nextflow<span class="w"> </span>run<span class="w"> </span>single/main.nf<span class="w"> </span>--reads<span class="w"> </span><span class="s1">&#39;data/samples/ERR2143768/ERR2143768_{1,2}.fastq&#39;</span>
+<div class="highlight"><pre><span></span><code>mv<span class="w"> </span>data<span class="w"> </span>single/
+<span class="nb">cd</span><span class="w"> </span>single
+nextflow<span class="w"> </span>run<span class="w"> </span>main.nf<span class="w"> </span>--reads<span class="w"> </span><span class="s1">&#39;data/samples/ERR2143768/ERR2143768_{1,2}.fastq&#39;</span>
+<span class="nb">cd</span><span class="w"> </span>-
 </code></pre></div>
 <p>On the output of the command line, you will see:</p>
 <details class="success">
