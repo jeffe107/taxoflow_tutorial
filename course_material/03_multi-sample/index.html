@@ -1489,6 +1489,10 @@ This is possible thanks to <a href="https://seqera.io/containers/">Seqera Contai
 <span class="go">Succeeded   : 10</span>
 </code></pre></div>
 </details>
+<details class="tip">
+<summary>Use your own data</summary>
+<p>If you want to use your own data, you just need to change sample IDs and the paths to sequencing reads on the file <code>data/samplesheet.csv</code>, or create your own one to use it with the parameter <code>--sheet_csv</code>.</p>
+</details>
 <p>Keep in mind that since the execution is in parallel, the order in which the samples are processed is random and the order in which <code>sample ids</code> appear will differ among executions.
 Also, while the pipeline is running you will see that <code>KRAKEN_BIOM</code>, and hence <code>KNIT_PHYLOSEQ</code>, will not be triggered until all the samples are processed by the previous processes.</p>
 <p>Finally, inside the <strong>output</strong> directory, you will see multiple folders with the exact <code>sample ids</code>, and within these all the output files, including the files to visualize the Krona plots.
