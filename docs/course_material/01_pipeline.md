@@ -21,12 +21,12 @@ Our goal is to develop a workflow that takes **FASTQ** files from one or multipl
 
 To perform these steps, we will use the following tools:
 
-1. **Host removal** with [**Bowtie2**](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) by aligning the reads against an indexed reference genome. Nonetheless, you can use any organism you are interested in by building [your own index](https://www.metagenomics.wiki/tools/bowtie2/index) or downloading a [precomputed one](https://benlangmead.github.io/aws-indexes/bowtie).
-2. **Taxonomic classification** with [**Kraken2**](https://ccb.jhu.edu/software/kraken2/). This tool relies on an indexed database that can be [downloaded](https://benlangmead.github.io/aws-indexes/k2). Alternatively, you can build your customized version following [these instructions](https://avilpage.com/2024/07/mastering-kraken2-build-custom-db.html). Here, we will use the custom database with 50 bacterial species that we have selected only for the purpose of this tutorial. However, you can expand the annotation simply by switching to another database.
+1. **Host removal** with [**Bowtie2**](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) by aligning the reads against an indexed reference genome.
+2. **Taxonomic classification** with [**Kraken2**](https://ccb.jhu.edu/software/kraken2/). This tool relies on an indexed database that can be [downloaded](https://benlangmead.github.io/aws-indexes/k2). Here, we will use the custom database with 50 bacterial species that we have selected only for the purpose of this tutorial. However, you can expand the annotation simply by switching to another database.
 3. **Bayesian re-estimation of species abundance** with [**Bracken**](https://ccb.jhu.edu/software/bracken/index.shtml?t=manual). This software is designed to compute species abundance using Kraken classification results as described in the reference paper. It also uses some files contained in the database folders such as the kmer distribution files. This is a fairly complex analysis, but you don't need to know the details in order to follow this tutorial; you can learn about how the method works afterwards.
 4. **Plot generation** with [**Krona**](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-385) from the Bracken output. This will allow us to visualize interactively the relative abundance of each annotated species.
 5. (Multi-sample) **Concatenation with kraken-biom.** If multiple samples are provided, the Bracken reports will be concatenated and converted into a [Biological Observation Matrix (BIOM)](https://biom-format.org/) file.
-6. (Multi-sample) **Generation of final report with Phyloseq** The BIOM file will be converted to a [Phyloseq](https://joey711.github.io/phyloseq/index.html) object, and this object will be further processed to generate absolute plots, estimate both α and β-diversity and perform a network analysis. This information will be presented in a final `report.html`. To learn more about the code used to generate the plots and metrics, check out this Phyloseq [tutorial](https://vaulot.github.io/tutorials/Phyloseq_tutorial.html).
+6. (Multi-sample) **Generation of final report with Phyloseq**. The BIOM file will be converted to a [Phyloseq](https://joey711.github.io/phyloseq/index.html) object, and this object will be further processed to generate absolute plots, estimate both α and β-diversity and perform a network analysis. This information will be presented in a final `report.html`. To learn more about the code used to generate the plots and metrics, check out this Phyloseq [tutorial](https://vaulot.github.io/tutorials/Phyloseq_tutorial.html).
 
 The specific versions used by the current version of Taxoflow for each tool are as follows:
 
@@ -51,6 +51,22 @@ The specific versions used by the current version of Taxoflow for each tool are 
 !!!tip
 
     If you feel a bit overwhelmed by the theoretical background of the methodology, we strongly encourage you to check this [Carpentries](https://carpentries-lab.github.io/metagenomics-analysis/) lesson first, where the concepts are explained step by step using interesting examples.
+
+## 2. Databases and indexed genomes
+
+As mentioned before, this tutorial provides with an indexed genome for Bowtie2 and a really reduced Kraken2/Bracken database to execute the pipeline. However, please keep in mind that the outcomes of the pipeline are not biologically meaningful if these resources are used on real data sets. At the moment of running the workflow with your own data, you must ensure that the proper database and indexed genome are used. Thus, we hereby provided you with repositories with already pre-compiled Kraken2/Bracken databases and indexed Bowtie2 genomes for the most popular organisms.
+
+ - Kraken2/Bracken databases: [https://benlangmead.github.io/aws-indexes/k2](https://benlangmead.github.io/aws-indexes/k2)
+
+ - Bowtie2 indexed genomes: [https://benlangmead.github.io/aws-indexes/bowtie](https://benlangmead.github.io/aws-indexes/bowtie)
+
+ Also, it is possible to build your own databases and indexed genomes. You can find the tutorials here:
+
+ - Build Kraken2 database (until step 6): [https://hackmd.io/@MEC-lab-team/SyvOOB0skl](https://hackmd.io/@MEC-lab-team/SyvOOB0skl)
+
+ - Additional option to customize Kraken2 database: [https://avilpage.com/2024/07/mastering-kraken2-build-custom-db.html](https://avilpage.com/2024/07/mastering-kraken2-build-custom-db.html)
+
+ - Build Bowtie2 index: [https://www.metagenomics.wiki/tools/bowtie2/index](https://www.metagenomics.wiki/tools/bowtie2/index)
 
 ---
 

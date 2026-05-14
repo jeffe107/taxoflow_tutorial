@@ -326,6 +326,9 @@ On the output of the command line, you will see:
     Succeeded   : 10
     ```
 
+??? tip "Use your own data"
+	If you want to use your own data, you just need to change sample IDs and the paths to sequencing reads on the file `data/samplesheet.csv`, or create your own one to use it with the parameter `--sheet_csv`.
+
 Keep in mind that since the execution is in parallel, the order in which the samples are processed is random and the order in which `sample ids` appear will differ among executions.
 Also, while the pipeline is running you will see that `KRAKEN_BIOM`, and hence `KNIT_PHYLOSEQ`, will not be triggered until all the samples are processed by the previous processes.
 

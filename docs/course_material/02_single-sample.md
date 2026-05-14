@@ -457,6 +457,9 @@ On the output of the command line, you will see:
 	[39/08b32c] process > TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 1 of 1 ✔
 	```
 
+??? tip "Use your own data"
+	If you want to use your own data, you just need to change the path indicated with the `--reads` parameter.
+
 If that worked for you, it's finally time to analyze the results!
 
 You can find all the output files in the `output/` directory by running the `tree` command:
