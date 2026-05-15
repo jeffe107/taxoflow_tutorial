@@ -1,7 +1,7 @@
 # Part 1: Method overview
 
-In the field of metagenomics data analysis, there is an endless universe of pipelines or methodologies you can follow to explore and characterize your samples.
-We recommend this comprehensive [review](https://www.sciencedirect.com/science/article/pii/S2001037021004931) for you to explore the different existing approaches.
+In the field of metagenomics taxonomic classification or profiling, there is an endless universe of pipelines or methodologies you can follow to explore and characterize your samples.
+We recommend this comprehensive [review/benchmark](https://www.nature.com/articles/s41597-024-03672-8) for you to explore the different existing approaches.
 For this course, we propose to wrap with Nextflow the protocol published by [Jennifer Lu *et al.* (2022)](https://www.nature.com/articles/s41596-022-00738-y).
 
 The example dataset we will use to demonstrate the analysis consists of only paired-end reads recovered from an oligotrophic, phosphorus-deficient pond in Cuatro Ciénegas, Mexico ([Okie *et al.*, 2020](https://elifesciences.org/articles/49816)) in FASTQ format.

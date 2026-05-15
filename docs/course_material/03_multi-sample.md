@@ -246,7 +246,7 @@ This R Markdown file uses a Phyloseq object created from Kraken2/Bracken output 
 
     **Statistical testing**
 
-    This workflow provides **descriptive exploratory analysis only**. Results should therefore be interpreted as **visual summaries of community structure**, not as statistically validated differences. Please visit the [microbiome R package tutorial](https://microbiome.github.io/tutorials/) for expanding the statistical analysis of microbiome data.
+    This workflow provides **descriptive and exploratory analysis only**. Results should therefore be interpreted as **visual summaries of community structure**, not as statistically validated differences. Please visit the [microbiome R package tutorial](https://microbiome.github.io/tutorials/) for expanding the statistical analysis of microbiome data.
 
 In addition, please notice the `container` used for the `KNIT_PHYLOSEQ`, which is combination of multiple packages required to render the `*.html` report.
 This is possible thanks to [Seqera Containers](https://seqera.io/containers/), which is able to build almost any container (for docker or singularity!) by just "merging" different PyPI or Conda packages.
