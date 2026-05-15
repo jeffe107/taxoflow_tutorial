@@ -669,6 +669,23 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-biological-meaning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Biological meaning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Biological meaning">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#takeaway" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1112,6 +1129,23 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-biological-meaning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Biological meaning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Biological meaning">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#takeaway" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1497,9 +1531,10 @@ This is possible thanks to <a href="https://seqera.io/containers/">Seqera Contai
 Also, while the pipeline is running you will see that <code>KRAKEN_BIOM</code>, and hence <code>KNIT_PHYLOSEQ</code>, will not be triggered until all the samples are processed by the previous processes.</p>
 <p>Finally, inside the <strong>output</strong> directory, you will see multiple folders with the exact <code>sample ids</code>, and within these all the output files, including the files to visualize the Krona plots.
 Likewise, in the <strong>output</strong> folder you will see the file <code>report.html</code> which is ready to be opened and explored. It&rsquo;s your time to analyze it!</p>
-<p>Below you can see one the plots included in the report: an absolute abundance plot, where it is possible to compare the absolute number of annotated reads at genus level considering the custom database that we created for this tutorial with only 54 bacterial species (<strong>we applied a filter to keep only genera with relative above 3%, and keep in mind that this is the Bracken output!</strong>):</p>
+<p>Below you can see the plots included in the report, where it is possible to observe different metrics and general trends of annotated reads at genus level considering the custom database that we created for this tutorial with only 54 bacterial species (<strong>we applied a filter to keep only genera with relative above 3%, and keep in mind that this is the Bracken output!</strong>):</p>
 <div class="metagenomics">
-<p><img alt="Metagenomics" src="../../assets/images/bracken_output.png" /></p>
+<p><img alt="Metagenomics" src="../../assets/images/output.png" /></p>
+<p><strong>Taxonomic composition and diversity analyses of metagenomic samples.</strong> Absolute (a) and relative (c) abundance plots show the distribution of dominant genera across samples. α-diversity (b) was estimated using Chao1 and Shannon indices. β-diversity (d) was assessed by Principal Coordinates Analysis (PCoA) using Bray–Curtis distance. A co-occurrence network (e) shows relationships among genera based on Bray–Curtis similarity (<code>maxdist = 0.9</code>). A heatmap (f) displays genus abundance patterns across samples, ordered according to Bray–Curtis dissimilarity and PCoA. Low-abundance genera (&lt;3% mean relative abundance) were removed before diversity and network analyses.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1565,6 +1600,8 @@ Likewise, in the <strong>output</strong> folder you will see the file <code>repo
 <li>This keeps all outputs (taxonomy results, Krona plots, RMarkdown report, Nextflow report) under a single <code>output/</code> tree.</li>
 </ul>
 </details>
+<h2 id="4-biological-meaning">4. Biological meaning</h2>
+<p>Once again, please remember that this execution of the pipeline, and therefore <strong>it doesn&rsquo;t have a clear biological interpretation</strong>. To extract truly insights from the samples hereby provided or your own data, you need to use the corresponding genome index and Kraken2/Bracken databases for you analysis purposes. Please check how to achieve this <a href="../01_pipeline/#2-databases-and-indexed-genomes">here</a>.</p>
 <hr />
 <h3 id="takeaway">Takeaway</h3>
 <p>You just learnt how to control workflow execution by including conditionals and operators, processing multiple samples simultaneously and running a customized script to perform a metagenomics data analysis at read level.</p>

@@ -481,7 +481,18 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Databases and indexed genomes">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Validation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Validation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -851,7 +862,18 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Databases and indexed genomes">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Validation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Validation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -931,6 +953,7 @@ The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproj
 <th>Tool</th>
 <th style="text-align: right;">Version</th>
 <th>Container* (Seqera**)</th>
+<th>License</th>
 </tr>
 </thead>
 <tbody>
@@ -938,46 +961,55 @@ The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproj
 <td>Bowtie2</td>
 <td style="text-align: right;">2.5.4</td>
 <td>bowtie2:2.5.4&ndash;d51920539234bea7</td>
+<td>GPL-3.0</td>
 </tr>
 <tr>
 <td>Kraken2</td>
 <td style="text-align: right;">2.14</td>
 <td>kraken2:2.14&ndash;83aa57048e304f01</td>
+<td>MIT</td>
 </tr>
 <tr>
 <td>Bracken</td>
 <td style="text-align: right;">3.1</td>
 <td>bracken:3.1&ndash;22a4e66ce04c5e01</td>
+<td>GPL-3.0</td>
 </tr>
 <tr>
 <td>KrakenTools</td>
 <td style="text-align: right;">1.2</td>
 <td>krakentools:1.2&ndash;db94e0b19cfa397b</td>
+<td>GPL-3.0</td>
 </tr>
 <tr>
 <td>Krona</td>
 <td style="text-align: right;">2.8.1</td>
 <td>krona:2.8.1&ndash;2f750080982f027e</td>
+<td>BSD</td>
 </tr>
 <tr>
 <td>Kraken-BIOM</td>
 <td style="text-align: right;">1.2.0</td>
 <td>kraken-biom:1.2.0&ndash;f040ab91c9691136</td>
+<td>MIT</td>
 </tr>
 <tr>
 <td>R</td>
 <td style="text-align: right;">4.4.3</td>
 <td>bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44</td>
+<td>GPL-2,3</td>
 </tr>
 <tr>
 <td>Phyloseq</td>
 <td style="text-align: right;">1.50.0</td>
 <td>bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44</td>
+<td>AGPL-3</td>
 </tr>
 <tr>
 <td>ggplot2</td>
 <td style="text-align: right;">3.5.1</td>
 <td>bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44</td>
+<td>MIT</td>
 </tr>
 </tbody>
 </table>
@@ -1010,6 +1042,8 @@ The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproj
 <p>Build Bowtie2 index: <a href="https://www.metagenomics.wiki/tools/bowtie2/index">https://www.metagenomics.wiki/tools/bowtie2/index</a></p>
 </li>
 </ul>
+<h2 id="3-validation">3. Validation</h2>
+<p>We used TaxoFlow to analyze the sequences <a href="https://www.ncbi.nlm.nih.gov/sra/?term=SRR32316197">SRR32316197</a> belonging to the mock community (ZymoBIOMICS™ Microbial Community DNA Standard D6305) in combination with the Kraken2 database PlusPFP (Standard plus Refseq protozoa, fungi &amp; plant) v04/09/2024. This analysis shows the correct estimation of the community member proportions according to the manufacturer specifications. The resulting files of this analysis were deposited on Zenodo under the identifier <a href="https://doi.org/10.5281/zenodo.16947911">16947911</a> and with the filename <em>mock_community.tar.gz</em>.</p>
 <hr />
 <h3 id="takeaway">Takeaway</h3>
 <p>You understand the underlying method and the overall design of the workflow.</p>
