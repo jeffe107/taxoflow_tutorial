@@ -8,9 +8,6 @@ hide:
 
 # Environment options
 
-??? info "Credit to Nextflow training team"
-    The material found in these sections regarding Codespaces configuration and local installation was retrieved and adapted from the [Environment options tutorial](https://training.nextflow.io/latest/envsetup/) provided by the official Nextflow training material.
-
 We aim to provide a consistent and thoroughly tested environment that allows learners to focus on learning Nextflow without having to spend time and effort on managing software.
 To that end, we have developed a containerized environment that contains all the necessary software, code files and example data to work through all of our courses.
 

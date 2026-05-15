@@ -26,7 +26,7 @@ All the software needed in this workflow is either:
 
 All information of this course is based on the [official Nextflow documentation](https://docs.seqera.io/nextflow/) and uses **Nextflow DSL2** syntax.
 
-!!! info "Nextflow version"
+!!! warning "Nextflow version"
     This tutorial uses a pinned version of Nextflow (**24.10.6**) with parser **v1**. This is important considering the rapid evolution of Nextflow, thus ensuring the proper execution of the pipeline.
 
 ### GitHub Codespaces - Code editor

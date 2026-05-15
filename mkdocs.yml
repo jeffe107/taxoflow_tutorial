@@ -22,6 +22,15 @@ theme:
   custom_dir: overrides
   icon:
     repo: fontawesome/brands/github
+    admonition:
+      catalog: octicons/thumbsup-16
+      courses: octicons/book-16
+      terminal: octicons/terminal-16
+      full-code: material/code-block-braces
+      learning: octicons/mortar-board-16
+      people: octicons/people-16
+      licensing: octicons/law-16
+      videos: octicons/video-16
   features:
     - announce.dismiss
     - content.code.copy
@@ -33,7 +42,6 @@ theme:
       toggle:
         icon: material/brightness-7 
         name: Switch to dark mode
-
     # Palette toggle for dark mode
     - scheme: slate
       toggle:
@@ -72,7 +80,6 @@ markdown_extensions:
   - sane_lists
   - smarty
   - toc
-  - pymdownx.superfences
   - md_in_html
   - attr_list
   - pymdownx.tabbed:
@@ -84,6 +91,12 @@ markdown_extensions:
       options:
         custom_icons:
           - overrides/.icons
+  - pymdownx.superfences:
+      preserve_tabs: true
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 
 extra_css:
   - stylesheets/extra.css
