@@ -122,3 +122,28 @@ article ul ul ul {
   -webkit-mask-image: var(--md-admonition-icon--catalog);
   mask-image: var(--md-admonition-icon--catalog);
 }
+
+/* Custom right-hand-side sidebar */
+.sidebar_resources {
+  margin-top: 2rem;
+}
+.sidebar_resources svg {
+  fill: currentcolor;
+  max-height: 100%;
+  width: 1.125em;
+  margin-right: 0.5rem;
+  opacity: 0.6;
+}
+.sidebar_resources .md-nav__link {
+  justify-content: left;
+}
+@media screen and (min-width: 59.9375em) {
+  .md-sidebar--secondary .md-sidebar__inner > nav > .md-nav__list {
+    border-left: 3px solid var(--md-default-fg-color--lightest);
+  }
+}
+@media screen and (max-width: 59.9375em) {
+  .sidebar_resources {
+    display: none !important;
+  }
+}
