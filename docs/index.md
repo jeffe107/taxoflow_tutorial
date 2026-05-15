@@ -60,7 +60,7 @@ hide:
 
         [![Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](assets/images/cc_by-nc-sa.svg){ align=right }](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-        This training material is developed and maintained by [BUGFri](https://www.unifr.ch/bio/en/groups/falquet/) and released under an open-source license ([CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/)) for the benefit of the community..
+        This training material is developed and maintained by [BUGFri](https://www.unifr.ch/bio/en/groups/falquet/) and released under an open-source license ([CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/)) for the benefit of the community.
 
         We welcome improvements, fixes and bug reports from the community. Please refer to [GitHub issue section](https://github.com/jeffe107/taxoflow_tutorial/issues), where you can report issues or propose changes to the training source material. See the `README.md` in the repository for more details.
 
