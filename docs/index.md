@@ -66,7 +66,7 @@ hide:
 
     ??? catalog "Credit to Nextflow training team"
 
-        TaxoFlow is inspired by the training material developed by the Nextflow training team, and important sections as the [Environment options tutorial](https://training.nextflow.io/latest/envsetup/) are explictly taken from their repository. We hereby express our gratitude to them, particularly to Geraldine Van der Auwera for their valuable contribution to conceive the idea of the tutorial and for her insightful feedback to implement it.
+        TaxoFlow is inspired by the training material developed by the Nextflow training team, and important sections as the [Environment options tutorial](https://training.nextflow.io/latest/envsetup/) are explictly taken from their repository. We hereby express our gratitude to them, particularly to **Geraldine Van der Auwera** for their valuable contribution to conceive the idea of the tutorial and for her insightful feedback to implement it.
 
 </div>
 
