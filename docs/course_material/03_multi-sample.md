@@ -335,11 +335,13 @@ Also, while the pipeline is running you will see that `KRAKEN_BIOM`, and hence `
 Finally, inside the **output** directory, you will see multiple folders with the exact `sample ids`, and within these all the output files, including the files to visualize the Krona plots.
 Likewise, in the **output** folder you will see the file `report.html` which is ready to be opened and explored. It's your time to analyze it!
 
-Below you can see one the plots included in the report: an absolute abundance plot, where it is possible to compare the absolute number of annotated reads at genus level considering the custom database that we created for this tutorial with only 54 bacterial species (**we applied a filter to keep only genera with relative above 3%, and keep in mind that this is the Bracken output!**):
+Below you can see the plots included in the report, where it is possible to observe different metrics and general trends of annotated reads at genus level considering the custom database that we created for this tutorial with only 54 bacterial species (**we applied a filter to keep only genera with relative above 3%, and keep in mind that this is the Bracken output!**):
 
 <div markdown class="metagenomics">
 
-![Metagenomics](../assets/images/bracken_output.png)
+![Metagenomics](../assets/images/output.png)
+
+**Taxonomic composition and diversity analyses of metagenomic samples.** Absolute (a) and relative (c) abundance plots show the distribution of dominant genera across samples. α-diversity (b) was estimated using Chao1 and Shannon indices. β-diversity (d) was assessed by Principal Coordinates Analysis (PCoA) using Bray–Curtis distance. A co-occurrence network (e) shows relationships among genera based on Bray–Curtis similarity (`maxdist = 0.9`). A heatmap (f) displays genus abundance patterns across samples, ordered according to Bray–Curtis dissimilarity and PCoA. Low-abundance genera (<3% mean relative abundance) were removed before diversity and network analyses.
 
 </div>
 
@@ -408,6 +410,10 @@ This native report complements the domain‑specific Phyloseq HTML:
       }
       ```
     - This keeps all outputs (taxonomy results, Krona plots, RMarkdown report, Nextflow report) under a single `output/` tree.
+
+## 4. Biological meaning
+
+Once again, please remember that this execution of the pipeline, and therefore **it doesn't have a clear biological interpretation**. To extract truly insights from the samples hereby provided or your own data, you need to use the corresponding genome index and Kraken2/Bracken databases for you analysis purposes. Please check how to achieve this [here](01_pipeline.md#2-databases-and-indexed-genomes).
 
 ---
 

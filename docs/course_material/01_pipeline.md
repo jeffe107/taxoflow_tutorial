@@ -31,22 +31,21 @@ To perform these steps, we will use the following tools:
 The specific versions used by the current version of Taxoflow for each tool are as follows:
 
 ??? info "Specific software versions"
-    | Tool        | Version | Container\* (Seqera\*\*)                                                     |
-    | ----------- | ------: | ------------------------------------------------------------------------- |
-    | Bowtie2     |   2.5.4 | bowtie2:2.5.4--d51920539234bea7                                           |
-    | Kraken2     |    2.14 | kraken2:2.14--83aa57048e304f01                                            |
-    | Bracken     |     3.1 | bracken:3.1--22a4e66ce04c5e01                                             |
-    | KrakenTools |     1.2 | krakentools:1.2--db94e0b19cfa397b                                         |
-    | Krona       |   2.8.1 | krona:2.8.1--2f750080982f027e                                             |
-    | Kraken-BIOM |   1.2.0 | kraken-biom:1.2.0--f040ab91c9691136                                       |
-    | R           |   4.4.3 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 |
-    | Phyloseq    |  1.50.0 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 |
-    | ggplot2     |   3.5.1 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 |
+    | Tool        | Version | Container\* (Seqera\*\*)                                                     | License      |
+    | ----------- | ------: | ------------------------------------------------------------------------- | ------------ |
+    | Bowtie2     |   2.5.4 | bowtie2:2.5.4--d51920539234bea7                                           | GPL-3.0      |
+    | Kraken2     |    2.14 | kraken2:2.14--83aa57048e304f01                                            | MIT          |
+    | Bracken     |     3.1 | bracken:3.1--22a4e66ce04c5e01                                             | GPL-3.0      |
+    | KrakenTools |     1.2 | krakentools:1.2--db94e0b19cfa397b                                         | GPL-3.0      |
+    | Krona       |   2.8.1 | krona:2.8.1--2f750080982f027e                                             | BSD          |
+    | Kraken-BIOM |   1.2.0 | kraken-biom:1.2.0--f040ab91c9691136                                       | MIT          |
+    | R           |   4.4.3 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 | GPL-2,3 |
+    | Phyloseq    |  1.50.0 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 | AGPL-3       |
+    | ggplot2     |   3.5.1 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 | MIT          |
 
     \* Containers found at: [community.wave.seqera.io/library/](https://community.wave.seqera.io/browse/library)
 
     ** Containers compatible with Docker engine.
-
 
 !!!tip
 
@@ -67,6 +66,10 @@ As mentioned before, this tutorial provides with an indexed genome for Bowtie2 a
  - Additional option to customize Kraken2 database: [https://avilpage.com/2024/07/mastering-kraken2-build-custom-db.html](https://avilpage.com/2024/07/mastering-kraken2-build-custom-db.html)
 
  - Build Bowtie2 index: [https://www.metagenomics.wiki/tools/bowtie2/index](https://www.metagenomics.wiki/tools/bowtie2/index)
+
+## 3. Validation
+
+We used TaxoFlow to analyze the sequences [SRR32316197](https://www.ncbi.nlm.nih.gov/sra/?term=SRR32316197) belonging to the mock community (ZymoBIOMICS™ Microbial Community DNA Standard D6305) in combination with the Kraken2 database PlusPFP (Standard plus Refseq protozoa, fungi & plant) v04/09/2024. This analysis shows the correct estimation of the community member proportions according to the manufacturer specifications. The resulting files of this analysis were deposited on Zenodo under the identifier [16947911](https://doi.org/10.5281/zenodo.16947911) and with the filename *mock_community.tar.gz*.
 
 ---
 

@@ -11,6 +11,9 @@ Specifically, this course demonstrates how to implement a simple read taxonomic 
 
 Let's get started! Click on the "Open in GitHub Codespaces" button below to launch the training environment (preferably in a separate tab), then read on while it loads.
 
+!!! info "Environment options"
+    This tutorial is fully packed to be used on GitHub Codespaces. If you want to use it locally, on an HPC cluster or using CodeSandbox, please check the section [Environment options](envsetup/index.md)
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1)
 
 ## Learning objectives
