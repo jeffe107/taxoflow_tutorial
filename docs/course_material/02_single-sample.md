@@ -19,6 +19,10 @@ Each module corresponds to a step in the pipeline.
 
 ### 1.1. Initial quality control with FastQC
 
+As noted in the method overview, the objective of this module is to assess the quality of the raw paired-end reads before any trimming or filtering is applied.
+
+Let's create the `fastqc.nf` file inside the `single/modules/` folder and write the following code:
+
 ```groovy title="single/modules/fastqc.nf" linenums="1"
 process FASTQC {
     tag "${sample_id}"
@@ -38,7 +42,43 @@ process FASTQC {
 	}
 ```
 
+Let's take a moment to break down what we are seeing here.
+
+First, let's look at the 'housekeeping' parts of the process, which you should be familiar with if you worked through the beginner Nextflow training.
+
+- The process name is `FASTQC`, this is important when creating the workflow file.
+- The `tag` directive is used to indicate which sample is being processed at a determined moment.
+  This will be useful when running the pipeline.
+- `container` indicates the docker container with which the process will be run.
+  We have retrieved all the containers from [Seqera Containers](https://seqera.io/containers/).
+
+!!! tip "Container images"
+	Please keep in mind that we are using Docker images. If you want to use Apptainer/Singularity images, please refer to the HPC [installation section](../envsetup/05_HPC.md)
+
+Now let's have a look at the interesting bits!
+
+#### 1.1.1. Process inputs
+
+The `input` for this process is a tuple containing the `sample id` and the paired-end `reads` (forward and reverse FASTQ files).
+
+We'll go over how this channel is built when we create the `main.nf` file.
+
+#### 1.1.2. Process outputs
+
+This process emits two separate channels: one for the `*_fastqc.zip` archives and one for the `*_fastqc.html` reports.
+The HTML files are meant for interactive inspection in a browser; the ZIP archives contain the underlying data and plots used to build those reports.
+
+#### 1.1.3. Command script
+
+The `script` block runs a single `fastqc` command on both read files at once.
+FastQC will generate one HTML report and one ZIP file per input FASTQ.
+To learn more about how to interpret the modules and plots in these reports, see the [FastQC help pages](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
+
 ### 1.2. Read trimming and quality re-estimation using Trim Galore
+
+As noted in the method overview, the objective of this module is to remove adapter sequences and low-quality bases from the reads, and to re-run quality control on the trimmed data.
+
+Let's create the `trimgalore.nf` file inside the `single/modules/` folder and write the following code:
 
 ```groovy title="single/modules/trimgalore.nf" linenums="1"
 process TRIM_GALORE {
@@ -60,6 +100,33 @@ process TRIM_GALORE {
     """
 	}
 ```
+
+Once again, this module follows the same structure as the previous process.
+The directives `tag` and `container` play the same role.
+Note that Trim Galore and FastQC share the same container image in this pipeline, because the Trim Galore image bundles both tools.
+
+#### 1.2.1. Process inputs
+
+The `input` is the same tuple as for FastQC: the `sample id` and the paired-end `reads`.
+Trim Galore receives the **raw** reads directly from the input channel, in parallel with the initial FastQC step.
+
+#### 1.2.2. Process outputs
+
+This process produces several outputs:
+
+- a tuple with the `sample id` and the paths to the trimmed forward and reverse reads (`*_val_1.fq.gz` and `*_val_2.fq.gz`), which are passed on to Bowtie2;
+- a trimming report (`*_trimming_report.txt`) summarizing how many bases were removed;
+- FastQC HTML and ZIP reports for each trimmed read file, allowing you to compare quality before and after trimming.
+
+#### 1.2.3. Command script
+
+The `script` block runs Trim Galore with three important flags:
+
+- `--paired` tells Trim Galore to treat the reads as paired-end and to trim them accordingly;
+- `--fastqc` runs FastQC automatically on the trimmed reads;
+- the two input FASTQ paths are passed as `${reads[0]}` and `${reads[1]}` for the forward and reverse files, respectively.
+
+You are encouraged to check the [Trim Galore documentation](https://www.trimgalore.com/) for additional options, such as adjusting quality thresholds or adapter sequences.
 
 ### 1.3. Remove host sequence with Bowtie2
 
@@ -90,22 +157,8 @@ process BOWTIE2 {
 !!! bug "Bowtie2 path to index"
 	You may have noticed that we exported the variable BOWTIE2_INDEXES. This is a specific requirement by Bowtie2 to find the proper indexed genome. This path is only exported at runtime, and it is **hard-coded** to the Codespaces environment. If you are using a different environment you will need to adapt this path (we have done it for the Bowtie2 module used in the Part 3 of this tutorial).
 
-Let's take a moment to break down what we are seeing here.
-
-First, let's look at the 'housekeeping' parts of the process, which you should be familiar with if you worked through the beginner Nextflow training.
-
-- The process name is `BOWTIE2`, this is important when creating the workflow file.
-- The `tag` directive is used to indicate which sample is being processed at a determined moment.
-  This will be useful when running the pipeline.
-- `publishDir` points out to the directory where the output is stored.
-  In this case we are taking the desired output path (supplied as a parameter) and creating subdirectories based on the sample names where each `.sam` file will be output.
-- `container` indicates the docker container with which the process will be run.
-  We have retrieved all the containers from [Seqera Containers](https://seqera.io/containers/).
-
-!!! tip "Container images"
-	Please keep in mind that we are using Docker images. If you want to use Apptainer/Singularity images, please refer to the HPC [installation section](../envsetup/05_HPC.md)
-
-Now let's have a look at the interesting bits!
+At first glance, you can see that it follows the same structure as the later processes.
+The directives `tag` and `container` play the same role.
 
 #### 1.3.1. Process inputs
 
@@ -312,7 +365,7 @@ This completes the implementation of the modules we need for the single-sample u
 
 ---
 
-## 2. Create the `taxoflow.nf`
+## 2. Create `taxoflow.nf`
 
 There are several strategies for building Nextflow workflows.
 Here we are going to use a composable workflow structure as described in the [`Workflows of Workflows`](https://training.nextflow.io/latest/side_quests/workflows_of_workflows/) Side Quest, which uses an entrypoint workflow in a `single/main.nf` file, an embedded `single/taxoflow.nf` file containing the core logic of the workflow, and the `take` syntax to declare inputs.
@@ -424,8 +477,62 @@ include {TaxoFlow} from './taxoflow.nf'
 
 workflow {
 
-	reads_ch = Channel.fromFilePairs(params.reads, checkIfExists:true)
-	TaxoFlow(params.bowtie2_index, params.kraken2_db, reads_ch)
+    if(params.reads){
+            reads_ch = Channel.fromFilePairs(params.reads, checkIfExists:true)
+        } else {
+            reads_ch = Channel.fromPath(params.sheet_csv)
+                            .splitCsv(header:true)
+                            .map {row-> tuple(row.sample_id, [file(row.fastq_1), file(row.fastq_2)])}
+        }
+    TaxoFlow(params.bowtie2_index, params.kraken2_db, reads_ch)
+
+	// publish files
+    publish:
+
+    bowtie_unali            =    TaxoFlow.out.bowtie_unali
+    kraken_class            =    TaxoFlow.out.kraken_class
+    bracken_class           =    TaxoFlow.out.bracken_class
+    krona                   =    TaxoFlow.out.krona
+    fastqc_zip              =    TaxoFlow.out.fastqc_zip
+    fastqc_html             =    TaxoFlow.out.fastqc_html 
+    trimmed_reads           =    TaxoFlow.out.trimmed_reads
+    trimming_reports        =    TaxoFlow.out.trimming_reports
+    trimming_fastqc_1       =    TaxoFlow.out.trimming_fastqc_1
+    trimming_fastqc_2       =    TaxoFlow.out.trimming_fastqc_1
+}
+
+output {
+
+    bowtie_unali {
+        path 'bowtie2'
+    }
+    kraken_class {
+        path 'kraken2'
+    }
+    bracken_class {
+        path 'bracken'
+    }
+    krona {
+        path 'krona'
+    }
+    fastqc_zip {
+        path 'fastqc'
+    }
+    fastqc_html {
+        path 'fastqc'
+    }
+    trimmed_reads {
+        path 'trimming'
+    }
+    trimming_reports {
+        path 'trimming'
+    }
+    trimming_fastqc_1 {
+        path 'trimming'
+    }
+    trimming_fastqc_2 {
+        path 'trimming'
+    }
 }
 ```
 
@@ -439,7 +546,7 @@ workflow {
 
 Finally, we create the file `single/nextflow.config`, where we'll set up the configuration of our pipeline.
 
-This is where we provide default input parameters for the pipeline and enable the use of Docker containers.
+This is where we provide default input parameters, define the output folder for the pipeline and enable the use of Docker containers.
 
 ```groovy title="single/nextflow.config" linenums="1"
 /*
@@ -455,6 +562,10 @@ params {
 
 // Enable using docker as the container engine to run the pipeline
 docker.enabled = true
+
+// Hard copies of files
+workflow.output.mode = 'copy'
+outputDir = params.outdir
 ```
 
 !!! warning "Paths to files and directories"
