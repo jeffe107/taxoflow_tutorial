@@ -1023,59 +1023,66 @@ rm<span class="w"> </span>-r<span class="w"> </span>TAIR10.zip
 <summary>Materials provided within Taxoflow&rsquo;s directory</summary>
 <div class="highlight"><span class="filename">Directory contents</span><pre><span></span><code><span class="go">.</span>
 <span class="go">├── assets</span>
-<span class="go">│   ├── taxoflow_logo.png</span>
-<span class="go">│   └── workflow_taxoflow.png</span>
+<span class="go">│   ├── taxoflow_logo.png</span>
+<span class="go">│   └── workflow_taxoflow.png</span>
 <span class="go">├── data</span>
-<span class="go">│   ├── genome</span>
-<span class="go">│   │   └── TAIR10</span>
-<span class="go">│   ├── krakendb</span>
-<span class="go">│   │   ├── database250mers.kmer_distrib</span>
-<span class="go">│   │   ├── database250mers.kraken</span>
-<span class="go">│   │   ├── database.kraken</span>
-<span class="go">│   │   ├── hash.k2d</span>
-<span class="go">│   │   ├── names.dmp</span>
-<span class="go">│   │   ├── nodes.dmp</span>
-<span class="go">│   │   ├── opts.k2d</span>
-<span class="go">│   │   ├── seqid2taxid.map</span>
-<span class="go">│   │   └── taxo.k2d</span>
-<span class="go">│   ├── samples</span>
-<span class="go">│   │   ├── ERR2143768</span>
-<span class="go">│   │   ├── ERR2143770</span>
-<span class="go">│   │   └── ERR2143774</span>
-<span class="go">│   └── samplesheet.csv</span>
+<span class="go">│   ├── genome</span>
+<span class="go">│   │   └── TAIR10</span>
+<span class="go">│   ├── krakendb</span>
+<span class="go">│   │   ├── database250mers.kmer_distrib</span>
+<span class="go">│   │   ├── database250mers.kraken</span>
+<span class="go">│   │   ├── database.kraken</span>
+<span class="go">│   │   ├── hash.k2d</span>
+<span class="go">│   │   ├── names.dmp</span>
+<span class="go">│   │   ├── nodes.dmp</span>
+<span class="go">│   │   ├── opts.k2d</span>
+<span class="go">│   │   ├── seqid2taxid.map</span>
+<span class="go">│   │   └── taxo.k2d</span>
+<span class="go">│   ├── samples</span>
+<span class="go">│   │   ├── ERR2143768</span>
+<span class="go">│   │   ├── ERR2143770</span>
+<span class="go">│   │   └── ERR2143774</span>
+<span class="go">│   └── samplesheet.csv</span>
 <span class="go">├── LICENSE</span>
 <span class="go">├── multi</span>
-<span class="go">│   ├── bin</span>
-<span class="go">│   │   └── report.Rmd</span>
-<span class="go">│   ├── main.nf</span>
-<span class="go">│   ├── modules</span>
-<span class="go">│   │   ├── bowtie2.nf</span>
-<span class="go">│   │   ├── bracken.nf</span>
-<span class="go">│   │   ├── knit_phyloseq.nf</span>
-<span class="go">│   │   ├── kraken2.nf</span>
-<span class="go">│   │   ├── kraken_biom.nf</span>
-<span class="go">│   │   ├── kReport2Krona.nf</span>
-<span class="go">│   │   └── ktImportText.nf</span>
-<span class="go">│   ├── nextflow.config</span>
-<span class="go">│   └── workflow.nf</span>
+<span class="go">│   ├── bin</span>
+<span class="go">│   │   └── report.Rmd</span>
+<span class="go">│   ├── main.nf</span>
+<span class="go">│   ├── modules</span>
+<span class="go">│   │   ├── bowtie2.nf</span>
+<span class="go">│   │   ├── bracken.nf</span>
+<span class="go">│   │   ├── fastqc.nf</span>
+<span class="go">│   │   ├── knit_phyloseq.nf</span>
+<span class="go">│   │   ├── kraken2.nf</span>
+<span class="go">│   │   ├── kraken_biom.nf</span>
+<span class="go">│   │   ├── kReport2Krona.nf</span>
+<span class="go">│   │   ├── ktImportText.nf</span>
+<span class="go">│   │   ├── multiqc.nf</span>
+<span class="go">│   │   └── trimgalore.nf</span>
+<span class="go">│   ├── nextflow.config</span>
+<span class="go">│   └── taxoflow.nf</span>
 <span class="go">├── README.md</span>
 <span class="go">└── single</span>
+<span class="go">    ├── bin</span>
+<span class="go">    │   └── report.Rmd</span>
 <span class="go">    ├── main.nf</span>
 <span class="go">    ├── modules</span>
-<span class="go">    │   ├── bowtie2.nf</span>
-<span class="go">    │   ├── bracken.nf</span>
-<span class="go">    │   ├── kraken2.nf</span>
-<span class="go">    │   ├── kReport2Krona.nf</span>
-<span class="go">    │   └── ktImportText.nf</span>
+<span class="go">    │   ├── bowtie2.nf</span>
+<span class="go">    │   ├── bracken.nf</span>
+<span class="go">    │   ├── fastqc.nf</span>
+<span class="go">    │   ├── kraken2.nf</span>
+<span class="go">    │   ├── kReport2Krona.nf</span>
+<span class="go">    │   ├── ktImportText.nf</span>
+<span class="go">    │   └── trimgalore.nf</span>
 <span class="go">    ├── nextflow.config</span>
-<span class="go">    └── workflow.nf</span>
+<span class="go">    └── taxoflow.nf</span>
 </code></pre></div>
 </details>
 <p><strong>This a summarized description of the files and directories found:</strong></p>
 <ul>
 <li><strong><code>main.nf</code></strong> is the file we are going to invoke with the world-famous <code>nextflow run</code> command.</li>
-<li><strong><code>workflow.nf</code></strong> is where all the magic happens, it stores the order of execution of tasks and how data should be handled.</li>
-<li><strong><code>nextflow.config</code></strong>: you should know what this file does right? JK, with it we can manage different directives for workflow execution.</li>
+<li><strong><code>taxoflow.nf</code></strong> is where all the magic happens, it stores the order of execution of tasks and how data should be handled.</li>
+<li><strong><code>nextflow.config</code></strong>: it manages different directives for workflow execution.</li>
 <li><strong><code>modules</code></strong> is a really important folder since here we find dedicated files per each process of the pipeline.</li>
 <li><strong><code>bin</code></strong> is the directory where we store customized scripts that can be run within a given process.</li>
 <li><strong><code>data</code></strong> contains input data and related resources:</li>

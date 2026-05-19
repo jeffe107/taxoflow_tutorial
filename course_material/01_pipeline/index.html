@@ -1082,18 +1082,25 @@ For this course, we propose to wrap with Nextflow the protocol published by <a h
 The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproject/PRJEB22811">PRJEB22811</a>.</p>
 <hr />
 <h2 id="1-workflow-design">1. Workflow design</h2>
-<p>Our goal is to develop a workflow that takes <strong>FASTQ</strong> files from one or multiple samples as input and applies the following processing steps: host removal, taxonomic classification, Bayesian re-estimation of species abundance, and generation of plots and metrics.</p>
+<p>Our goal is to develop a workflow that takes <strong>FASTQ</strong> files from one or multiple samples as input and applies the following processing steps: initial quality screening, read trimming, host removal, taxonomic classification, Bayesian re-estimation of species abundance, and generation of plots and metrics.</p>
 <div class="metagenomics">
 <p><img alt="Metagenomics" src="../../assets/images/workflow_taxoflow.png" /></p>
 </div>
 <p>To perform these steps, we will use the following tools:</p>
 <ol>
+<li><strong>Quality control</strong> on the read data before trimming using <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/"><strong>FastQC</strong></a>.</li>
+<li><strong>Trimming adapter sequences</strong> and perform QC after trimming using <a href="https://github.com/FelixKrueger/TrimGalore"><strong>Trim Galore</strong></a> (bundles Cutadapt and FastQC).</li>
 <li><strong>Host removal</strong> with <a href="https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml"><strong>Bowtie2</strong></a> by aligning the reads against an indexed reference genome.</li>
-<li><strong>Taxonomic classification</strong> with <a href="https://ccb.jhu.edu/software/kraken2/"><strong>Kraken2</strong></a>. This tool relies on an indexed database that can be <a href="https://benlangmead.github.io/aws-indexes/k2">downloaded</a>. Here, we will use the custom database with 50 bacterial species that we have selected only for the purpose of this tutorial. However, you can expand the annotation simply by switching to another database.</li>
+<li><strong>Taxonomic classification</strong> with <a href="https://ccb.jhu.edu/software/kraken2/"><strong>Kraken2</strong></a>. This tool relies on an indexed database that can be <a href="https://benlangmead.github.io/aws-indexes/k2">downloaded</a>. Here, we will use the custom database with 54 bacterial species that we have selected only for the purpose of this tutorial. However, you can expand the annotation simply by switching to another database.</li>
 <li><strong>Bayesian re-estimation of species abundance</strong> with <a href="https://ccb.jhu.edu/software/bracken/index.shtml?t=manual"><strong>Bracken</strong></a>. This software is designed to compute species abundance using Kraken classification results as described in the reference paper. It also uses some files contained in the database folders such as the kmer distribution files. This is a fairly complex analysis, but you don&rsquo;t need to know the details in order to follow this tutorial; you can learn about how the method works afterwards.</li>
 <li><strong>Plot generation</strong> with <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-385"><strong>Krona</strong></a> from the Bracken output. This will allow us to visualize interactively the relative abundance of each annotated species.</li>
 <li>(Multi-sample) <strong>Concatenation with kraken-biom.</strong> If multiple samples are provided, the Bracken reports will be concatenated and converted into a <a href="https://biom-format.org/">Biological Observation Matrix (BIOM)</a> file.</li>
-<li>(Multi-sample) <strong>Generation of final report with Phyloseq</strong>. The BIOM file will be converted to a <a href="https://joey711.github.io/phyloseq/index.html">Phyloseq</a> object, and this object will be further processed to generate absolute plots, estimate both α and β-diversity and perform a network analysis. This information will be presented in a final <code>report.html</code>. To learn more about the code used to generate the plots and metrics, check out this Phyloseq <a href="https://vaulot.github.io/tutorials/Phyloseq_tutorial.html">tutorial</a>.</li>
+<li>
+<p>(Multi-sample) <strong>Generation of final report with Phyloseq</strong>. The BIOM file will be converted to a <a href="https://joey711.github.io/phyloseq/index.html">Phyloseq</a> object, and this object will be further processed to generate absolute plots, estimate both α and β-diversity and perform a network analysis. This information will be presented in a final <code>report.html</code>. To learn more about the code used to generate the plots and metrics, check out this Phyloseq <a href="https://vaulot.github.io/tutorials/Phyloseq_tutorial.html">tutorial</a>.</p>
+</li>
+<li>
+<p>(Multi-sample) <strong>Compilation of multiple tool outputs through <a href="https://seqera.io/multiqc/">MultiQC</a></strong>. The outputs from FastQC, Trim Galore and Kraken2 are aggregated into a single, comprehensive and interactive report.</p>
+</li>
 </ol>
 <p>The specific versions used by the current version of Taxoflow for each tool are as follows:</p>
 <details class="info">
@@ -1108,6 +1115,18 @@ The BioProject accession number is <a href="https://www.ncbi.nlm.nih.gov/bioproj
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>fastQC</td>
+<td style="text-align: right;">0.12.1</td>
+<td>trim-galore:0.6.10&ndash;1bf8ca4e1967cd18</td>
+<td>GPL-3.0</td>
+</tr>
+<tr>
+<td>Trim Galore</td>
+<td style="text-align: right;">0.6.10</td>
+<td>trim-galore:0.6.10&ndash;1bf8ca4e1967cd18</td>
+<td>GPL-3.0</td>
+</tr>
 <tr>
 <td>Bowtie2</td>
 <td style="text-align: right;">2.5.4</td>
