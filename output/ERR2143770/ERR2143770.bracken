@@ -1,8 +1,0 @@
-name	taxonomy_id	taxonomy_lvl	kraken_assigned_reads	added_reads	new_est_reads	fraction_total_reads
-Acinetobacter johnsonii	40214	S	11	0	11	0.12222
-Nitrosomonas europaea	915	S	12	0	12	0.13333
-Flavobacterium johnsoniae	986	S	15	3	18	0.20000
-Nitrospira moscoviensis	42253	S	10	0	10	0.11111
-Staphylococcus aureus	1280	S	10	8	18	0.20000
-Micrococcus luteus	1270	S	10	0	10	0.11111
-Methanosarcina mazei	2209	S	11	0	11	0.12222

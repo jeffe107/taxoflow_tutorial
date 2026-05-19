@@ -502,10 +502,6 @@ Below you can see the plots included in the report, where it is possible to obse
 
 </div>
 
-!!! tip "Execution success"
-
-    In case that the pipeline does not run in your environment, the output is available for you to check [here](https://github.com/jeffe107/TaxoFlow_tutorial/tree/main/output).
-
 ### 5.1 Performance report
 
 Open the file `performanceReport.html` in a browser. You will find:

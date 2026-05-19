@@ -736,10 +736,6 @@ You can either download it and open it in your browser, or install the [preview]
 
 </div>
 
-!!!note
-
-    In case that the pipeline does not run in your environment, the output is available for you to check [here](https://github.com/jeffe107/TaxoFlow_tutorial/tree/main/output).
-
 ---
 
 ### Takeaway
