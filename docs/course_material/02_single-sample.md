@@ -19,9 +19,47 @@ Each module corresponds to a step in the pipeline.
 
 ### 1.1. Initial quality control with FastQC
 
+```groovy title="single/modules/fastqc.nf" linenums="1"
+process FASTQC {
+    tag "${sample_id}"
+    container "community.wave.seqera.io/library/trim-galore:0.6.10--1bf8ca4e1967cd18"
+
+    input:
+    tuple val(sample_id), path(reads)
+
+    output:
+    path "*_fastqc.zip", emit: zip
+    path "*_fastqc.html", emit: html
+
+    script:
+    """
+    fastqc ${reads}
+    """
+	}
+```
 
 ### 1.2. Read trimming and quality re-estimation using Trim Galore
 
+```groovy title="single/modules/trimgalore.nf" linenums="1"
+process TRIM_GALORE {
+    tag "${sample_id}"
+    container "community.wave.seqera.io/library/trim-galore:0.6.10--1bf8ca4e1967cd18"
+
+    input:
+    tuple val(sample_id), path(reads)
+
+    output:
+    tuple val(sample_id), path("*_val_1.fq.gz"), path("*_val_2.fq.gz"), emit: trimmed_reads
+    path "*_trimming_report.txt", emit: trimming_reports
+    path "*_val_1_fastqc.{zip,html}", emit: fastqc_reports_1
+    path "*_val_2_fastqc.{zip,html}", emit: fastqc_reports_2
+
+    script:
+    """
+    trim_galore --fastqc --paired ${reads[0]} ${reads[1]}
+    """
+	}
+```
 
 ### 1.3. Remove host sequence with Bowtie2
 
