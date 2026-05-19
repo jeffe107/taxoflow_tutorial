@@ -11,7 +11,7 @@ The BioProject accession number is [PRJEB22811](https://www.ncbi.nlm.nih.gov/bio
 
 ## 1. Workflow design
 
-Our goal is to develop a workflow that takes **FASTQ** files from one or multiple samples as input and applies the following processing steps: host removal, taxonomic classification, Bayesian re-estimation of species abundance, and generation of plots and metrics.
+Our goal is to develop a workflow that takes **FASTQ** files from one or multiple samples as input and applies the following processing steps: initial quality screening, read trimming, host removal, taxonomic classification, Bayesian re-estimation of species abundance, and generation of plots and metrics.
 
 <div markdown class="metagenomics">
 
@@ -21,18 +21,24 @@ Our goal is to develop a workflow that takes **FASTQ** files from one or multipl
 
 To perform these steps, we will use the following tools:
 
-1. **Host removal** with [**Bowtie2**](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) by aligning the reads against an indexed reference genome.
-2. **Taxonomic classification** with [**Kraken2**](https://ccb.jhu.edu/software/kraken2/). This tool relies on an indexed database that can be [downloaded](https://benlangmead.github.io/aws-indexes/k2). Here, we will use the custom database with 50 bacterial species that we have selected only for the purpose of this tutorial. However, you can expand the annotation simply by switching to another database.
-3. **Bayesian re-estimation of species abundance** with [**Bracken**](https://ccb.jhu.edu/software/bracken/index.shtml?t=manual). This software is designed to compute species abundance using Kraken classification results as described in the reference paper. It also uses some files contained in the database folders such as the kmer distribution files. This is a fairly complex analysis, but you don't need to know the details in order to follow this tutorial; you can learn about how the method works afterwards.
-4. **Plot generation** with [**Krona**](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-385) from the Bracken output. This will allow us to visualize interactively the relative abundance of each annotated species.
-5. (Multi-sample) **Concatenation with kraken-biom.** If multiple samples are provided, the Bracken reports will be concatenated and converted into a [Biological Observation Matrix (BIOM)](https://biom-format.org/) file.
-6. (Multi-sample) **Generation of final report with Phyloseq**. The BIOM file will be converted to a [Phyloseq](https://joey711.github.io/phyloseq/index.html) object, and this object will be further processed to generate absolute plots, estimate both α and β-diversity and perform a network analysis. This information will be presented in a final `report.html`. To learn more about the code used to generate the plots and metrics, check out this Phyloseq [tutorial](https://vaulot.github.io/tutorials/Phyloseq_tutorial.html).
+1. **Quality control** on the read data before trimming using [**FastQC**](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/).
+2. **Trimming adapter sequences** and perform QC after trimming using [**Trim Galore**](https://github.com/FelixKrueger/TrimGalore) (bundles Cutadapt and FastQC).
+3. **Host removal** with [**Bowtie2**](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) by aligning the reads against an indexed reference genome.
+4. **Taxonomic classification** with [**Kraken2**](https://ccb.jhu.edu/software/kraken2/). This tool relies on an indexed database that can be [downloaded](https://benlangmead.github.io/aws-indexes/k2). Here, we will use the custom database with 50 bacterial species that we have selected only for the purpose of this tutorial. However, you can expand the annotation simply by switching to another database.
+5. **Bayesian re-estimation of species abundance** with [**Bracken**](https://ccb.jhu.edu/software/bracken/index.shtml?t=manual). This software is designed to compute species abundance using Kraken classification results as described in the reference paper. It also uses some files contained in the database folders such as the kmer distribution files. This is a fairly complex analysis, but you don't need to know the details in order to follow this tutorial; you can learn about how the method works afterwards.
+6. **Plot generation** with [**Krona**](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-385) from the Bracken output. This will allow us to visualize interactively the relative abundance of each annotated species.
+7. (Multi-sample) **Concatenation with kraken-biom.** If multiple samples are provided, the Bracken reports will be concatenated and converted into a [Biological Observation Matrix (BIOM)](https://biom-format.org/) file.
+8. (Multi-sample) **Generation of final report with Phyloseq**. The BIOM file will be converted to a [Phyloseq](https://joey711.github.io/phyloseq/index.html) object, and this object will be further processed to generate absolute plots, estimate both α and β-diversity and perform a network analysis. This information will be presented in a final `report.html`. To learn more about the code used to generate the plots and metrics, check out this Phyloseq [tutorial](https://vaulot.github.io/tutorials/Phyloseq_tutorial.html).
+
+9. (Multi-sample) **Compilation of multiple tool outputs through [MultiQC](https://seqera.io/multiqc/)**. The outputs from FastQC, Trim Galore and Kraken2 are aggregated into a single, comprehensive and interactive report.
 
 The specific versions used by the current version of Taxoflow for each tool are as follows:
 
 ??? info "Specific software versions"
     | Tool        | Version | Container\* (Seqera\*\*)                                                     | License      |
     | ----------- | ------: | ------------------------------------------------------------------------- | ------------ |
+    | fastQC     |   0.12.1 | trim-galore:0.6.10--1bf8ca4e1967cd18 | GPL-3.0          |
+    | Trim Galore     |   0.6.10 | trim-galore:0.6.10--1bf8ca4e1967cd18 | GPL-3.0          |
     | Bowtie2     |   2.5.4 | bowtie2:2.5.4--d51920539234bea7                                           | GPL-3.0      |
     | Kraken2     |    2.14 | kraken2:2.14--83aa57048e304f01                                            | MIT          |
     | Bracken     |     3.1 | bracken:3.1--22a4e66ce04c5e01                                             | GPL-3.0      |

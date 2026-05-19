@@ -34,13 +34,10 @@ To move forward, let's create the file `samplesheet.csv` inside the folder `data
 
 ```csv title="data/samplesheet.csv" linenums="1"
 sample_id,fastq_1,fastq_2
-ERR2143768,data/samples/ERR2143768/ERR2143768_1.fastq,data/samples/ERR2143768/ERR2143768_2.fastq
-ERR2143770,data/samples/ERR2143770/ERR2143770_1.fastq,data/samples/ERR2143770/ERR2143770_2.fastq
-ERR2143774,data/samples/ERR2143774/ERR2143774_1.fastq,data/samples/ERR2143774/ERR2143774_2.fastq
+ERR2143768,data/samples/ERR2143768/ERR2143768_1.fastq.gz,data/samples/ERR2143768/ERR2143768_2.fastq.gz
+ERR2143770,data/samples/ERR2143770/ERR2143770_1.fastq.gz,data/samples/ERR2143770/ERR2143770_2.fastq.gz
+ERR2143774,data/samples/ERR2143774/ERR2143774_1.fastq.gz,data/samples/ERR2143774/ERR2143774_2.fastq.gz
 ```
-
-!!! tip "Paths to files"
-    Please notice that these paths are **hard-coded**, and thus, it will work only on Codespaces. If you are using a local installation or CodeSandbox, you need to change the pa
 
 Here, we have provided the `sample id` and the absolute paths to both forward and reverse reads per sample.
 Please notice that the files are not required to be stored in the directory; however, this is recommended in order to maintain a consistent fodirectorylder structure.
@@ -74,7 +71,7 @@ Otherwise, we must include the parameter `--sheet_csv` with the corresponding fi
 TaxoFlow showcases **two layers** of conditional logic:
 
 - At the **top‑level workflow** (`main.nf`) to decide how to build the read channel.
-- Inside the **`TaxoFlow` workflow** (`workflow.nf`) to decide whether to run downstream reporting steps (shown in section **2.3 Conditional reporting inside `workflow.nf`**).
+- Inside the **`TaxoFlow` workflow** (`taxoflow.nf`) to decide whether to run downstream reporting steps (shown in section **2.3 Conditional reporting inside `taxoflow.nf`**).
 
 The `if` statement decides **how inputs are parsed**:
 
@@ -144,21 +141,21 @@ process KRAKEN_BIOM {
 ```
 
 This process will _collect_ each output from the Bracken files to build a single `*.biom` file that contains the abundance species data of all the samples.
-In the `script` statement we find three tasks to execute, the first two lines are for variable manipulation required to handle the type of input this process receives (more about this when modifying `multi/workflow.nf` below), and the second line executes the kraken-biom command that is available thanks to specified container.
+In the `script` statement we find three tasks to execute, the first two lines are for variable manipulation required to handle the type of input this process receives (more about this when modifying `multi/taxoflow.nf` below), and the second line executes the kraken-biom command that is available thanks to specified container.
 
 #### 2.1.1. Operator _collect()_ and conditional execution
 
 Nextflow provides a high number of operators that smooth data handling and orchestrates the workflow to do exactly what we want.
 In this case, the process `KRAKEN_BIOM` requires all the files produced by Bracken belonging to each sample, which means that `KRAKEN_BIOM` can not be triggered until all Bracken processes are finished.
-For this task, the operator _collect()_ comes really handy, and therefore let's include it in our `multi/workflow.nf`... but wait!
+For this task, the operator _collect()_ comes really handy, and therefore let's include it in our `multi/taxoflow.nf`... but wait!
 Let's recall that `KRAKEN_BIOM` and the following `KNIT_PHYLOSEQ` are only triggered if the execution is aiming at processing more than one sample.
-Being so, we will include these processes and modify the workflow execution to add the conditional statement in `multi/workflow.nf`:
+Being so, we will include these processes and modify the workflow execution to add the conditional statement in `multi/taxoflow.nf`:
 
-```groovy title="multi/workflow.nf" linenums="9"
+```groovy title="multi/taxoflow.nf" linenums="9"
 include { KRAKEN_BIOM               }   from './modules/kraken_biom.nf'
 ```
 
-```groovy title="multi/workflow.nf" linenums="29"
+```groovy title="multi/taxoflow.nf" linenums="29"
         if(params.sheet_csv){
 		    KRAKEN_BIOM(BRACKEN.out.collect())
 		}
@@ -194,7 +191,7 @@ process KNIT_PHYLOSEQ {
     """
     biom_path=\$(realpath ${merged})
     outreport=\$(realpath ${outdir})
-    Rscript -e "rmarkdown::render('${report}', params=list(args='\${biom_path}'),output_file='\${outreport}/report.html')"
+    Rscript -e "rmarkdown::render('${report}', params=list(args='\${biom_path}'),output_file='\${outreport}/taxoReport.html')"
     """
     }
 ```
@@ -251,19 +248,19 @@ This R Markdown file uses a Phyloseq object created from Kraken2/Bracken output 
 In addition, please notice the `container` used for the `KNIT_PHYLOSEQ`, which is combination of multiple packages required to render the `*.html` report.
 This is possible thanks to [Seqera Containers](https://seqera.io/containers/), which is able to build almost any container (for docker or singularity!) by just "merging" different PyPI or Conda packages.
 
-Also, we have to include this new process within `multi/workflow.nf`:
+Also, we have to include this new process within `multi/taxoflow.nf`:
 
-```groovy title="multi/workflow.nf" linenums="10"
+```groovy title="multi/taxoflow.nf" linenums="10"
 include { KNIT_PHYLOSEQ             }   from './modules/knit_phyloseq.nf'
 ```
 
 We need to call it as well inside the conditional execution if multi-sample is being handled:
 
-```groovy title="multi/workflow.nf" linenums="31"
+```groovy title="multi/taxoflow.nf" linenums="31"
         KNIT_PHYLOSEQ(KRAKEN_BIOM.out)
 ```
 
-### 2.3 Conditional reporting inside `workflow.nf`
+### 2.3 Conditional reporting inside `taxoflow.nf`
 
 The inner `if (params.sheet_csv)` controls whether to:
 
@@ -365,7 +362,7 @@ This block tells Nextflow to:
 - Generate a **single HTML report** named `report.html` at the end of each run.
 - Place it in the **results directory** from where you launched Nextflow.
 
-You do not need to change `main.nf` or `workflow.nf` to use this feature; it is entirely controlled by configuration.
+You do not need to change `main.nf` or `taxoflow.nf` to use this feature; it is entirely controlled by configuration.
 
 #### 3.1.1 Running TaxoFlow and inspecting the report
 

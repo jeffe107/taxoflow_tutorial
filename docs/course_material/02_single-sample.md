@@ -4,7 +4,7 @@ Now that we have a clear overview of what we want to achieve, we can start writi
 We are going to do this in four steps:
 
 1. Create the modules that are going to perform each task
-2. Create a `workflow.nf` containing the core logic of the pipeline
+2. Create a `taxoflow.nf` containing the core logic of the pipeline
 3. Create a `main.nf` entrypoint workflow
 4. Create a `nextflow.config` configuration file
 
@@ -17,7 +17,13 @@ Then we will test that we can run the pipeline and that it produces the expected
 You can think of modules as building blocks that we can string together to form an assembly line.
 Each module corresponds to a step in the pipeline.
 
-### 1.1. Remove host sequence with Bowtie2
+### 1.1. Initial quality control with FastQC
+
+
+### 1.2. Read trimming and quality re-estimation using Trim Galore
+
+
+### 1.3. Remove host sequence with Bowtie2
 
 As noted in the method overview, the objective of this module is to clean the reads by aligning them against a reference genome and remove any reads that map to that reference.
 
@@ -26,11 +32,10 @@ Let's create the `bowtie2.nf` file inside the `single/modules/` folder and write
 ```groovy title="single/modules/bowtie2.nf" linenums="1"
 process BOWTIE2 {
     tag "${sample_id}"
-    publishDir "$params.outdir/${sample_id}", pattern: "*.sam", mode:'copy'
     container "community.wave.seqera.io/library/bowtie2:2.5.4--d51920539234bea7"
 
     input:
-    tuple val(sample_id), path(reads)
+    tuple val(sample_id), path(read1), path(read2)
     path bowtie2_index
 
     output:
@@ -39,7 +44,7 @@ process BOWTIE2 {
     script:
     """
     export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/single/data/genome/TAIR10
-    bowtie2 -x $bowtie2_index -1 ${reads[0]} -2 ${reads[1]} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}
+    bowtie2 -x $bowtie2_index -1 ${read1} -2 ${read2} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}
     """
     }
 ```
@@ -64,20 +69,20 @@ First, let's look at the 'housekeeping' parts of the process, which you should b
 
 Now let's have a look at the interesting bits!
 
-#### 1.1.1. Process inputs
+#### 1.3.1. Process inputs
 
 The `input` for this process will be the `sample id`, the paired-end `reads`, as well as the path to the `bowtie index`.
 
 We'll go over these in more detail when we create the `main.nf` file.
 
-#### 1.1.2. Process outputs
+#### 1.3.2. Process outputs
 
 This process will produce a tuple containing the `sample id`, the path to the cleaned `reads` and the path to the `*.sam` file.
 
 The SAM file contains the information about the alignment of the sequences against the reference indexed genome.
 To learn more about this format, please see the [SAM format specification](https://samtools.github.io/hts-specs/SAMv1.pdf).
 
-#### 1.1.3. Command script
+#### 1.3.3. Command script
 
 The `script` block contains two commands:
 
@@ -90,7 +95,7 @@ The `script` block contains two commands:
    The `--un-conc-gz` argument is used to write out any paired-end reads that fail to align concordantly to the reference genome. It is important to keep that these are the reads we are actually looking for, and therefore the ones we are passing to next process (Kraken2) to proceed with the taxonomic classification.
    To learn more about this parameter, see the [Bowtie2](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) manual.
 
-### 1.2. Apply taxonomic classification with Kraken2
+### 1.4. Apply taxonomic classification with Kraken2
 
 Now, let's create the module for our taxonomic classifier.
 
@@ -99,7 +104,6 @@ Let's create `kraken2.nf` file inside the `single/modules/` folder and write thi
 ```groovy title="single/modules/kraken2.nf" linenums="1"
 process KRAKEN2 {
 	tag "${sample_id}"
-	publishDir "$params.outdir/${sample_id}", mode:'copy'
 	container "community.wave.seqera.io/library/kraken2:2.14--83aa57048e304f01"
 
 	input:
@@ -107,7 +111,8 @@ process KRAKEN2 {
 	path kraken2_db
 
 	output:
-	tuple val("${sample_id}"), path("${sample_id}.k2report"), path("${sample_id}.kraken2")
+	tuple val("${sample_id}"), path("${sample_id}.k2report"), path("${sample_id}.kraken2"), emit: files
+    path "${sample_id}.k2report", emit: report
 
 	script:
 	"""
@@ -123,9 +128,9 @@ process KRAKEN2 {
 ```
 
 At first glance, you can see that it follows the same structure as the previous process.
-The directives `tag`, `publishDir` and `container` play the same role.
+The directives `tag` and `container` play the same role.
 
-#### 1.2.1. Process inputs
+#### 1.4.1. Process inputs
 
 The `input` in this case is a tuple containing the `sample id`, the cleaned reads and the `*.sam` file.
 This one is declared just to maintain the correspondence between the output from Bowtie2 and the Kraken2 input.
@@ -133,11 +138,11 @@ This one is declared just to maintain the correspondence between the output from
 Also, the path to the Kraken database is declared.
 We'll go over this in more detail when create the `main.nf` file.
 
-#### 1.2.2. Process outputs
+#### 1.4.2. Process outputs
 
 The output from this process will be a tuple containing the `sample id`, the path to the `.k2report` file, as well as the path to the `.kraken2` file.
 
-#### 1.2.3. Command script
+#### 1.4.3. Command script
 
 This is a standard Kraken2 command that specifies the following arguments:
 
@@ -151,14 +156,13 @@ This is a standard Kraken2 command that specifies the following arguments:
 You are strongly encouraged to check out both the [protocol](https://www.nature.com/articles/s41596-022-00738-y) that documents this methodology, as well as the [source publication](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1891-0) to understand how Kraken2 works and the type of files it generates.
 This [article](https://homolog.us/blogs/bioinfo/2017/10/25/intro-minimizer/) about minimizers may also be useful.
 
-### 1.3. Apply Bayesian re-estimation of species abundance with Bracken
+### 1.5. Apply Bayesian re-estimation of species abundance with Bracken
 
 Let's create the file `bracken.nf` inside `single/modules/` and write the following code:
 
 ```groovy title="single/modules/bracken.nf" linenums="1"
 process BRACKEN {
 	tag "${sample_id}"
-	publishDir "$params.outdir/${sample_id}", mode:'copy'
 	container "community.wave.seqera.io/library/bracken:3.1--22a4e66ce04c5e01"
 
 	input:
@@ -179,19 +183,19 @@ process BRACKEN {
 ```
 
 Once again, this module follows the same structure as the previous process.
-The directives `tag`, `publishDir` and `container` play the same role.
+The directives `tag` and `container` play the same role.
 
-#### 1.2.1. Process inputs
+#### 1.5.1. Process inputs
 
 The declared `input` for this Bracken process matches the output generated by Kraken2.
 It expects to receive a tuple containing the `sample id` and the paths to `.k2report` and `kraken2` reports.
 
-#### 1.2.2. Process outputs
+#### 1.5.2. Process outputs
 
 Similarly, the `output` establishes that this process will generate a tuple with the `sample id` and the two types of `reports` Bracken produces.
 You can find more information about these reports in the [GitHub repository for Bracken](https://github.com/jenniferlu717/Bracken).
 
-#### 1.2.3. Command script
+#### 1.5.3. Command script
 
 The Bracken command specifies the following arguments:
 
@@ -202,20 +206,19 @@ The Bracken command specifies the following arguments:
 - the required number of reads before abundance estimation to perform re-estimation
 - the format for the output reports
 
-### 1.4. Generate plots with Krona
+### 1.6. Generate plots with Krona
 
 Krona plots are interactive pie charts that are widely used in the metagenomics field.
 
 To generate them, we will need two distinct processes; one to extract species abundance metrics from the Bracken report, and another to render the Krona plot itself based on that file.
 
-#### 1.4.1. Extract the species abundance metrics
+#### 1.6.1. Extract the species abundance metrics
 
 Let's create the file `kReport2Krona.nf` inside `single/modules/` and write the following code:
 
 ```groovy title="single/modules/kReport2Krona.nf" linenums="1"
 process K_REPORT_TO_KRONA {
 	tag "${sample_id}"
-	publishDir "$params.outdir/${sample_id}", mode:'copy'
 	container "community.wave.seqera.io/library/krakentools:1.2--db94e0b19cfa397b"
 
 	input:
@@ -240,14 +243,13 @@ The command will run a script called `kreport2krona.py` that is provided as part
 Note that the command includes an additional flag to leave out non-traditional ranks.
 For more information about that option, see the KrakenTools documentation referenced above.
 
-#### 1.4.2. Extract the species abundance metrics
+#### 1.6.2. Extract the species abundance metrics
 
 Let's create the file `ktImportText.nf` inside `single/modules/` and write the following code:
 
 ```groovy title="single/modules/ktImportText.nf" linenums="1"
 process KT_IMPORT_TEXT {
 	tag "${sample_id}"
-	publishDir "$params.outdir/${sample_id}", mode:'copy'
 	container "community.wave.seqera.io/library/krona:2.8.1--2f750080982f027e"
 
 	input:
@@ -272,25 +274,27 @@ This completes the implementation of the modules we need for the single-sample u
 
 ---
 
-## 2. Create the `workflow.nf`
+## 2. Create the `taxoflow.nf`
 
 There are several strategies for building Nextflow workflows.
-Here we are going to use a composable workflow structure as described in the [`Workflows of Workflows`](https://training.nextflow.io/latest/side_quests/workflows_of_workflows/) Side Quest, which uses an entrypoint workflow in a `single/main.nf` file, an embedded `single/workflow.nf` file containing the core logic of the workflow, and the `take` syntax to declare inputs.
+Here we are going to use a composable workflow structure as described in the [`Workflows of Workflows`](https://training.nextflow.io/latest/side_quests/workflows_of_workflows/) Side Quest, which uses an entrypoint workflow in a `single/main.nf` file, an embedded `single/taxoflow.nf` file containing the core logic of the workflow, and the `take` syntax to declare inputs.
 
-Let's start by creating the `single/workflow.nf` file that will the core logic of the workflow.
+Let's start by creating the `single/taxoflow.nf` file that will the core logic of the workflow.
 Note that we create this file in our `single/` directory, NOT in `single/modules/`.
 
 We start by adding the following code to import modules:
 
-```groovy title="single/workflow.nf" linenums="1"
+```groovy title="single/taxoflow.nf" linenums="1"
 /*
  * required tasks
  */
-include { BOWTIE2               }  from './modules/bowtie2.nf'
-include { KRAKEN2               }  from './modules/kraken2.nf'
-include { BRACKEN               }  from './modules/bracken.nf'
-include { K_REPORT_TO_KRONA     }  from './modules/kReport2Krona.nf'
-include { KT_IMPORT_TEXT        }  from './modules/ktImportText.nf'
+include { FASTQC                      }  from './modules/fastqc.nf'
+include { TRIM_GALORE                 }  from './modules/trimgalore.nf'
+include { BOWTIE2                     }  from './modules/bowtie2.nf'
+include { KRAKEN2                     }  from './modules/kraken2.nf'
+include { BRACKEN                     }  from './modules/bracken.nf'
+include { K_REPORT_TO_KRONA           }  from './modules/kReport2Krona.nf'
+include { KT_IMPORT_TEXT              }  from './modules/ktImportText.nf'
 ```
 
 Here we list all the modules that we wish to import into the workflow using the standard `include` syntax.
@@ -300,25 +304,39 @@ Note that the process names should match exactly how they are written in the mod
 Now, let's write the workflow itself.
 We need to declare the primary input for the workflow and invoke the processes on the appropriate inputs.
 
-```groovy title="single/workflow.nf" linenums="10"
+```groovy title="single/taxoflow.nf" linenums="16"
 /*
  * workflow
  */
 
 workflow TaxoFlow {
-	// required inputs
-	take:
-		bowtie2_index
-		kraken2_db
-		reads_ch
-	// workflow implementation
-	main:
-		BOWTIE2(reads_ch, bowtie2_index)
-		KRAKEN2(BOWTIE2.out, kraken2_db)
-		BRACKEN(KRAKEN2.out, kraken2_db)
-		K_REPORT_TO_KRONA(BRACKEN.out)
-		KT_IMPORT_TEXT(K_REPORT_TO_KRONA.out)
+    // required inputs
+    take:
+        bowtie2_index
+        kraken2_db
+        reads_ch
+    // workflow implementation
+    main:
+         // Initial quality control
+        FASTQC(reads_ch)
+        TRIM_GALORE(reads_ch)
+        BOWTIE2(TRIM_GALORE.out.trimmed_reads, bowtie2_index)
+        KRAKEN2(BOWTIE2.out, kraken2_db)
+        BRACKEN(KRAKEN2.out.files, kraken2_db)
+        K_REPORT_TO_KRONA(BRACKEN.out)
+        KT_IMPORT_TEXT(K_REPORT_TO_KRONA.out)
 
+    emit:
+        bowtie_unali             =    BOWTIE2.out
+        kraken_class             =    KRAKEN2.out.files
+        bracken_class            =    BRACKEN.out
+        krona                    =    KT_IMPORT_TEXT.out
+        fastqc_zip               =    FASTQC.out.zip
+        fastqc_html              =    FASTQC.out.html
+        trimmed_reads            =    TRIM_GALORE.out.trimmed_reads
+        trimming_reports         =    TRIM_GALORE.out.trimming_reports
+        trimming_fastqc_1        =    TRIM_GALORE.out.fastqc_reports_1
+        trimming_fastqc_2        =    TRIM_GALORE.out.fastqc_reports_2
 }
 ```
 
@@ -361,10 +379,10 @@ log.info """\
 .stripIndent()
 ```
 
-Then we add an `include` statement to import the `kraken2Flow` workflow from the `single/workflow.nf` file, as well as a `workflow` block that sets up an input channel and invokes the `kraken2Flow` workflow:
+Then we add an `include` statement to import the `kraken2Flow` workflow from the `single/taxoflow.nf` file, as well as a `workflow` block that sets up an input channel and invokes the `kraken2Flow` workflow:
 
 ```groovy title="main.nf" linenums="18"
-include {TaxoFlow} from './workflow.nf'
+include {TaxoFlow} from './taxoflow.nf'
 
 workflow {
 
@@ -426,7 +444,7 @@ Let's just pick one of the samples provided (you can choose any of them) and run
 ```bash
 mv data single/
 cd single
-nextflow run main.nf --reads 'data/samples/ERR2143768/ERR2143768_{1,2}.fastq'
+nextflow run main.nf --reads 'data/samples/ERR2143768/ERR2143768_{1,2}.fastq.gz'
 ```
 
 On the output of the command line, you will see:

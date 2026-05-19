@@ -1,6 +1,5 @@
 process KRAKEN2 {
     tag "${sample_id}"
-    publishDir "$params.outdir/${sample_id}", mode:'copy'
     container "community.wave.seqera.io/library/kraken2:2.14--83aa57048e304f01"
 
     input:
@@ -8,7 +7,8 @@ process KRAKEN2 {
     path kraken2_db
 
     output:
-    tuple val("${sample_id}"), path("${sample_id}.k2report"), path("${sample_id}.kraken2")
+    tuple val("${sample_id}"), path("${sample_id}.k2report"), path("${sample_id}.kraken2"), emit: files
+    path "${sample_id}.k2report", emit: report
 
     script:
     """

@@ -1,6 +1,5 @@
 process K_REPORT_TO_KRONA {
     tag "${sample_id}"
-    publishDir "$params.outdir/${sample_id}", mode:'copy'
     container "community.wave.seqera.io/library/krakentools:1.2--db94e0b19cfa397b"
 
     input:

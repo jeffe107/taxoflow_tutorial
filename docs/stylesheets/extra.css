@@ -45,15 +45,15 @@ article ul ul ul {
 /* learning */
 .md-typeset .admonition.learning,
 .md-typeset details.learning {
-  border-color: #448aff;
+  border-color: #e20613;
 }
 .md-typeset .learning > .admonition-title,
 .md-typeset .learning > summary {
-  background-color: #4489ff10;
+  background-color: #ffdede;
 }
 .md-typeset .learning > .admonition-title::before,
 .md-typeset .learning > summary::before {
-  background-color: #448aff;
+  background-color: #e20613;
   -webkit-mask-image: var(--md-admonition-icon--learning);
   mask-image: var(--md-admonition-icon--learning);
 }

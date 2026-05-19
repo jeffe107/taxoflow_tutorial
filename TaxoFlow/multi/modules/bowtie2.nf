@@ -1,10 +1,9 @@
 process BOWTIE2 {
     tag "${sample_id}"
-    publishDir "$params.outdir/${sample_id}", pattern: "*.sam", mode:'copy'
     container "community.wave.seqera.io/library/bowtie2:2.5.4--d51920539234bea7"
 
     input:
-    tuple val(sample_id), path(reads)
+    tuple val(sample_id), path(read1), path(read2)
     path bowtie2_index
 
     output:
@@ -12,7 +11,7 @@ process BOWTIE2 {
 
     script:
     """
-    export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/multi/data/genome/TAIR10
-    bowtie2 -x $bowtie2_index -1 ${reads[0]} -2 ${reads[1]} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}
+    export BOWTIE2_INDEXES=/home/jeffe107/taxoflow_tutorial/TaxoFlow/multi/data/genome/TAIR10
+    bowtie2 -x $bowtie2_index -1 ${read1} -2 ${read2} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}
     """
 }

@@ -1,6 +1,5 @@
 process BRACKEN {
     tag "${sample_id}"
-    publishDir "$params.outdir/${sample_id}", mode:'copy'
     container "community.wave.seqera.io/library/bracken:3.1--22a4e66ce04c5e01"
 
     input:

@@ -104,6 +104,6 @@ The course assumes some minimal familiarity with the following:
 - Foundational Nextflow concepts and tooling covered in the [Hello Nextflow](https://training.nextflow.io/latest/hello_nextflow/) and [Nextflow for RNAseq](https://training.nextflow.io/latest/nf4_science/rnaseq/) beginner training. We also recommend the SIB course [Nextflow in Action Build Smarter, Faster, Reproducible Pipelines](https://sib-swiss.github.io/nextflow-training/)
 - Familiarity with VS code. We recommend this [tutorial](https://code.visualstudio.com/docs/getstarted/getting-started) to get started.
 
-More information about prerequisites and precourse arrangements can be found [here](precourse.md)
+More information about prerequisites and precourse arrangements can be found [here](precourse.md).
 
 For technical requirements and environment setup, see the [Environment Setup](envsetup/index.md) directions.
