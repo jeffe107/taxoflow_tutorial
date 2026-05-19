@@ -61,59 +61,66 @@ Here you should see the following directory structure:
     ```console title="Directory contents"
     .
     ├── assets
-    │   ├── taxoflow_logo.png
-    │   └── workflow_taxoflow.png
+    │   ├── taxoflow_logo.png
+    │   └── workflow_taxoflow.png
     ├── data
-    │   ├── genome
-    │   │   └── TAIR10
-    │   ├── krakendb
-    │   │   ├── database250mers.kmer_distrib
-    │   │   ├── database250mers.kraken
-    │   │   ├── database.kraken
-    │   │   ├── hash.k2d
-    │   │   ├── names.dmp
-    │   │   ├── nodes.dmp
-    │   │   ├── opts.k2d
-    │   │   ├── seqid2taxid.map
-    │   │   └── taxo.k2d
-    │   ├── samples
-    │   │   ├── ERR2143768
-    │   │   ├── ERR2143770
-    │   │   └── ERR2143774
-    │   └── samplesheet.csv
+    │   ├── genome
+    │   │   └── TAIR10
+    │   ├── krakendb
+    │   │   ├── database250mers.kmer_distrib
+    │   │   ├── database250mers.kraken
+    │   │   ├── database.kraken
+    │   │   ├── hash.k2d
+    │   │   ├── names.dmp
+    │   │   ├── nodes.dmp
+    │   │   ├── opts.k2d
+    │   │   ├── seqid2taxid.map
+    │   │   └── taxo.k2d
+    │   ├── samples
+    │   │   ├── ERR2143768
+    │   │   ├── ERR2143770
+    │   │   └── ERR2143774
+    │   └── samplesheet.csv
     ├── LICENSE
     ├── multi
-    │   ├── bin
-    │   │   └── report.Rmd
-    │   ├── main.nf
-    │   ├── modules
-    │   │   ├── bowtie2.nf
-    │   │   ├── bracken.nf
-    │   │   ├── knit_phyloseq.nf
-    │   │   ├── kraken2.nf
-    │   │   ├── kraken_biom.nf
-    │   │   ├── kReport2Krona.nf
-    │   │   └── ktImportText.nf
-    │   ├── nextflow.config
-    │   └── workflow.nf
+    │   ├── bin
+    │   │   └── report.Rmd
+    │   ├── main.nf
+    │   ├── modules
+    │   │   ├── bowtie2.nf
+    │   │   ├── bracken.nf
+    │   │   ├── fastqc.nf
+    │   │   ├── knit_phyloseq.nf
+    │   │   ├── kraken2.nf
+    │   │   ├── kraken_biom.nf
+    │   │   ├── kReport2Krona.nf
+    │   │   ├── ktImportText.nf
+    │   │   ├── multiqc.nf
+    │   │   └── trimgalore.nf
+    │   ├── nextflow.config
+    │   └── taxoflow.nf
     ├── README.md
     └── single
+        ├── bin
+        │   └── report.Rmd
         ├── main.nf
         ├── modules
-        │   ├── bowtie2.nf
-        │   ├── bracken.nf
-        │   ├── kraken2.nf
-        │   ├── kReport2Krona.nf
-        │   └── ktImportText.nf
+        │   ├── bowtie2.nf
+        │   ├── bracken.nf
+        │   ├── fastqc.nf
+        │   ├── kraken2.nf
+        │   ├── kReport2Krona.nf
+        │   ├── ktImportText.nf
+        │   └── trimgalore.nf
         ├── nextflow.config
-        └── workflow.nf
+        └── taxoflow.nf
     ```
 
 **This a summarized description of the files and directories found:**
 
 - **`main.nf`** is the file we are going to invoke with the world-famous `nextflow run` command.
-- **`workflow.nf`** is where all the magic happens, it stores the order of execution of tasks and how data should be handled.
-- **`nextflow.config`**: you should know what this file does right? JK, with it we can manage different directives for workflow execution.
+- **`taxoflow.nf`** is where all the magic happens, it stores the order of execution of tasks and how data should be handled.
+- **`nextflow.config`**: it manages different directives for workflow execution.
 - **`modules`** is a really important folder since here we find dedicated files per each process of the pipeline.
 - **`bin`** is the directory where we store customized scripts that can be run within a given process.
 - **`data`** contains input data and related resources:

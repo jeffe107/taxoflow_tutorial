@@ -39,7 +39,7 @@ process FASTQC {
     """
     fastqc ${reads}
     """
-	}
+    }
 ```
 
 Let's take a moment to break down what we are seeing here.
@@ -53,7 +53,7 @@ First, let's look at the 'housekeeping' parts of the process, which you should b
   We have retrieved all the containers from [Seqera Containers](https://seqera.io/containers/).
 
 !!! tip "Container images"
-	Please keep in mind that we are using Docker images. If you want to use Apptainer/Singularity images, please refer to the HPC [installation section](../envsetup/05_HPC.md)
+	Please keep in mind that we are using Docker images. If you want to use Apptainer/Singularity images, please refer to the HPC [installation section](../envsetup/05_HPC.md).
 
 Now let's have a look at the interesting bits!
 
@@ -67,6 +67,9 @@ We'll go over how this channel is built when we create the `main.nf` file.
 
 This process emits two separate channels: one for the `*_fastqc.zip` archives and one for the `*_fastqc.html` reports.
 The HTML files are meant for interactive inspection in a browser; the ZIP archives contain the underlying data and plots used to build those reports.
+
+!!! tip "emit:"
+    You see that a the end of each output there is an `emit:` statement. This is useful to name file or set of files to later refer to them when calling the ouput of the process. This way offers a practical way to track the resulting outputs of a process. More about this when defining `taxoflow.nf` file. 
 
 #### 1.1.3. Command script
 
@@ -98,7 +101,7 @@ process TRIM_GALORE {
     """
     trim_galore --fastqc --paired ${reads[0]} ${reads[1]}
     """
-	}
+    }
 ```
 
 Once again, this module follows the same structure as the previous process.
@@ -154,7 +157,7 @@ process BOWTIE2 {
     }
 ```
 
-!!! bug "Bowtie2 path to index"
+??? bug "Bowtie2 path to index"
 	You may have noticed that we exported the variable BOWTIE2_INDEXES. This is a specific requirement by Bowtie2 to find the proper indexed genome. This path is only exported at runtime, and it is **hard-coded** to the Codespaces environment. If you are using a different environment you will need to adapt this path (we have done it for the Bowtie2 module used in the Part 3 of this tutorial).
 
 At first glance, you can see that it follows the same structure as the later processes.
@@ -284,7 +287,7 @@ It expects to receive a tuple containing the `sample id` and the paths to `.k2re
 #### 1.5.2. Process outputs
 
 Similarly, the `output` establishes that this process will generate a tuple with the `sample id` and the two types of `reports` Bracken produces.
-You can find more information about these reports in the [GitHub repository for Bracken](https://github.com/jenniferlu717/Bracken).
+You can find more information about these reports in the [here](https://ccb.jhu.edu/software/bracken/index.shtml).
 
 #### 1.5.3. Command script
 
@@ -395,7 +398,7 @@ Note that the process names should match exactly how they are written in the mod
 Now, let's write the workflow itself.
 We need to declare the primary input for the workflow and invoke the processes on the appropriate inputs.
 
-```groovy title="single/taxoflow.nf" linenums="16"
+```groovy title="single/taxoflow.nf" linenums="12"
 /*
  * workflow
  */
@@ -428,17 +431,33 @@ workflow TaxoFlow {
         trimming_reports         =    TRIM_GALORE.out.trimming_reports
         trimming_fastqc_1        =    TRIM_GALORE.out.fastqc_reports_1
         trimming_fastqc_2        =    TRIM_GALORE.out.fastqc_reports_2
-}
+    }
 ```
 
 In this declaration you see that we need three primary inputs for the pipeline: the indexed reference genome for Bowtie2, the indexed database for Kraken2 and Bracken, and the paths to the reads; when creating the `nextflow.config`, you will see how to specify these paths.
 
 In the block `main`, you see the names of the processes with one or more parameters inside the parenthesis depicting the exact data flow:
 
-1. `BOWTIE2(reads_ch, bowtie2_index)` will be the first executed process using the reads and the indexed genome; the other processes must wait until this one is finished.
-2. Once `BOWTIE2` has completed the task, `KRAKEN2` will take the output, along with the database path to perform the specified task; the remaining processes are on hold until Kraken2 is finished.
-3. `BRACKEN`, in turn, will take `KRAKEN2` output to run the abundance re-estimation using the same database; `K_REPORT_TO_KRONA` and `KT_IMPORT_TEXT` can not be run until `BRACKEN` is finished with its task.
-4. Finally, `K_REPORT_TO_KRONA`, and subsequently `KT_IMPORT_TEXT`, will be run to generate our final goal file which is the Krona plot.
+1. `FASTQC(reads_ch)` and `TRIM_GALORE(reads_ch)` will be the first executed processes in parallel using the raw reads; the other processes must wait until `TRIM_GALORE` is finished.
+3. `BOWTIE2(TRIM_GALORE.out.trimmed_reads, bowtie2_index)` will received the trimmed reads from  `TRIM_GALORE` to execute its task using the clean sequences and the indexed genome.
+4. Once `BOWTIE2` has completed the task, `KRAKEN2` will take the output, along with the database path to perform the specified task; the remaining processes are on hold until Kraken2 is finished.
+5. `BRACKEN`, in turn, will take `KRAKEN2` output to run the abundance re-estimation using the same database; `K_REPORT_TO_KRONA` and `KT_IMPORT_TEXT` can not be run until `BRACKEN` is finished with its task.
+6. Finally, `K_REPORT_TO_KRONA`, and subsequently `KT_IMPORT_TEXT`, will be run to generate our final goal file which is the Krona plot.
+
+### 2.1. The `emit` block
+
+At the end of the `TaxoFlow` workflow you will notice an `emit` block.
+This is how a composable workflow declares its **outputs**: the channels that another workflow (our `main.nf` entrypoint) can use after `TaxoFlow` has run.
+
+Each line gives a short name to a process output, using the form `name = PROCESS.out.<channel>`.
+For example:
+
+- `fastqc_zip = FASTQC.out.zip` forwards the ZIP reports from FastQC.
+  The `.zip` part refers to the `emit: zip` label we set in the `fastqc.nf` module.
+- `trimmed_reads = TRIM_GALORE.out.trimmed_reads` exposes the trimmed reads produced by Trim Galore.
+
+You only need to list the results you want to keep or inspect later.
+The names you choose here (`krona`, `bracken_class`, and so on) will show up again in `main.nf`, where we connect them to the `publish` block.
 
 ---
 
@@ -470,20 +489,17 @@ log.info """\
 .stripIndent()
 ```
 
-Then we add an `include` statement to import the `kraken2Flow` workflow from the `single/taxoflow.nf` file, as well as a `workflow` block that sets up an input channel and invokes the `kraken2Flow` workflow:
+??? warning "No longer supported"
+    This way of using customized information for the pipeline execution is no longer supported since Nextflow version **26**.
+
+Then we add an `include` statement to import the `TaxoFlow` workflow from the `single/taxoflow.nf` file, as well as a `workflow` block that sets up an input channel and invokes it:
 
 ```groovy title="main.nf" linenums="18"
 include {TaxoFlow} from './taxoflow.nf'
 
 workflow {
 
-    if(params.reads){
-            reads_ch = Channel.fromFilePairs(params.reads, checkIfExists:true)
-        } else {
-            reads_ch = Channel.fromPath(params.sheet_csv)
-                            .splitCsv(header:true)
-                            .map {row-> tuple(row.sample_id, [file(row.fastq_1), file(row.fastq_2)])}
-        }
+    reads_ch = Channel.fromFilePairs(params.reads, checkIfExists:true)
     TaxoFlow(params.bowtie2_index, params.kraken2_db, reads_ch)
 
 	// publish files
@@ -498,7 +514,7 @@ workflow {
     trimmed_reads           =    TaxoFlow.out.trimmed_reads
     trimming_reports        =    TaxoFlow.out.trimming_reports
     trimming_fastqc_1       =    TaxoFlow.out.trimming_fastqc_1
-    trimming_fastqc_2       =    TaxoFlow.out.trimming_fastqc_1
+    trimming_fastqc_2       =    TaxoFlow.out.trimming_fastqc_2
 }
 
 output {
@@ -536,9 +552,39 @@ output {
 }
 ```
 
-1. Creating a channel for the paired-end reads using the channel factory [`fromFilePairs`](https://nextflow.io/docs/latest/reference/channel.html#fromfilepairs).
+Let's break down the rest of this file.
 
-2. Running the workflow using the reference indexed genome, the Kraken2 database and the channel created for the reads.
+### 3.1. Setting up the input channel
+
+`params.reads` takes the path to the paired-end reads, using the channel factory [`fromFilePairs`](https://nextflow.io/docs/latest/reference/channel.html#fromfilepairs) to build a channel of paired FASTQ files.
+
+The result is `reads_ch`: a channel of tuples with the sample ID and the two read files.
+
+??? tip "Input reads"
+    This way of providing the path to the reads requires the use regular expressions. Fortunately, in this case you just need to know the specific expected pattern by this paramater: `name_of_the_files{1,2}.fastq.gz`. More about this [here](https://training.nextflow.io/2.1.2/basic_training/channels/#fromfilepairs).
+
+### 3.2. Calling `TaxoFlow`
+
+The line `TaxoFlow(params.bowtie2_index, params.kraken2_db, reads_ch)` runs our core workflow.
+The three arguments match the three inputs declared in the `take:` block of `taxoflow.nf`.
+
+### 3.3. The `publish` block
+
+After calling `TaxoFlow`, the `publish` block selects **which** emitted channels should be saved to your results folder.
+Each line connects a label to the matching output from the subworkflow, for example:
+
+`fastqc_zip = TaxoFlow.out.fastqc_zip`
+
+The name on the left-hand side must match an entry in the `output` block below.
+Channels that are not listed here will not be copied to the output directory (although they may still exist in Nextflow's work directory while the run is in progress).
+
+### 3.4. The `output` block
+
+The `output` block tells Nextflow **where** to place each published file on disk.
+For each name from `publish`, we specify a subdirectory such as `path 'kraken2'` or `path 'krona'`.
+These folders are created inside `outputDir`, which we configure in `nextflow.config` in the next section.
+
+When the pipeline finishes successfully, you will find your result files organized in these folders under the output directory.
 
 ---
 
@@ -568,8 +614,14 @@ workflow.output.mode = 'copy'
 outputDir = params.outdir
 ```
 
-!!! warning "Paths to files and directories"
-	We are providing the paths using the Nextflow `${projectDir}` variable to point to the project directory directly; this ensures system independence. Usually, relative paths are preferred for system-independence of the pipelines, although some tools or scripts will fail if parameters are not provided as absolute paths.
+Importantly,
+
+- `workflow.output.mode` defines if we want hard copies (`'copy'`) of the files or just symlinks (default mode) to the files that will be located within the working directory (the `work` directory created during each Nextflow's execution).
+
+- `outputDir` is a Nextflow variable used to set the output directory. Here we use the `param` `outdir` that can be controlled via CLI to use any other name for the output folder.
+
+??? warning "Paths to files and directories"
+	We are providing the paths using the Nextflow `${projectDir}` variable to point to the project directory directly; this ensures system independence. Usually, relative paths are preferred for system-independence of the pipelines, although some tools or scripts will fail if parameters are not provided as absolute paths. Likewise, please notice the paths to the database and indexed genomes, these **must be changed** in case you want to use a different genome and an alternative database. More about this [here](01_pipeline.md#2-databases-and-indexed-genomes).
 
 ??? tip "Override parameters"
 	Parameters can be overridden at run time when included as command flags. You can learn more about this on [Nextflow parameters](https://training.nextflow.io/2.0/basic_training/config/). For example:
@@ -600,7 +652,7 @@ On the output of the command line, you will see:
 
 ??? success "Single-sample execution"
 	```console title="Output"
-	N E X T F L O W   ~  version 24.10.4
+	N E X T F L O W   ~  version 25.10.4
 
 	Launching `main.nf` [determined_lorenz] DSL2 - revision: 8f65b983e6
 
@@ -616,18 +668,23 @@ On the output of the command line, you will see:
 		___________________________________________________________________________________________________
 		___________________________________________________________________________________________________
 
-	executor >  local (5)
-	[fe/4b8409] process > TaxoFlow:BOWTIE2 (ERR2143768)           [100%] 1 of 1 ✔
-	[14/c3d787] process > TaxoFlow:KRAKEN2 (ERR2143768)           [100%] 1 of 1 ✔
-	[4c/5d2db3] process > TaxoFlow:BRACKEN (ERR2143768)           [100%] 1 of 1 ✔
-	[e4/c305af] process > TaxoFlow:K_REPORT_TO_KRONA (ERR2143768) [100%] 1 of 1 ✔
-	[39/08b32c] process > TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 1 of 1 ✔
+        executor >  local (7)
+        [2f/3e9520] TaxoFlow:FASTQC (ERR2143768)            [100%] 1 of 1 ✔
+        [a9/4bc888] TaxoFlow:TRIM_GALORE (ERR2143768)       [100%] 1 of 1 ✔
+        [e4/84c903] TaxoFlow:BOWTIE2 (ERR2143768)           [100%] 1 of 1 ✔
+        [7b/13c639] TaxoFlow:KRAKEN2 (ERR2143768)           [100%] 1 of 1 ✔
+        [45/b44c39] TaxoFlow:BRACKEN (ERR2143768)           [100%] 1 of 1 ✔
+        [1f/3d7684] TaxoFlow:K_REPORT_TO_KRONA (ERR2143768) [100%] 1 of 1 ✔
+        [59/5b2453] TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 1 of 1 ✔
 	```
 
 ??? tip "Use your own data"
 	If you want to use your own data, you just need to change the path indicated with the `--reads` parameter.
 
 If that worked for you, it's finally time to analyze the results!
+
+??? warning "Indexed genome and database"
+    Please keep in mind that we are using an indexed genome and database that do not confer explicit biological interpretation, and thus the results are NOT meaningful. Please make sure that you checked the corresponding [section](01_pipeline.md#2-databases-and-indexed-genomes).
 
 You can find all the output files in the `output/` directory by running the `tree` command:
 
@@ -640,19 +697,37 @@ You should see the following:
 ??? abstract "Output directory content" 
 	```console title="Output contents"
 	output/
-	└── ERR2143758
-		├── ERR2143768.b.krona.txt
-		├── ERR2143768.bracken
-		├── ERR2143768.breport
-		├── ERR2143768.k2report
-		├── ERR2143768.kraken2
-		├── ERR2143768.krona.html
-		└── ERR2143768.sam
+    ├── bowtie2
+    │   ├── ERR2143768.1
+    │   ├── ERR2143768.2
+    │   └── ERR2143768.sam
+    ├── bracken
+    │   ├── ERR2143768.bracken
+    │   └── ERR2143768.breport
+    ├── fastqc
+    │   ├── ERR2143768_1_fastqc.html
+    │   ├── ERR2143768_1_fastqc.zip
+    │   ├── ERR2143768_2_fastqc.html
+    │   └── ERR2143768_2_fastqc.zip
+    ├── kraken2
+    │   ├── ERR2143768.k2report
+    │   └── ERR2143768.kraken2
+    ├── krona
+    │   └── ERR2143768.krona.html
+    └── trimming
+        ├── ERR2143768_1.fastq.gz_trimming_report.txt
+        ├── ERR2143768_1_val_1_fastqc.html
+        ├── ERR2143768_1_val_1_fastqc.zip
+        ├── ERR2143768_1_val_1.fq.gz
+        ├── ERR2143768_2.fastq.gz_trimming_report.txt
+        ├── ERR2143768_2_val_2_fastqc.html
+        ├── ERR2143768_2_val_2_fastqc.zip
+        └── ERR2143768_2_val_2.fq.gz
 	```
 
 Please feel free to explore each of the files to understand each process and how data were handled.
 
-The file we are most interested in is the `*.html` file containing the Krona plot.
+The file we are most interested in is the `*.html` file within `krona/` containing the Krona plot.
 You can either download it and open it in your browser, or install the [preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) extension for Visual Studio. Below you can see a snapshot of how it should look like (**keep in mind that this is the Bracken output!**):
 
 <div markdown class="metagenomics">

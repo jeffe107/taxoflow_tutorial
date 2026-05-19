@@ -18,7 +18,7 @@ chmod +x nextflow
 export PATH=${PATH}:/project/workspace
 git clone https://github.com/jeffe107/taxoflow_tutorial
 cd taxoflow_tutorial
-export NXF_VER=24.10.6
+export NXF_VER=25.10.4
 ```
 
 9. Now you should be into the repository folder, just like on GitHub Codespaces.

@@ -42,8 +42,8 @@ workflow TaxoFlow {
         TRIM_GALORE.out.trimming_reports,
         TRIM_GALORE.out.fastqc_reports_1,
         TRIM_GALORE.out.fastqc_reports_2,
-        KRAKEN2.out.report,
-    )
+        KRAKEN2.out.report
+        )
     multiqc_files_list = multiqc_files_ch.collect()
     MULTIQC(multiqc_files_list, params.report_id)
 

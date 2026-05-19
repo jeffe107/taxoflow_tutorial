@@ -14,6 +14,7 @@ This will give us the opportunity to practice using the following Nextflow featu
 1. Using a Nextflow operator to control the flow of data
 2. Controlling the execution of modules according to an input condition
 3. Including a process that runs a customized script
+4. Generate a performance report
 
 ---
 
@@ -46,7 +47,7 @@ However, we cannot use this file as input in the current state of the pipeline, 
 So let's include an additional parameter in the `multi/nextflow.config` file (inside the parameter block, keeping the same structure):
 
 ```groovy title="multi/nextflow.config" linenums="10"
-    sheet_csv                             = null
+sheet_csv                             = null
 ```
 
 We initialize this parameter as `null` since it can be used or not.
@@ -54,13 +55,13 @@ We initialize this parameter as `null` since it can be used or not.
 Now, we need to modify the `main.nf` file to state how the input should be handled depending on the type of input:
 
 ```groovy title="main.nf" linenums="22"
-	    if(params.reads){
-		    reads_ch = Channel.fromFilePairs(params.reads, checkIfExists:true)
-		} else {
-		    reads_ch = Channel.fromPath(params.sheet_csv)
-				   .splitCsv(header:true)
-				   .map {row-> tuple(row.sample_id, [file(row.fastq_1), file(row.fastq_2)])}
-		}
+if(params.reads){
+	reads_ch = Channel.fromFilePairs(params.reads, checkIfExists:true)
+} else {
+	reads_ch = Channel.fromPath(params.sheet_csv)
+			.splitCsv(header:true)
+			.map {row-> tuple(row.sample_id, [file(row.fastq_1), file(row.fastq_2)])}
+}
 ```
 
 This modified declaration states that if we use the parameter `--reads` when we invoke the `nextflow run main.nf`, the _reads_ channel will be created using only the path to paired-end files.
@@ -71,7 +72,7 @@ Otherwise, we must include the parameter `--sheet_csv` with the corresponding fi
 TaxoFlow showcases **two layers** of conditional logic:
 
 - At the **top‑level workflow** (`main.nf`) to decide how to build the read channel.
-- Inside the **`TaxoFlow` workflow** (`taxoflow.nf`) to decide whether to run downstream reporting steps (shown in section **2.3 Conditional reporting inside `taxoflow.nf`**).
+- Inside the **`TaxoFlow` workflow** (`taxoflow.nf`) to decide whether to run downstream reporting steps (shown in section **3. Conditional reporting inside `taxoflow.nf`**).
 
 The `if` statement decides **how inputs are parsed**:
 
@@ -121,8 +122,7 @@ The `kraken_biom.nf` file will be located in the `multi/modules/` directory:
 
 ```groovy title="multi/modules/kraken_biom.nf" linenums="1"
 process KRAKEN_BIOM {
-	  tag "merge_samples"
-    publishDir "$params.outdir", mode:'copy'
+    tag "merge_samples"
     container "community.wave.seqera.io/library/kraken-biom:1.2.0--f040ab91c9691136"
 
     input:
@@ -151,14 +151,14 @@ For this task, the operator _collect()_ comes really handy, and therefore let's 
 Let's recall that `KRAKEN_BIOM` and the following `KNIT_PHYLOSEQ` are only triggered if the execution is aiming at processing more than one sample.
 Being so, we will include these processes and modify the workflow execution to add the conditional statement in `multi/taxoflow.nf`:
 
-```groovy title="multi/taxoflow.nf" linenums="9"
+```groovy title="multi/taxoflow.nf" linenums="11"
 include { KRAKEN_BIOM               }   from './modules/kraken_biom.nf'
 ```
 
-```groovy title="multi/taxoflow.nf" linenums="29"
-        if(params.sheet_csv){
-		    KRAKEN_BIOM(BRACKEN.out.collect())
-		}
+```groovy title="multi/taxoflow.nf" linenums="35"
+if(params.sheet_csv){
+	KRAKEN_BIOM(BRACKEN.out.collect())
+}
 ```
 
 Here, you can see that we have added the operator _collect()_ to capture all the output files from `BRACKEN`, and this is happening only if we are using `--sheet_csv` as input.
@@ -175,8 +175,7 @@ Here, we will run an R script inside the module `multi/modules/knit_phyloseq.nf`
 
 ```groovy title="multi/modules/knit_phyloseq.nf" linenums="1"
 process KNIT_PHYLOSEQ {
-	tag "knit_phyloseq"
-    publishDir "$params.outdir", mode:'copy'
+    tag "knit_phyloseq"
     container "community.wave.seqera.io/library/bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44"
 
     input:
@@ -205,12 +204,12 @@ Nevertheless, as we are not "running the script" directly but we are calling `Rs
 As a result the output from this process is just a standard/command-line output, and we have to include an additional parameter in the `multi/nextflow.config` file:
 
 ```groovy title="multi/nextflow.config" linenums="11"
-    report                             = "${projectDir}/bin/report.Rmd"
+report                             = "${projectDir}/bin/report.Rmd"
 ```
 
 This R Markdown file uses a Phyloseq object created from Kraken2/Bracken output (BIOM file), then applies standard functions from for diversity and network analysis. Thus, results should therefore be interpreted as **visual summaries of community structure**, not as statistically validated differences.
 
-??? tip "Diversity and network analysis methods"
+??? info "Diversity and network analysis methods"
 
     **Input data**  
     Taxonomic abundance tables generated with Bracken were imported into R as a Phyloseq object. Taxa were agglomerated at the **genus level** (`tax_glom`), and low-abundance genera were filtered by retaining taxa with a **mean relative abundance ≥ 3%** across samples.
@@ -250,19 +249,153 @@ This is possible thanks to [Seqera Containers](https://seqera.io/containers/), w
 
 Also, we have to include this new process within `multi/taxoflow.nf`:
 
-```groovy title="multi/taxoflow.nf" linenums="10"
+```groovy title="multi/taxoflow.nf" linenums="12"
 include { KNIT_PHYLOSEQ             }   from './modules/knit_phyloseq.nf'
 ```
 
 We need to call it as well inside the conditional execution if multi-sample is being handled:
 
-```groovy title="multi/taxoflow.nf" linenums="31"
-        KNIT_PHYLOSEQ(KRAKEN_BIOM.out)
+```groovy title="multi/taxoflow.nf" linenums="37"
+KNIT_PHYLOSEQ(KRAKEN_BIOM.out)
 ```
 
-### 2.3 Conditional reporting inside `taxoflow.nf`
+### 2.3. MultiQC
 
-The inner `if (params.sheet_csv)` controls whether to:
+As noted in the method overview, the last step of the multi-sample workflow is to compile quality-control results from several tools into a single interactive report using [**MultiQC**](https://seqera.io/multiqc/).
+
+While FastQC, Trim Galore, and Kraken2 each produce their own reports per sample, MultiQC scans those outputs and builds one HTML summary that makes it easier to compare samples side by side.
+
+Let's create the `multiqc.nf` file inside the `multi/modules/` directory:
+
+```groovy title="multi/modules/multiqc.nf" linenums="1"
+process MULTIQC {
+    tag "All samples"
+    container "community.wave.seqera.io/library/pip_multiqc:a3c26f6199d64b7c"
+
+    input:
+    path '*'
+    val output_name
+
+    output:
+    path "${output_name}.html", emit: report
+    path "${output_name}_data", emit: data
+
+    script:
+    """
+    multiqc . -n ${output_name}.html
+    """
+    }
+```
+
+This process runs **once** for the whole pipeline run, after all per-sample QC tasks have finished.
+Unlike the per-sample modules, its `tag` is fixed to `"All samples"` because it does not process reads from a single sample in isolation.
+
+#### 2.3.1. Process inputs
+
+The `input` block expects two arguments:
+
+- `path '*'` — a collection of report files from FastQC, Trim Galore, and Kraken2.
+  Nextflow stages all of these files in the process work directory before the command runs.
+- `val output_name` — the base name for the final report (in our case, this comes from `params.report_id`).
+
+#### 2.3.2. Process outputs
+
+MultiQC produces two outputs:
+
+- `${output_name}.html` (emitted as `report`) — the interactive summary report you open in a browser.
+- `${output_name}_data` (emitted as `data`) — a folder with the parsed data MultiQC used to build the report.
+
+#### 2.3.3. Command script
+
+The `script` block runs a single command: `multiqc . -n ${output_name}.html`.
+MultiQC scans the current directory (`.`) for recognized report formats and writes the combined HTML file.
+The `-n` flag sets the output file name.
+
+#### 2.3.4. Modify `taxoflow.nf`
+
+First, import the new module at the top of `multi/taxoflow.nf`:
+
+```groovy title="multi/taxoflow.nf" linenums="13"
+include { MULTIQC                     }  from './modules/multiqc.nf'
+```
+
+Next, we need to **gather** the QC files produced across all samples before calling `MULTIQC`.
+Add the following lines inside the `main:` block of the `TaxoFlow` workflow, after the per-sample processes:
+
+```groovy title="multi/taxoflow.nf" linenums="39"
+multiqc_files_ch = channel.empty().mix(
+FASTQC.out.zip,
+FASTQC.out.html,
+TRIM_GALORE.out.trimming_reports,
+TRIM_GALORE.out.fastqc_reports_1,
+TRIM_GALORE.out.fastqc_reports_2,
+KRAKEN2.out.report,
+)
+multiqc_files_list = multiqc_files_ch.collect()
+MULTIQC(multiqc_files_list, params.report_id)
+```
+
+Here is what each part does:
+
+- `channel.empty().mix(...)` starts from an empty channel and **merges** several channels into one.
+  Each channel contributes files from a different step: FastQC (before trimming), Trim Galore (trimming reports and post-trim FastQC), and Kraken2 (`.k2report` files).
+
+??? tip "Operator mix()"
+    The mix operator combines the items emitted by two (or more) channels. More [here](https://training.nextflow.io/2.2/basic_training/operators/#mix).
+
+- As explained before, `.collect()` waits until **all** samples have finished the upstream processes, then bundles every file into a single list.
+  This is what allows `MULTIQC` to run only once, with inputs from every sample.
+- `MULTIQC(multiqc_files_list, params.report_id)` passes that list and the report name to the process.
+
+Unlike `KRAKEN_BIOM` and `KNIT_PHYLOSEQ`, MultiQC runs **every time** the pipeline runs, whether you use `--reads` or `--sheet_csv`.
+
+Finally, expose the MultiQC outputs in the `emit` block:
+
+```groovy title="multi/taxoflow.nf" linenums="62"
+multiqc_report           =    MULTIQC.out.report
+multiqc_data             =    MULTIQC.out.data
+```
+
+#### 2.3.5. Modify `main.nf`
+
+We need to publish the MultiQC results in `multi/main.nf`, alongside the other outputs from `TaxoFlow`.
+
+Add these lines to the `publish` block:
+
+```groovy title="multi/main.nf" linenums="45"
+multiqc_report          =    TaxoFlow.out.multiqc_report
+multiqc_data            =    TaxoFlow.out.multiqc_data
+```
+
+And assign a destination folder in the `output` block:
+
+```groovy title="multi/main.nf" linenums="85"
+multiqc_report {
+    path 'multiqc'
+}
+multiqc_data {
+    path 'multiqc'
+}
+```
+
+When the pipeline finishes, you will find `all_samples.html` (or whatever name you set in `params.report_id`) and the companion `all_samples_data` folder under `output/multiqc/`.
+
+#### 2.3.6. Parameter in `nextflow.config`
+
+Add the following parameter to the `params` block in `multi/nextflow.config`:
+
+```groovy title="multi/nextflow.config" linenums="12"
+report_id                             = "all_samples"
+```
+
+This value is passed to `MULTIQC` as the output name.
+You can change it at run time, for example: `--report_id 'cuatro_cienegas_run'`. That would produce `cuatro_cienegas_run.html` instead of `all_samples.html`.
+
+---
+
+## 3. Conditional reporting inside `taxoflow.nf`
+
+The inner `if (params.sheet_csv)` in `taxoflow.nf` controls whether to:
 
 - **Merge Bracken outputs across samples** with `KRAKEN_BIOM(BRACKEN.out.collect())`.
 - **Render a Phyloseq HTML report** with `KNIT_PHYLOSEQ(KRAKEN_BIOM.out)`.
@@ -279,7 +412,31 @@ This is a clean way to:
 
 ---
 
-## 3. Execution
+## 4. Enabling the built‑in report
+
+In `nextflow.config`:
+
+```groovy title="multi/nextflow.config" linenums="22"
+report {
+    enabled = true
+    file = "${projectDir}/output/performanceReport.html"
+}
+```
+
+This block tells Nextflow to:
+
+- Generate a **single HTML report** named `performanceReport.html` at the end of each run.
+- Place it in the **results directory** from where you launched Nextflow. Please notice that this is a **custom path**. It does not take from `params.outdir`, and thus if `outdir` is changed, the report will not be stored on the new output directory.
+- Keep all outputs (taxonomy results, Krona plots, RMarkdown report, MultiQC output,Nextflow report) under a single `output/` tree.
+
+You do not need to change `main.nf` or `taxoflow.nf` to use this feature; it is entirely controlled by configuration.
+
+??? info "Enabling the report as a parameter"
+    It is possible to generate the report just by adding the parameter `-with-report <file_name>` when executing the pipeline. [More about this here](https://docs.seqera.io/nextflow/reports#execution-report).
+
+---
+
+## 5. Execution
 
 Now, we are completely set to run the analysis for as many samples as we would like, and we will obtain a final report depicting different metrics regarding taxonomic abundance, network analysis, and α and β-diversity. Let's execute (please remember that we are within the **multi** directory):
 
@@ -291,7 +448,7 @@ On the output of the command line, you will see:
 
 ??? success "Multi-sample execution"
     ```console title="Output"
-    N E X T F L O W   ~  version 24.10.4
+    N E X T F L O W   ~  version 25.10.4
 
     Launching `main.nf` [stoic_miescher] DSL2 - revision: 8f65b983e6
 
@@ -308,14 +465,17 @@ On the output of the command line, you will see:
         ___________________________________________________________________________________________________
         ___________________________________________________________________________________________________
 
-    executor >  local (22)
-    [4e/914152] TaxoFlow:BOWTIE2 (ERR2143774)           [100%] 3 of 3 ✔
-    [bf/7fcac7] TaxoFlow:KRAKEN2 (ERR2143774)           [100%] 3 of 3 ✔
-    [f5/aa12aa] TaxoFlow:BRACKEN (ERR2143774)           [100%] 3 of 3 ✔
-    [e9/84eb9d] TaxoFlow:K_REPORT_TO_KRONA (ERR2143774) [100%] 3 of 3 ✔
-    [59/456551] TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 3 of 3 ✔
-    [da/7b9f45] TaxoFlow:KRAKEN_BIOM (merge_samples)    [100%] 1 of 1 ✔
-    [d0/deccc9] TaxoFlow:KNIT_PHYLOSEQ (knit_phyloseq)  [100%] 1 of 1 ✔
+    executor >  local (24)
+    [1f/176196] TaxoFlow:FASTQC (ERR2143768)            [100%] 3 of 3 ✔
+    [c5/42b877] TaxoFlow:TRIM_GALORE (ERR2143774)       [100%] 3 of 3 ✔
+    [da/6ba52f] TaxoFlow:BOWTIE2 (ERR2143774)           [100%] 3 of 3 ✔
+    [45/054c41] TaxoFlow:KRAKEN2 (ERR2143774)           [100%] 3 of 3 ✔
+    [30/94f39e] TaxoFlow:BRACKEN (ERR2143774)           [100%] 3 of 3 ✔
+    [67/1dabc3] TaxoFlow:K_REPORT_TO_KRONA (ERR2143774) [100%] 3 of 3 ✔
+    [ed/8bf05a] TaxoFlow:KT_IMPORT_TEXT (ERR2143774)    [100%] 3 of 3 ✔
+    [b2/cfd842] TaxoFlow:KRAKEN_BIOM (merge_samples)    [100%] 1 of 1 ✔
+    [cb/815f36] TaxoFlow:KNIT_PHYLOSEQ (knit_phyloseq)  [100%] 1 of 1 ✔
+    [7f/b77259] TaxoFlow:MULTIQC (All samples)          [100%] 1 of 1 ✔
 
     Completed at: 27-Nov-2025 13:03:40
     Duration    : 1m 36s
@@ -330,7 +490,7 @@ Keep in mind that since the execution is in parallel, the order in which the sam
 Also, while the pipeline is running you will see that `KRAKEN_BIOM`, and hence `KNIT_PHYLOSEQ`, will not be triggered until all the samples are processed by the previous processes.
 
 Finally, inside the **output** directory, you will see multiple folders with the exact `sample ids`, and within these all the output files, including the files to visualize the Krona plots.
-Likewise, in the **output** folder you will see the file `report.html` which is ready to be opened and explored. It's your time to analyze it!
+Likewise, in the **output** folder you will see the file `TaxoReport.html` which is ready to be opened and explored. It's your time to analyze it!
 
 Below you can see the plots included in the report, where it is possible to observe different metrics and general trends of annotated reads at genus level considering the custom database that we created for this tutorial with only 54 bacterial species (**we applied a filter to keep only genera with relative above 3%, and keep in mind that this is the Bracken output!**):
 
@@ -346,44 +506,11 @@ Below you can see the plots included in the report, where it is possible to obse
 
     In case that the pipeline does not run in your environment, the output is available for you to check [here](https://github.com/jeffe107/TaxoFlow_tutorial/tree/main/output).
 
-### 3.1 Enabling the built‑in report
+### 5.1 Performance report
 
-In `nextflow.config`:
+Open the file `performanceReport.html` in a browser. You will find:
 
-```groovy title="multi/nextflow.config" linenums="17"
-report {
-    enabled = true
-    file = "${projectDir}/output/performance_report.html"
-}
-```
-
-This block tells Nextflow to:
-
-- Generate a **single HTML report** named `report.html` at the end of each run.
-- Place it in the **results directory** from where you launched Nextflow.
-
-You do not need to change `main.nf` or `taxoflow.nf` to use this feature; it is entirely controlled by configuration.
-
-#### 3.1.1 Running TaxoFlow and inspecting the report
-
-The workflow can be executed without adding anything else. For instance:
-
-```bash
-nextflow run main.nf --sheet_csv data/samplesheet.csv
-```
-
-??? info "Enabling the report as a parameter"
-    It is possible to generate the report just by adding `-with-report <file_name>`. [More about this here](https://docs.seqera.io/nextflow/reports#execution-report).
-
-At the end of the execution you should see a message similar to:
-
-```text
-Execution report saved to: performance_report.html
-```
-
-Open `report.html` in a browser. You will find:
-
-- A **timeline** of all tasks across processes like `BOWTIE2`, `KRAKEN2`, `BRACKEN`, etc.
+- A **timeline** of all tasks across processes like `FASTQC`, `BOWTIE2`, `KRAKEN2`, `BRACKEN`, etc.
 - A **resources** table with CPU, memory and time usage per process.
 - A **tasks** section showing how many samples were processed and how long each step took.
 
@@ -396,19 +523,9 @@ This native report complements the domain‑specific Phyloseq HTML:
 
 - The **Nextflow report** focuses on **pipeline performance and resource usage**.
 - The **Phyloseq report** focuses on **biological interpretation** of the metagenomic profiles.
+- The **MultiQC report** focuses on **general statistics and metrics** aggregated from different tools.
 
-??? tip "Customizing the report location"
-    - To save the report under the project directory, you can update `file`:
-      ```groovy title="multi/nextflow.config" linenums="17"
-      report {
-          enabled = true
-          file = "${projectDir}/output/performance_report.html"
-          overwrite = true
-      }
-      ```
-    - This keeps all outputs (taxonomy results, Krona plots, RMarkdown report, Nextflow report) under a single `output/` tree.
-
-## 4. Biological meaning
+## 6. Biological meaning
 
 Once again, please remember that this execution of the pipeline, and therefore **it doesn't have a clear biological interpretation**. To extract truly insights from the samples hereby provided or your own data, you need to use the corresponding genome index and Kraken2/Bracken databases for you analysis purposes. Please check how to achieve this [here](01_pipeline.md#2-databases-and-indexed-genomes).
 
