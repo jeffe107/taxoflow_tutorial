@@ -490,7 +490,7 @@ log.info """\
 ```
 
 ??? bug "No longer supported"
-    This way of using customized information for the pipeline execution is no longer supported since Nextflow version **26**.
+    This way of using customized information to display during pipeline execution is no longer supported, starting since Nextflow version **26**.
 
 Then we add an `include` statement to import the `TaxoFlow` workflow from the `single/taxoflow.nf` file, as well as a `workflow` block that sets up an input channel and invokes it:
 
