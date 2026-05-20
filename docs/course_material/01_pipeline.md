@@ -48,6 +48,7 @@ The specific versions used by the current version of Taxoflow for each tool are 
     | R           |   4.4.3 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 | GPL-2,3 |
     | Phyloseq    |  1.50.0 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 | AGPL-3       |
     | ggplot2     |   3.5.1 | bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44 | MIT          |
+    | MultiQC     |   1.33 | pip_multiqc:a3c26f6199d64b7c | GPL-3.0          |
 
     \* Containers found at: [community.wave.seqera.io/library/](https://community.wave.seqera.io/browse/library)
 

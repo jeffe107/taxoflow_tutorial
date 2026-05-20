@@ -676,6 +676,10 @@ On the output of the command line, you will see:
         [45/b44c39] TaxoFlow:BRACKEN (ERR2143768)           [100%] 1 of 1 ✔
         [1f/3d7684] TaxoFlow:K_REPORT_TO_KRONA (ERR2143768) [100%] 1 of 1 ✔
         [59/5b2453] TaxoFlow:KT_IMPORT_TEXT (ERR2143768)    [100%] 1 of 1 ✔
+        Completed at: 19-May-2026 17:43:27
+        Duration    : 4m 1s
+        CPU hours   : 0.1
+        Succeeded   : 7
 	```
 
 ??? tip "Use your own data"
