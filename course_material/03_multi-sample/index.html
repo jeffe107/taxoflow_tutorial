@@ -727,6 +727,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#237-adaptation-of-bowtie2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.7. Adaptation of Bowtie2
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1311,6 +1322,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#237-adaptation-of-bowtie2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.7. Adaptation of Bowtie2
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1825,13 +1847,15 @@ Add the following lines inside the <code>main:</code> block of the <code>TaxoFlo
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">multiqc_files_ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">channel</span><span class="o">.</span><span class="na">empty</span><span class="o">().</span><span class="na">mix</span><span class="o">(</span>
+<span class="normal">48</span>
+<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">multiqc_files_ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">channel</span><span class="o">.</span><span class="na">empty</span><span class="o">().</span><span class="na">mix</span><span class="o">(</span>
 <span class="n">FASTQC</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">zip</span><span class="o">,</span>
 <span class="n">FASTQC</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">html</span><span class="o">,</span>
 <span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">trimming_reports</span><span class="o">,</span>
 <span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">fastqc_reports_1</span><span class="o">,</span>
 <span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">fastqc_reports_2</span><span class="o">,</span>
 <span class="n">KRAKEN2</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">report</span><span class="o">,</span>
+<span class="n">BOWTIE2</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">log</span>
 <span class="o">)</span>
 <span class="n">multiqc_files_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">multiqc_files_ch</span><span class="o">.</span><span class="na">collect</span><span class="o">()</span>
 <span class="n">MULTIQC</span><span class="o">(</span><span class="n">multiqc_files_list</span><span class="o">,</span><span class="w"> </span><span class="n">params</span><span class="o">.</span><span class="na">report_id</span><span class="o">)</span>
@@ -1883,6 +1907,170 @@ Add the following lines inside the <code>main:</code> block of the <code>TaxoFlo
 </code></pre></div></td></tr></table></div>
 <p>This value is passed to <code>MULTIQC</code> as the output name.
 You can change it at run time, for example: <code>--report_id 'cuatro_cienegas_run'</code>. That would produce <code>cuatro_cienegas_run.html</code> instead of <code>all_samples.html</code>.</p>
+<h4 id="237-adaptation-of-bowtie2">2.3.7. Adaptation of Bowtie2</h4>
+<p>In order to include Bowtie2&rsquo;s output into the final MultiQC report, we need to modify the module itself, along with additions to <code>main.nf</code> and <code>taxoflow.nf</code>:</p>
+<ul>
+<li>Changes in <code>bowtie2.nf</code>:</li>
+</ul>
+<details class="terminal">
+<summary><code>bowtie2.nf</code></summary>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">multi/modules/bowtie2.nf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">process</span><span class="w"> </span><span class="n">BOWTIE2</span><span class="w"> </span><span class="o">{</span>
+<span class="n">tag</span><span class="w"> </span><span class="s2">&quot;${sample_id}&quot;</span>
+<span class="n">container</span><span class="w"> </span><span class="s2">&quot;community.wave.seqera.io/library/bowtie2:2.5.4--d51920539234bea7&quot;</span>
+
+<span class="nl">input:</span>
+<span class="n">tuple</span><span class="w"> </span><span class="nf">val</span><span class="o">(</span><span class="n">sample_id</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="n">read1</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="n">read2</span><span class="o">)</span>
+<span class="n">path</span><span class="w"> </span><span class="n">bowtie2_index</span>
+
+<span class="nl">output:</span>
+<span class="hll"><span class="n">tuple</span><span class="w"> </span><span class="nf">val</span><span class="o">(</span><span class="s2">&quot;${sample_id}&quot;</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${sample_id}.1&quot;</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${sample_id}.2&quot;</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${sample_id}.sam&quot;</span><span class="o">),</span><span class="w"> </span><span class="nl">emit:</span><span class="w"> </span><span class="n">reads</span>
+</span><span class="hll"><span class="n">path</span><span class="w"> </span><span class="s2">&quot;${sample_id}_aln_sum.log&quot;</span><span class="o">,</span><span class="w"> </span><span class="nl">emit:</span><span class="w"> </span><span class="n">log</span>
+</span>
+<span class="nl">script:</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/multi/data/genome/TAIR10</span>
+<span class="hll"><span class="s2">(bowtie2 -x $bowtie2_index -1 ${read1} -2 ${read2} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}) 2&gt; ${sample_id}_aln_sum.log</span>
+</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="o">}</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<details class="tip">
+<summary>Getting the <code>stderr</code> of Bowtie2</summary>
+<p>Bowtie2 places its output regarding the number of aligned reads to a common CLI output channel known as <strong>stderr</strong>. Thus, to capture this information we had to modify the command by using braces and create the file where we want the stderr to be stored. This file will be used by MultiQC to build the report.</p>
+</details>
+<ul>
+<li>Changes in <code>taxoflow.nf</code>:</li>
+</ul>
+<details class="terminal">
+<summary><code>taxoflow.nf</code></summary>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">multi/taxoflow.nf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">workflow</span><span class="w"> </span><span class="n">TaxoFlow</span><span class="w"> </span><span class="o">{</span>
+<span class="c1">// required inputs</span>
+<span class="nl">take:</span>
+<span class="w">    </span><span class="n">bowtie2_index</span>
+<span class="w">    </span><span class="n">kraken2_db</span>
+<span class="w">    </span><span class="n">reads_ch</span>
+<span class="c1">// workflow implementation</span>
+<span class="nl">main:</span>
+<span class="w">     </span><span class="c1">// Initial quality control</span>
+<span class="w">    </span><span class="n">FASTQC</span><span class="o">(</span><span class="n">reads_ch</span><span class="o">)</span>
+<span class="w">    </span><span class="n">TRIM_GALORE</span><span class="o">(</span><span class="n">reads_ch</span><span class="o">)</span>
+<span class="w">    </span><span class="n">BOWTIE2</span><span class="o">(</span><span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">trimmed_reads</span><span class="o">,</span><span class="w"> </span><span class="n">bowtie2_index</span><span class="o">)</span>
+<span class="hll"><span class="w">    </span><span class="n">KRAKEN2</span><span class="o">(</span><span class="n">BOWTIE2</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">reads</span><span class="o">,</span><span class="w"> </span><span class="n">kraken2_db</span><span class="o">)</span>
+</span><span class="w">    </span><span class="n">BRACKEN</span><span class="o">(</span><span class="n">KRAKEN2</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">files</span><span class="o">,</span><span class="w"> </span><span class="n">kraken2_db</span><span class="o">)</span>
+<span class="w">    </span><span class="n">K_REPORT_TO_KRONA</span><span class="o">(</span><span class="n">BRACKEN</span><span class="o">.</span><span class="na">out</span><span class="o">)</span>
+<span class="w">    </span><span class="n">KT_IMPORT_TEXT</span><span class="o">(</span><span class="n">K_REPORT_TO_KRONA</span><span class="o">.</span><span class="na">out</span><span class="o">)</span>
+<span class="w">    </span><span class="k">if</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">sheet_csv</span><span class="o">){</span>
+<span class="w">        </span><span class="n">KRAKEN_BIOM</span><span class="o">(</span><span class="n">BRACKEN</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">collect</span><span class="o">())</span>
+<span class="w">        </span><span class="n">KNIT_PHYLOSEQ</span><span class="o">(</span><span class="n">KRAKEN_BIOM</span><span class="o">.</span><span class="na">out</span><span class="o">)</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="w">    </span><span class="n">multiqc_files_ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">channel</span><span class="o">.</span><span class="na">empty</span><span class="o">().</span><span class="na">mix</span><span class="o">(</span>
+<span class="w">    </span><span class="n">FASTQC</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">zip</span><span class="o">,</span>
+<span class="w">    </span><span class="n">FASTQC</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">html</span><span class="o">,</span>
+<span class="w">    </span><span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">trimming_reports</span><span class="o">,</span>
+<span class="w">    </span><span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">fastqc_reports_1</span><span class="o">,</span>
+<span class="w">    </span><span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">fastqc_reports_2</span><span class="o">,</span>
+<span class="w">    </span><span class="n">KRAKEN2</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">report</span>
+<span class="hll"><span class="w">    </span><span class="n">BOWTIE2</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">log</span>
+</span><span class="w">    </span><span class="o">)</span>
+<span class="n">multiqc_files_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">multiqc_files_ch</span><span class="o">.</span><span class="na">collect</span><span class="o">()</span>
+<span class="n">MULTIQC</span><span class="o">(</span><span class="n">multiqc_files_list</span><span class="o">,</span><span class="w"> </span><span class="n">params</span><span class="o">.</span><span class="na">report_id</span><span class="o">)</span>
+
+<span class="nl">emit:</span>
+<span class="hll"><span class="w">    </span><span class="n">bowtie_log</span><span class="w">               </span><span class="o">=</span><span class="w">    </span><span class="n">BOWTIE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">log</span>
+</span><span class="hll"><span class="w">    </span><span class="n">bowtie_unali</span><span class="w">             </span><span class="o">=</span><span class="w">    </span><span class="n">BOWTIE2</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">reads</span>
+</span><span class="w">    </span><span class="n">kraken_class</span><span class="w">             </span><span class="o">=</span><span class="w">    </span><span class="n">KRAKEN2</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">files</span>
+<span class="w">    </span><span class="n">bracken_class</span><span class="w">            </span><span class="o">=</span><span class="w">    </span><span class="n">BRACKEN</span><span class="o">.</span><span class="na">out</span>
+<span class="w">    </span><span class="n">krona</span><span class="w">                    </span><span class="o">=</span><span class="w">    </span><span class="n">KT_IMPORT_TEXT</span><span class="o">.</span><span class="na">out</span>
+<span class="w">    </span><span class="n">biom</span><span class="w">                     </span><span class="o">=</span><span class="w">    </span><span class="n">KRAKEN_BIOM</span><span class="o">.</span><span class="na">out</span>
+<span class="w">    </span><span class="n">fastqc_zip</span><span class="w">               </span><span class="o">=</span><span class="w">    </span><span class="n">FASTQC</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">zip</span>
+<span class="w">    </span><span class="n">fastqc_html</span><span class="w">              </span><span class="o">=</span><span class="w">    </span><span class="n">FASTQC</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">html</span>
+<span class="w">    </span><span class="n">trimmed_reads</span><span class="w">            </span><span class="o">=</span><span class="w">    </span><span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">trimmed_reads</span>
+<span class="w">    </span><span class="n">trimming_reports</span><span class="w">         </span><span class="o">=</span><span class="w">    </span><span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">trimming_reports</span>
+<span class="w">    </span><span class="n">trimming_fastqc_1</span><span class="w">        </span><span class="o">=</span><span class="w">    </span><span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">fastqc_reports_1</span>
+<span class="w">    </span><span class="n">trimming_fastqc_2</span><span class="w">        </span><span class="o">=</span><span class="w">    </span><span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">fastqc_reports_2</span>
+<span class="w">    </span><span class="n">multiqc_report</span><span class="w">           </span><span class="o">=</span><span class="w">    </span><span class="n">MULTIQC</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">report</span>
+<span class="w">    </span><span class="n">multiqc_data</span><span class="w">             </span><span class="o">=</span><span class="w">    </span><span class="n">MULTIQC</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">data</span>
+<span class="o">}</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<ul>
+<li>Additions in <code>main.nf</code>:</li>
+</ul>
+<details class="terminal">
+<summary><code>main.nf</code></summary>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">multi/main.nf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">bowtie_log</span><span class="w">              </span><span class="o">=</span><span class="w">    </span><span class="n">TaxoFlow</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">bowtie_log</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">multi/main.nf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">bowtie_log</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="s1">&#39;bowtie2&#39;</span>
+<span class="o">}</span>
+</code></pre></div></td></tr></table></div>
+</details>
 <hr />
 <h2 id="3-conditional-reporting-inside-taxoflownf">3. Conditional reporting inside <code>taxoflow.nf</code></h2>
 <p>The inner <code>if (params.sheet_csv)</code> in <code>taxoflow.nf</code> controls whether to:</p>
