@@ -31,6 +31,7 @@ workflow {
 	// publish files
     publish:
 
+    bowtie_log              =    TaxoFlow.out.bowtie_log
     bowtie_unali            =    TaxoFlow.out.bowtie_unali
     kraken_class            =    TaxoFlow.out.kraken_class
     bracken_class           =    TaxoFlow.out.bracken_class
@@ -49,6 +50,9 @@ workflow {
 
 output {
 
+    bowtie_log {
+        path 'bowtie2'
+    }
     bowtie_unali {
         path 'bowtie2'
     }

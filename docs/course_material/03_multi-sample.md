@@ -330,6 +330,7 @@ TRIM_GALORE.out.trimming_reports,
 TRIM_GALORE.out.fastqc_reports_1,
 TRIM_GALORE.out.fastqc_reports_2,
 KRAKEN2.out.report,
+BOWTIE2.out.log
 )
 multiqc_files_list = multiqc_files_ch.collect()
 MULTIQC(multiqc_files_list, params.report_id)
@@ -390,6 +391,105 @@ report_id                             = "all_samples"
 
 This value is passed to `MULTIQC` as the output name.
 You can change it at run time, for example: `--report_id 'cuatro_cienegas_run'`. That would produce `cuatro_cienegas_run.html` instead of `all_samples.html`.
+
+#### 2.3.7. Adaptation of Bowtie2
+
+In order to include Bowtie2's output into the final MultiQC report, we need to modify the module itself, along with additions to `main.nf` and `taxoflow.nf`:
+
+- Changes in `bowtie2.nf`:
+
+??? terminal "`bowtie2.nf`"
+    ```groovy title="multi/modules/bowtie2.nf" linenums="1" hl_lines="10 11 16"
+    process BOWTIE2 {
+    tag "${sample_id}"
+    container "community.wave.seqera.io/library/bowtie2:2.5.4--d51920539234bea7"
+
+    input:
+    tuple val(sample_id), path(read1), path(read2)
+    path bowtie2_index
+
+    output:
+    tuple val("${sample_id}"), path("${sample_id}.1"), path("${sample_id}.2"), path("${sample_id}.sam"), emit: reads
+    path "${sample_id}_aln_sum.log", emit: log
+
+    script:
+    """
+    export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/multi/data/genome/TAIR10
+    (bowtie2 -x $bowtie2_index -1 ${read1} -2 ${read2} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}) 2> ${sample_id}_aln_sum.log
+    """
+    }
+    ```
+
+??? tip "Getting the `stderr` of Bowtie2"
+    Bowtie2 places its output regarding the number of aligned reads to a common CLI output channel known as **stderr**. Thus, to capture this information we had to modify the command by using braces and create the file where we want the stderr to be stored. This file will be used by MultiQC to build the report.
+
+
+- Changes in `taxoflow.nf`:
+
+??? terminal "`taxoflow.nf`"
+    ```groovy title="multi/taxoflow.nf" linenums="19" hl_lines="13 28 34-35"
+    workflow TaxoFlow {
+    // required inputs
+    take:
+        bowtie2_index
+        kraken2_db
+        reads_ch
+    // workflow implementation
+    main:
+         // Initial quality control
+        FASTQC(reads_ch)
+        TRIM_GALORE(reads_ch)
+        BOWTIE2(TRIM_GALORE.out.trimmed_reads, bowtie2_index)
+        KRAKEN2(BOWTIE2.out.reads, kraken2_db)
+        BRACKEN(KRAKEN2.out.files, kraken2_db)
+        K_REPORT_TO_KRONA(BRACKEN.out)
+        KT_IMPORT_TEXT(K_REPORT_TO_KRONA.out)
+        if(params.sheet_csv){
+            KRAKEN_BIOM(BRACKEN.out.collect())
+            KNIT_PHYLOSEQ(KRAKEN_BIOM.out)
+        }
+        multiqc_files_ch = channel.empty().mix(
+        FASTQC.out.zip,
+        FASTQC.out.html,
+        TRIM_GALORE.out.trimming_reports,
+        TRIM_GALORE.out.fastqc_reports_1,
+        TRIM_GALORE.out.fastqc_reports_2,
+        KRAKEN2.out.report
+        BOWTIE2.out.log
+        )
+    multiqc_files_list = multiqc_files_ch.collect()
+    MULTIQC(multiqc_files_list, params.report_id)
+
+    emit:
+        bowtie_log               =    BOWTIE.out.log
+        bowtie_unali             =    BOWTIE2.out.reads
+        kraken_class             =    KRAKEN2.out.files
+        bracken_class            =    BRACKEN.out
+        krona                    =    KT_IMPORT_TEXT.out
+        biom                     =    KRAKEN_BIOM.out
+        fastqc_zip               =    FASTQC.out.zip
+        fastqc_html              =    FASTQC.out.html
+        trimmed_reads            =    TRIM_GALORE.out.trimmed_reads
+        trimming_reports         =    TRIM_GALORE.out.trimming_reports
+        trimming_fastqc_1        =    TRIM_GALORE.out.fastqc_reports_1
+        trimming_fastqc_2        =    TRIM_GALORE.out.fastqc_reports_2
+        multiqc_report           =    MULTIQC.out.report
+        multiqc_data             =    MULTIQC.out.data
+    }
+    ```
+
+- Additions in `main.nf`:
+
+??? terminal "`main.nf`"
+    ```groovy title="multi/main.nf" linenums="34"
+    bowtie_log              =    TaxoFlow.out.bowtie_log
+    ```
+
+    ```groovy title="multi/main.nf" linenums="53"
+    bowtie_log {
+        path 'bowtie2'
+    }
+    ```
 
 ---
 
