@@ -1528,7 +1528,11 @@ mv<span class="w"> </span>../single/data<span class="w"> </span>.
 <h2 id="1-multi-sample-input">1. Multi-sample input</h2>
 <p>With our shiny brand-new pipeline, we are at this moment able to analyze each sample individually by running the workflow multiple times.
 Nonetheless, one of the most powerful capabilities by Nextflow is its native parallel execution according to the available resources the executor finds.
-You can think of this as a sort of &ldquo;integrated <em>for</em> loop&rdquo; that will process all the samples in parallel in a single run without the need of re-running the pipeline.</p>
+You can think of this as a sort of &ldquo;integrated <em>for</em> loop&rdquo; that will process all the samples in parallel in a single run without the need of re-running the pipeline. </p>
+<details class="info">
+<summary>Nextflow´s parallelization</summary>
+<p>Formally speaking, Nextflow&rsquo;s parallelization is implicitly defined by the processes input and output declarations, or in other words, Nextflow uses asynchronous first-in, first-out (FIFO) queues or channels. If you want to know more about this, we recomend this <a href="https://training.nextflow.io/2.1.3/basic_training/intro/">section</a> of the official documentation.</p>
+</details>
 <p>To achieve this purpose, there are two possibilities:</p>
 <ul>
 <li>The use of wildcards in the input (this can be tricky and requires taking into account particular folder structures).</li>
