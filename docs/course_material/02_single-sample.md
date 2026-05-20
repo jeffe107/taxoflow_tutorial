@@ -489,7 +489,7 @@ log.info """\
 .stripIndent()
 ```
 
-??? warning "No longer supported"
+??? bug "No longer supported"
     This way of using customized information for the pipeline execution is no longer supported since Nextflow version **26**.
 
 Then we add an `include` statement to import the `TaxoFlow` workflow from the `single/taxoflow.nf` file, as well as a `workflow` block that sets up an input channel and invokes it:

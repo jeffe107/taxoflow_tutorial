@@ -20,6 +20,8 @@ Alternatively, you can click on the button shown below, which is repeated in eac
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1&ref=master)
 
+!!! warning "Open the link in a new tab"
+
 You should be presented with a page where you can create a new GitHub Codespace:
 
 ![Create a GitHub Codespace](img/codespaces_create.png)
@@ -69,8 +71,6 @@ This is the interface of the VSCode IDE, a popular code development application 
 
 You can adjust the relative proportions of the window panes as you like.
 
-<!-- TODO (future) Link to development best practices side quest? -->
-
 ## Other notes about using GitHub Codespaces
 
 ### Resuming a session
@@ -88,6 +88,8 @@ If you have saved the URL for your previous GitHub Codespaces environment, you c
 Alternatively, click the same button that you used to create it in the first place:
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1&ref=master)
+
+!!! warning "Open the link in a new tab"
 
 You should see the previous session, the default option is to resume it:
 

@@ -42,6 +42,8 @@ hide:
 
         [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1&ref=master)
 
+        Please open the link in a new tab!
+
         If this does not suit your needs, please see the other [Environment options](envsetup/index.md).
 
     ??? learning "Complementary training"
@@ -81,6 +83,8 @@ Let's get started! Click on the "Open in GitHub Codespaces" button below to laun
     This tutorial is fully packed to be used on GitHub Codespaces. If you want to use it locally, on an HPC cluster or through CodeSandbox, please check the section [Environment options](envsetup/index.md).
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jeffe107/taxoflow_tutorial?quickstart=1)
+
+!!! warning "Open the link in a new tab"
 
 ## Learning objectives
 

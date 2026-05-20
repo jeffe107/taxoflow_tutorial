@@ -22,7 +22,11 @@ This will give us the opportunity to practice using the following Nextflow featu
 
 With our shiny brand-new pipeline, we are at this moment able to analyze each sample individually by running the workflow multiple times.
 Nonetheless, one of the most powerful capabilities by Nextflow is its native parallel execution according to the available resources the executor finds.
-You can think of this as a sort of "integrated *for* loop" that will process all the samples in parallel in a single run without the need of re-running the pipeline.
+You can think of this as a sort of "integrated *for* loop" that will process all the samples in parallel in a single run without the need of re-running the pipeline. 
+
+??? info "Nextflow´s parallelization"
+
+    Formally speaking, Nextflow's parallelization is implicitly defined by the processes input and output declarations, or in other words, Nextflow uses asynchronous first-in, first-out (FIFO) queues or channels. If you want to know more about this, we recomend this [section](https://training.nextflow.io/2.1.3/basic_training/intro/) of the official documentation.
 
 To achieve this purpose, there are two possibilities:
 
