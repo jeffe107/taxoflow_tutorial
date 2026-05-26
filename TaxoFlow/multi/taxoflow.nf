@@ -29,7 +29,7 @@ workflow TaxoFlow {
         TRIM_GALORE(reads_ch)
         BOWTIE2(TRIM_GALORE.out.trimmed_reads, bowtie2_index)
         KRAKEN2(BOWTIE2.out.reads, kraken2_db)
-        BRACKEN(KRAKEN2.out.files, kraken2_db)
+        BRACKEN(KRAKEN2.out.files, kraken2_db, params.read_length)
         K_REPORT_TO_KRONA(BRACKEN.out)
         KT_IMPORT_TEXT(K_REPORT_TO_KRONA.out)
         if(params.sheet_csv){
@@ -42,14 +42,14 @@ workflow TaxoFlow {
         TRIM_GALORE.out.trimming_reports,
         TRIM_GALORE.out.fastqc_reports_1,
         TRIM_GALORE.out.fastqc_reports_2,
-        KRAKEN2.out.report
+        KRAKEN2.out.report,
         BOWTIE2.out.log
         )
     multiqc_files_list = multiqc_files_ch.collect()
     MULTIQC(multiqc_files_list, params.report_id)
 
     emit:
-        bowtie_log               =    BOWTIE.out.log
+        bowtie_log               =    BOWTIE2.out.log
         bowtie_unali             =    BOWTIE2.out.reads
         kraken_class             =    KRAKEN2.out.files
         bracken_class            =    BRACKEN.out

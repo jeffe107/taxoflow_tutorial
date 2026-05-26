@@ -389,7 +389,7 @@ When the pipeline finishes, you will find `all_samples.html` (or whatever name y
 
 Add the following parameter to the `params` block in `multi/nextflow.config`:
 
-```groovy title="multi/nextflow.config" linenums="12"
+```groovy title="multi/nextflow.config" linenums="13"
 report_id                             = "all_samples"
 ```
 
@@ -418,8 +418,9 @@ In order to include Bowtie2's output into the final MultiQC report, we need to m
 
     script:
     """
-    export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/multi/data/genome/TAIR10
-    (bowtie2 -x $bowtie2_index -1 ${read1} -2 ${read2} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}) 2> ${sample_id}_aln_sum.log
+    export BOWTIE2_INDEXES="${bowtie2_index}"
+    export index="${bowtie2_index}/\$(basename ${bowtie2_index})"
+    (bowtie2 -x "\${index}" -1 ${read1} -2 ${read2} -p $task.cpus -S ${sample_id}.sam --un-conc-gz ${sample_id}) 2> ${sample_id}_aln_sum.log
     """
     }
     ```

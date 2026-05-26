@@ -32,7 +32,7 @@ To perform these steps, we will use the following tools:
 
 9. (Multi-sample) **Compilation of multiple tool outputs through [MultiQC](https://seqera.io/multiqc/)**. The outputs from FastQC, Trim Galore and Kraken2 are aggregated into a single, comprehensive and interactive report.
 
-The specific versions used by the current version of Taxoflow for each tool are as follows:
+The specific versions used by Taxoflow for each tool are as follows:
 
 ??? info "Specific software versions"
     | Tool        | Version | Container\* (Seqera\*\*)                                                     | License      |

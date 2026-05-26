@@ -34,7 +34,7 @@ hide:
 
     ??? warning "Version compatibility"
 
-        This tutorial uses a pinned version of Nextflow (**25.10.4**) with parser **v1**. This is important considering the rapid evolution of Nextflow, thus ensuring the proper execution of the pipeline.
+        This tutorial uses a pinned version of Nextflow (**25.10.4**) with parser **v2**. This is important considering the rapid evolution of Nextflow, thus ensuring the proper execution of the pipeline.
 
     ??? terminal "Environment options"
 

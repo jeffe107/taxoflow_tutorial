@@ -3,7 +3,7 @@ process KNIT_PHYLOSEQ {
     container "community.wave.seqera.io/library/bioconductor-phyloseq_knit_r-base_r-ggplot2_r-rmdformats:6efceb52eb05eb44"
 
     input:
-    path "merged"
+    path merged
 
     output:
     stdout

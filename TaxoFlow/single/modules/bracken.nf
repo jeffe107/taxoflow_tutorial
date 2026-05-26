@@ -5,6 +5,7 @@ process BRACKEN {
     input:
     tuple val(sample_id), path(k2report), path(kraken2)
     path kraken2_db
+    val length
 
     output:
     tuple val("${sample_id}"), path("${sample_id}.breport"), path("${sample_id}.bracken")
@@ -12,7 +13,7 @@ process BRACKEN {
     script:
     """
     bracken -d $kraken2_db \
-    -i ${k2report} -r 250 -l S -t 2 \
+    -i ${k2report} -r ${length} -l S -t 2 \
     -o ${sample_id}.bracken \
     -w ${sample_id}.breport
     """

@@ -3,7 +3,7 @@ process KRAKEN_BIOM {
     container "community.wave.seqera.io/library/kraken-biom:1.2.0--f040ab91c9691136"
 
     input:
-    val "files"
+    val files
 
     output:
     path "merged.biom"

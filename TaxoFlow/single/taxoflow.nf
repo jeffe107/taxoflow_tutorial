@@ -26,7 +26,7 @@ workflow TaxoFlow {
         TRIM_GALORE(reads_ch)
         BOWTIE2(TRIM_GALORE.out.trimmed_reads, bowtie2_index)
         KRAKEN2(BOWTIE2.out, kraken2_db)
-        BRACKEN(KRAKEN2.out.files, kraken2_db)
+        BRACKEN(KRAKEN2.out.files, kraken2_db, params.read_length)
         K_REPORT_TO_KRONA(BRACKEN.out)
         KT_IMPORT_TEXT(K_REPORT_TO_KRONA.out)
 
