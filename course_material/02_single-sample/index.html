@@ -1893,8 +1893,8 @@ Each module corresponds to a step in the pipeline.</p>
   We have retrieved all the containers from <a href="https://seqera.io/containers/">Seqera Containers</a>.</li>
 </ul>
 <div class="admonition tip">
-<p class="admonition-title">Container images</p>
-<p>Please keep in mind that we are using Docker images. If you want to use Apptainer/Singularity images, please refer to the HPC <a href="../../envsetup/05_HPC/">installation section</a>.</p>
+<p class="admonition-title">Container images and profiles</p>
+<p>Please keep in mind that we are using Docker images. If you want to use Apptainer/Singularity images, please refer to the HPC <a href="../../envsetup/05_HPC/">installation section</a>. It is also possible to control the container/manager technology used in every execution. This is achieved by creating specific profiles according to the wished behavior of the pipeline, more <a href="https://training.nextflow.io/latest/hello_nextflow/06_hello_config/#61-create-profiles-for-switching-between-local-development-and-execution-on-hpc">here</a>.</p>
 </div>
 <p>Now let&rsquo;s have a look at the interesting bits!</p>
 <h4 id="111-process-inputs">1.1.1. Process inputs</h4>
@@ -1990,7 +1990,8 @@ Trim Galore receives the <strong>raw</strong> reads directly from the input chan
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
-<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">process</span><span class="w"> </span><span class="n">BOWTIE2</span><span class="w"> </span><span class="o">{</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">process</span><span class="w"> </span><span class="n">BOWTIE2</span><span class="w"> </span><span class="o">{</span>
 <span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="s2">&quot;${sample_id}&quot;</span>
 <span class="w">    </span><span class="n">container</span><span class="w"> </span><span class="s2">&quot;community.wave.seqera.io/library/bowtie2:2.5.4--d51920539234bea7&quot;</span>
 
@@ -2003,14 +2004,15 @@ Trim Galore receives the <strong>raw</strong> reads directly from the input chan
 
 <span class="w">    </span><span class="nl">script:</span>
 <span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/single/data/genome/TAIR10</span>
-<span class="s2">    bowtie2 -x $bowtie2_index -1 ${read1} -2 ${read2} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}</span>
+<span class="s2">    export BOWTIE2_INDEXES=&quot;${bowtie2_index}&quot;</span>
+<span class="s2">    export index=&quot;${bowtie2_index}/\$(basename ${bowtie2_index})&quot;</span>
+<span class="s2">    (bowtie2 -x &quot;\${index}&quot; -1 ${read1} -2 ${read2} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}) 2&gt; ${sample_id}_aln_sum.log</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 <span class="w">    </span><span class="o">}</span>
 </code></pre></div></td></tr></table></div>
-<details class="bug">
-<summary>Bowtie2 path to index</summary>
-<p>You may have noticed that we exported the variable BOWTIE2_INDEXES. This is a specific requirement by Bowtie2 to find the proper indexed genome. This path is only exported at runtime, and it is <strong>hard-coded</strong> to the Codespaces environment. If you are using a different environment you will need to adapt this path (we have done it for the Bowtie2 module used in the Part 3 of this tutorial).</p>
+<details class="tip">
+<summary>Resources</summary>
+<p>The parameter <code>-p</code> is used to indicate how many cores or threads we want to use for this tool. The name of the parameter can change (i.e. in Kraken2, it is called <code>--threads</code>), and we can control the number of cpus assigned to each process with this kind of parameters. In Nextflow, there is a really convenient way to centralize these resources, assigning them to each process according to the requirements; this is an adavanced control feature that you can explore <a href="https://training.nextflow.io/latest/hello_nextflow/06_hello_config/#5-control-compute-resource-allocations">here</a>.</p>
 </details>
 <p>At first glance, you can see that it follows the same structure as the later processes.
 The directives <code>tag</code> and <code>container</code> play the same role.</p>
@@ -2071,7 +2073,7 @@ To learn more about this format, please see the <a href="https://samtools.github
 
 <span class="w">	</span><span class="nl">output:</span>
 <span class="w">	</span><span class="n">tuple</span><span class="w"> </span><span class="n">val</span><span class="o">(</span><span class="s2">&quot;${sample_id}&quot;</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${sample_id}.k2report&quot;</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${sample_id}.kraken2&quot;</span><span class="o">),</span><span class="w"> </span><span class="nl">emit:</span><span class="w"> </span><span class="n">files</span>
-<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;${sample_id}.k2report&quot;</span><span class="o">,</span><span class="w"> </span><span class="nl">emit:</span><span class="w"> </span><span class="n">report</span>
+<span class="w">        </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;${sample_id}.k2report&quot;</span><span class="o">,</span><span class="w"> </span><span class="nl">emit:</span><span class="w"> </span><span class="n">report</span>
 
 <span class="w">	</span><span class="nl">script:</span>
 <span class="w">	</span><span class="s2">&quot;&quot;&quot;</span>
@@ -2126,13 +2128,15 @@ This <a href="https://homolog.us/blogs/bioinfo/2017/10/25/intro-minimizer/">arti
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
-<span class="normal">19</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">process</span><span class="w"> </span><span class="n">BRACKEN</span><span class="w"> </span><span class="o">{</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">process</span><span class="w"> </span><span class="n">BRACKEN</span><span class="w"> </span><span class="o">{</span>
 <span class="w">	</span><span class="n">tag</span><span class="w"> </span><span class="s2">&quot;${sample_id}&quot;</span>
 <span class="w">	</span><span class="n">container</span><span class="w"> </span><span class="s2">&quot;community.wave.seqera.io/library/bracken:3.1--22a4e66ce04c5e01&quot;</span>
 
 <span class="w">	</span><span class="nl">input:</span>
 <span class="w">	</span><span class="n">tuple</span><span class="w"> </span><span class="n">val</span><span class="o">(</span><span class="n">sample_id</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="n">k2report</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="n">kraken2</span><span class="o">)</span>
 <span class="w">	</span><span class="n">path</span><span class="w"> </span><span class="n">kraken2_db</span>
+<span class="w">        </span><span class="n">val</span><span class="w"> </span><span class="n">length</span>
 
 <span class="w">	</span><span class="nl">output:</span>
 <span class="w">	</span><span class="n">tuple</span><span class="w"> </span><span class="n">val</span><span class="o">(</span><span class="s2">&quot;${sample_id}&quot;</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${sample_id}.breport&quot;</span><span class="o">),</span><span class="w"> </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${sample_id}.bracken&quot;</span><span class="o">)</span>
@@ -2140,7 +2144,7 @@ This <a href="https://homolog.us/blogs/bioinfo/2017/10/25/intro-minimizer/">arti
 <span class="w">	</span><span class="nl">script:</span>
 <span class="w">	</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">	bracken -d $kraken2_db \</span>
-<span class="s2">	-i ${k2report} -r 250 -l S -t 2 \</span>
+<span class="s2">	-i ${k2report} -r ${length} -l S -t 2 \</span>
 <span class="s2">	-o ${sample_id}.bracken \</span>
 <span class="s2">	-w ${sample_id}.breport</span>
 <span class="s2">	&quot;&quot;&quot;</span>
@@ -2149,8 +2153,7 @@ This <a href="https://homolog.us/blogs/bioinfo/2017/10/25/intro-minimizer/">arti
 <p>Once again, this module follows the same structure as the previous process.
 The directives <code>tag</code> and <code>container</code> play the same role.</p>
 <h4 id="151-process-inputs">1.5.1. Process inputs</h4>
-<p>The declared <code>input</code> for this Bracken process matches the output generated by Kraken2.
-It expects to receive a tuple containing the <code>sample id</code> and the paths to <code>.k2report</code> and <code>kraken2</code> reports.</p>
+<p>The declared <code>input</code> for this Bracken process matches the output generated by Kraken2. It expects to receive a tuple containing the <code>sample id</code> and the paths to <code>.k2report</code> and <code>kraken2</code> reports. It requires also the read length (<code>length</code>) to compute the probabilities, as well as the path to the database (<code>kraken2_db</code>)</p>
 <h4 id="152-process-outputs">1.5.2. Process outputs</h4>
 <p>Similarly, the <code>output</code> establishes that this process will generate a tuple with the <code>sample id</code> and the two types of <code>reports</code> Bracken produces.
 You can find more information about these reports in the <a href="https://ccb.jhu.edu/software/bracken/index.shtml">here</a>.</p>
@@ -2325,7 +2328,7 @@ We need to declare the primary input for the workflow and invoke the processes o
 <span class="w">        </span><span class="n">TRIM_GALORE</span><span class="o">(</span><span class="n">reads_ch</span><span class="o">)</span>
 <span class="w">        </span><span class="n">BOWTIE2</span><span class="o">(</span><span class="n">TRIM_GALORE</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">trimmed_reads</span><span class="o">,</span><span class="w"> </span><span class="n">bowtie2_index</span><span class="o">)</span>
 <span class="w">        </span><span class="n">KRAKEN2</span><span class="o">(</span><span class="n">BOWTIE2</span><span class="o">.</span><span class="na">out</span><span class="o">,</span><span class="w"> </span><span class="n">kraken2_db</span><span class="o">)</span>
-<span class="w">        </span><span class="n">BRACKEN</span><span class="o">(</span><span class="n">KRAKEN2</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">files</span><span class="o">,</span><span class="w"> </span><span class="n">kraken2_db</span><span class="o">)</span>
+<span class="w">        </span><span class="n">BRACKEN</span><span class="o">(</span><span class="n">KRAKEN2</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">files</span><span class="o">,</span><span class="w"> </span><span class="n">kraken2_db</span><span class="o">,</span><span class="w"> </span><span class="n">params</span><span class="o">.</span><span class="na">read_length</span><span class="o">)</span>
 <span class="w">        </span><span class="n">K_REPORT_TO_KRONA</span><span class="o">(</span><span class="n">BRACKEN</span><span class="o">.</span><span class="na">out</span><span class="o">)</span>
 <span class="w">        </span><span class="n">KT_IMPORT_TEXT</span><span class="o">(</span><span class="n">K_REPORT_TO_KRONA</span><span class="o">.</span><span class="na">out</span><span class="o">)</span>
 
@@ -2367,10 +2370,8 @@ The names you choose here (<code>krona</code>, <code>bracken_class</code>, and s
 <h2 id="3-create-the-mainnf-entrypoint-workflow">3. Create the <code>main.nf</code> entrypoint workflow</h2>
 <p>We are getting closer to running the pipeline!
 Let&rsquo;s create the <code>single/main.nf</code> file.</p>
-<p>Within this file, we create a banner with the pipeline name to be shown when the execution starts using <code>log.info</code>.</p>
-<p><code>log.info</code> is a method call on a logging object, and can be used to write informational messages to the Nextflow log during a pipeline&rsquo;s execution.
-You can learn more about this <a href="https://carpentries-incubator.github.io/workflows-nextflow/11-Simple_Rna-Seq_pipeline.html#define-the-pipeline-parameters">here</a>.</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">single/main.nf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<p>Then we add an <code>include</code> statement to import the <code>TaxoFlow</code> workflow from the <code>single/taxoflow.nf</code> file, as well as a <code>workflow</code> block that sets up an input channel and invokes it:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">main.nf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -2384,28 +2385,10 @@ You can learn more about this <a href="https://carpentries-incubator.github.io/w
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
-<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#!/usr/bin/env nextflow</span>
-
-<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="err">&quot;\</span>
-<span class="w">	</span><span class="n">___________________________________________________________________________________________________</span>
-<span class="w">	</span><span class="n">___________________________________________________________________________________________________</span>
-<span class="w">   </span><span class="o">&gt;===&gt;&gt;=====&gt;</span><span class="w">                                 </span><span class="o">&gt;=======&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w">                         </span>
-<span class="w">     	</span><span class="o">&gt;=&gt;</span><span class="w">                                      </span><span class="o">&gt;=&gt;</span><span class="w">        </span><span class="o">&gt;=&gt;</span><span class="w">                         </span>
-<span class="w">     	</span><span class="o">&gt;=&gt;</span><span class="w">        </span><span class="o">&gt;=&gt;</span><span class="w"> </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w">   </span><span class="o">&gt;=&gt;</span><span class="w">    </span><span class="o">&gt;=&gt;</span><span class="w">     </span><span class="o">&gt;=&gt;</span><span class="w">        </span><span class="o">&gt;=&gt;</span><span class="w">    </span><span class="o">&gt;=&gt;</span><span class="w">     </span><span class="o">&gt;=&gt;</span><span class="w">      </span><span class="o">&gt;=&gt;</span><span class="w"> </span>
-<span class="w">     	</span><span class="o">&gt;=&gt;</span><span class="w">      </span><span class="o">&gt;=&gt;</span><span class="w">   </span><span class="o">&gt;=&gt;</span><span class="w">    </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">&gt;=&gt;</span><span class="w">   </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;=====&gt;</span><span class="w">    </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w">   </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w"> </span>
-<span class="w">     	</span><span class="o">&gt;=&gt;</span><span class="w">     </span><span class="o">&gt;=&gt;</span><span class="w">    </span><span class="o">&gt;=&gt;</span><span class="w">     </span><span class="o">&gt;&gt;</span><span class="w">     </span><span class="o">&gt;=&gt;</span><span class="w">    </span><span class="o">&gt;=&gt;</span><span class="w"> </span><span class="o">&gt;=&gt;</span><span class="w">        </span><span class="o">&gt;=&gt;</span><span class="w"> </span><span class="o">&gt;=&gt;</span><span class="w">    </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w"> </span>
-<span class="w">     	</span><span class="o">&gt;=&gt;</span><span class="w">      </span><span class="o">&gt;=&gt;</span><span class="w">   </span><span class="o">&gt;=&gt;</span><span class="w">   </span><span class="o">&gt;&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w">   </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w">        </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;</span><span class="w">   </span><span class="o">&gt;=&gt;&gt;</span><span class="w">  </span><span class="o">&gt;=&gt;=&gt;</span><span class="w"> </span>
-<span class="w">     	</span><span class="o">&gt;=&gt;</span><span class="w">       </span><span class="o">&gt;==&gt;&gt;&gt;==&gt;</span><span class="w"> </span><span class="o">&gt;=&gt;</span><span class="w">   </span><span class="o">&gt;=&gt;</span><span class="w">    </span><span class="o">&gt;=&gt;</span><span class="w">     </span><span class="o">&gt;=&gt;</span><span class="w">       </span><span class="o">&gt;==&gt;</span><span class="w">    </span><span class="o">&gt;=&gt;</span><span class="w">     </span><span class="o">&gt;==&gt;</span><span class="w">    </span><span class="o">&gt;==&gt;</span><span class="w">                                                                                                     </span>
-<span class="w">	</span><span class="n">___________________________________________________________________________________________________</span>
-<span class="w">	</span><span class="n">___________________________________________________________________________________________________</span>
-<span class="o">.</span><span class="na">stripIndent</span><span class="o">()</span>
-</code></pre></div></td></tr></table></div>
-<details class="bug">
-<summary>No longer supported</summary>
-<p>This way of using customized information to display during pipeline execution is no longer supported, starting since Nextflow version <strong>26</strong>.</p>
-</details>
-<p>Then we add an <code>include</code> statement to import the <code>TaxoFlow</code> workflow from the <code>single/taxoflow.nf</code> file, as well as a <code>workflow</code> block that sets up an input channel and invokes it:</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">main.nf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
@@ -2442,24 +2425,7 @@ You can learn more about this <a href="https://carpentries-incubator.github.io/w
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">include</span><span class="w"> </span><span class="o">{</span><span class="n">TaxoFlow</span><span class="o">}</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="s1">&#39;./taxoflow.nf&#39;</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">include</span><span class="w"> </span><span class="o">{</span><span class="n">TaxoFlow</span><span class="o">}</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="s1">&#39;./taxoflow.nf&#39;</span>
 
 <span class="n">workflow</span><span class="w"> </span><span class="o">{</span>
 
@@ -2515,6 +2481,51 @@ You can learn more about this <a href="https://carpentries-incubator.github.io/w
 <span class="w">    </span><span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></td></tr></table></div>
+<p>Within this file, we create a banner with the pipeline name to be shown when the execution starts using <code>log.info</code>.</p>
+<p><code>log.info</code> is a method call on a logging object, and can be used to write informational messages to the Nextflow log during a pipeline&rsquo;s execution.
+You can learn more about this <a href="https://carpentries-incubator.github.io/workflows-nextflow/11-Simple_Rna-Seq_pipeline.html#define-the-pipeline-parameters">here</a>.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">single/main.nf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">workflow</span><span class="w"> </span><span class="o">{</span>
+
+<span class="w">    </span><span class="nl">main:</span>
+
+<span class="w">    </span><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s2">&quot;&quot;&quot;\</span>
+<span class="s2">	___________________________________________________________________________________________________</span>
+<span class="s2">	___________________________________________________________________________________________________</span>
+<span class="s2">    &gt;===&gt;&gt;=====&gt;                                 &gt;=======&gt;  &gt;=&gt;                         </span>
+<span class="s2">     	&gt;=&gt;                                      &gt;=&gt;        &gt;=&gt;                         </span>
+<span class="s2">     	&gt;=&gt;        &gt;=&gt; &gt;=&gt;  &gt;=&gt;   &gt;=&gt;    &gt;=&gt;     &gt;=&gt;        &gt;=&gt;    &gt;=&gt;     &gt;=&gt;      &gt;=&gt; </span>
+<span class="s2">     	&gt;=&gt;      &gt;=&gt;   &gt;=&gt;    &gt;&gt; &gt;=&gt;   &gt;=&gt;  &gt;=&gt;  &gt;=====&gt;    &gt;=&gt;  &gt;=&gt;  &gt;=&gt;   &gt;=&gt;  &gt;  &gt;=&gt; </span>
+<span class="s2">     	&gt;=&gt;     &gt;=&gt;    &gt;=&gt;     &gt;&gt;     &gt;=&gt;    &gt;=&gt; &gt;=&gt;        &gt;=&gt; &gt;=&gt;    &gt;=&gt;  &gt;=&gt; &gt;&gt;  &gt;=&gt; </span>
+<span class="s2">     	&gt;=&gt;      &gt;=&gt;   &gt;=&gt;   &gt;&gt;  &gt;=&gt;   &gt;=&gt;  &gt;=&gt;  &gt;=&gt;        &gt;=&gt;  &gt;=&gt;  &gt;=&gt;   &gt;=&gt;&gt;  &gt;=&gt;=&gt; </span>
+<span class="s2">     	&gt;=&gt;       &gt;==&gt;&gt;&gt;==&gt; &gt;=&gt;   &gt;=&gt;    &gt;=&gt;     &gt;=&gt;       &gt;==&gt;    &gt;=&gt;     &gt;==&gt;    &gt;==&gt;   </span>
+<span class="s2">	___________________________________________________________________________________________________</span>
+<span class="s2">	___________________________________________________________________________________________________</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="o">.</span><span class="na">stripIndent</span><span class="o">()</span>
+
+<span class="w">    </span><span class="n">reads_ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">fromFilePairs</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">reads</span><span class="o">,</span><span class="w"> </span><span class="nl">checkIfExists:</span><span class="kc">true</span><span class="o">)</span>
+<span class="w">    </span><span class="n">TaxoFlow</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">bowtie2_index</span><span class="o">,</span><span class="w"> </span><span class="n">params</span><span class="o">.</span><span class="na">kraken2_db</span><span class="o">,</span><span class="w"> </span><span class="n">reads_ch</span><span class="o">)</span>
+</code></pre></div></td></tr></table></div>
 <p>Let&rsquo;s break down the rest of this file.</p>
 <h3 id="31-setting-up-the-input-channel">3.1. Setting up the input channel</h3>
 <p><code>params.reads</code> takes the path to the paired-end reads, using the channel factory <a href="https://nextflow.io/docs/latest/reference/channel.html#fromfilepairs"><code>fromFilePairs</code></a> to build a channel of paired FASTQ files.</p>
@@ -2524,7 +2535,7 @@ You can learn more about this <a href="https://carpentries-incubator.github.io/w
 <p>This way of providing the path to the reads requires the use regular expressions. Fortunately, in this case you just need to know the specific expected pattern by this paramater: <code>name_of_the_files{1,2}.fastq.gz</code>. More about this <a href="https://training.nextflow.io/2.1.2/basic_training/channels/#fromfilepairs">here</a>.</p>
 </details>
 <h3 id="32-calling-taxoflow">3.2. Calling <code>TaxoFlow</code></h3>
-<p>The line <code>TaxoFlow(params.bowtie2_index, params.kraken2_db, reads_ch)</code> runs our core workflow.
+<p>The line <code>TaxoFlow(params.bowtie2_index, params.kraken2_db, reads_ch)</code> runs our core workflow. This statement is really explicit in terms of the requirements, which are the path to the Kraken2 database, the indexed genome for Bowtie2 and the reads.
 The three arguments match the three inputs declared in the <code>take:</code> block of <code>taxoflow.nf</code>.</p>
 <h3 id="33-the-publish-block">3.3. The <code>publish</code> block</h3>
 <p>After calling <code>TaxoFlow</code>, the <code>publish</code> block selects <strong>which</strong> emitted channels should be saved to your results folder.
@@ -2557,15 +2568,17 @@ These folders are created inside <code>outputDir</code>, which we configure in <
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
-<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cm">/*</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cm">/*</span>
 <span class="cm"> * pipeline input parameters</span>
 <span class="cm"> */</span>
 
 <span class="n">params</span><span class="w"> </span><span class="o">{</span>
 <span class="w">    </span><span class="n">reads</span><span class="w">                                 </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span>
 <span class="w">    </span><span class="n">outdir</span><span class="w">                                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${projectDir}/output&quot;</span>
-<span class="w">    </span><span class="n">bowtie2_index</span><span class="w">                         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${projectDir}/data/genome/TAIR10/TAIR10&quot;</span>
+<span class="w">    </span><span class="n">bowtie2_index</span><span class="w">                         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${projectDir}/data/genome/TAIR10&quot;</span>
 <span class="w">    </span><span class="n">kraken2_db</span><span class="w">                            </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${projectDir}/data/krakendb&quot;</span>
+<span class="w">    </span><span class="n">read_length</span><span class="w">                           </span><span class="o">=</span><span class="w"> </span><span class="mi">250</span>
 <span class="w">    </span><span class="o">}</span>
 
 <span class="c1">// Enable using docker as the container engine to run the pipeline</span>
@@ -2595,7 +2608,8 @@ These folders are created inside <code>outputDir</code>, which we configure in <
 <span class="w">	</span>--reads<span class="w"> </span><span class="s2">&quot;path/to/reads&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">	</span>--outdir<span class="w"> </span><span class="s2">&quot;path/to/outdir&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">	</span>--bowtie2_index<span class="w"> </span><span class="s2">&quot;path/to/bowtie2/index&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">	</span>--kraken2_db<span class="w"> </span><span class="s2">&quot;path/to/kraken2/database&quot;</span>
+<span class="w">	</span>--kraken2_db<span class="w"> </span><span class="s2">&quot;path/to/kraken2/database&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--<span class="w"> </span>read_length<span class="w"> </span>N
 </code></pre></div>
 </details>
 <hr />

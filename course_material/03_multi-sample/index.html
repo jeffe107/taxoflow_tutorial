@@ -1907,7 +1907,7 @@ Add the following lines inside the <code>main:</code> block of the <code>TaxoFlo
 <p>When the pipeline finishes, you will find <code>all_samples.html</code> (or whatever name you set in <code>params.report_id</code>) and the companion <code>all_samples_data</code> folder under <code>output/multiqc/</code>.</p>
 <h4 id="236-parameter-in-nextflowconfig">2.3.6. Parameter in <code>nextflow.config</code></h4>
 <p>Add the following parameter to the <code>params</code> block in <code>multi/nextflow.config</code>:</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">multi/nextflow.config</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">report_id</span><span class="w">                             </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;all_samples&quot;</span>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">multi/nextflow.config</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">report_id</span><span class="w">                             </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;all_samples&quot;</span>
 </code></pre></div></td></tr></table></div>
 <p>This value is passed to <code>MULTIQC</code> as the output name.
 You can change it at run time, for example: <code>--report_id 'cuatro_cienegas_run'</code>. That would produce <code>cuatro_cienegas_run.html</code> instead of <code>all_samples.html</code>.</p>
@@ -1935,7 +1935,8 @@ You can change it at run time, for example: <code>--report_id 'cuatro_cienegas_r
 <span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
-<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">process</span><span class="w"> </span><span class="n">BOWTIE2</span><span class="w"> </span><span class="o">{</span>
+<span class="normal">18</span>
+<span class="normal">19</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">process</span><span class="w"> </span><span class="n">BOWTIE2</span><span class="w"> </span><span class="o">{</span>
 <span class="n">tag</span><span class="w"> </span><span class="s2">&quot;${sample_id}&quot;</span>
 <span class="n">container</span><span class="w"> </span><span class="s2">&quot;community.wave.seqera.io/library/bowtie2:2.5.4--d51920539234bea7&quot;</span>
 
@@ -1949,9 +1950,10 @@ You can change it at run time, for example: <code>--report_id 'cuatro_cienegas_r
 </span>
 <span class="nl">script:</span>
 <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">export BOWTIE2_INDEXES=/workspaces/taxoflow_tutorial/TaxoFlow/multi/data/genome/TAIR10</span>
-<span class="hll"><span class="s2">(bowtie2 -x $bowtie2_index -1 ${read1} -2 ${read2} -p 2 -S ${sample_id}.sam --un-conc-gz ${sample_id}) 2&gt; ${sample_id}_aln_sum.log</span>
-</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">export BOWTIE2_INDEXES=&quot;${bowtie2_index}&quot;</span>
+<span class="hll"><span class="s2">export index=&quot;${bowtie2_index}/\$(basename ${bowtie2_index})&quot;</span>
+</span><span class="s2">(bowtie2 -x &quot;\${index}&quot; -1 ${read1} -2 ${read2} -p $task.cpus -S ${sample_id}.sam --un-conc-gz ${sample_id}) 2&gt; ${sample_id}_aln_sum.log</span>
+<span class="s2">&quot;&quot;&quot;</span>
 <span class="o">}</span>
 </code></pre></div></td></tr></table></div>
 </details>
