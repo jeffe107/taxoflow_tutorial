@@ -55,7 +55,7 @@ The specific versions used by Taxoflow for each tool are as follows:
     ** Containers compatible with Docker engine.
 
 ??? licensing "Pipeline and tools license"
-    Please keep in mind that TaxoFlow (both the tutorial and the Nextflow code) is released under an open-source license ([CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/)) for the benefit of the community. However, the encompassed tools feature different licenses that may affect your further implementation of TaxoFlow, and hence we encourage you to review carefully the terms of each individual license.
+    Please keep in mind that TaxoFlow (both the tutorial and the Nextflow code) is released under an open-source license ([CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)) for the benefit of the community. However, the encompassed tools feature different licenses that may affect your further implementation of TaxoFlow, and hence we encourage you to review carefully the terms of each individual license.
 
 !!!tip
 
